@@ -9,10 +9,10 @@
 
 int main()
 {
-// create a listening TCP socket on port 9999 (server)
+// create a listening TCP socket on port 8080 (server)
     IPaddress ip;
     TCPsocket server_tcpsock;
-    if(SDLNet_ResolveHost(&ip,NULL,9999)==-1) {
+    if(SDLNet_ResolveHost(&ip,NULL,8080)==-1) {
         printf("SDLNet_ResolveHost: %s\n", SDLNet_GetError());
         exit(1);
     }
@@ -24,13 +24,17 @@ int main()
 
     // accept a connection coming in on server_tcpsock
     TCPsocket new_tcpsock;
-    
-    new_tcpsock=SDLNet_TCP_Accept(server_tcpsock);
-    if(!new_tcpsock) {
-        printf("SDLNet_TCP_Accept: %s\n", SDLNet_GetError());
-    }
-    else {
-        // communicate over new_tcpsock
+    while (1)
+    {
+        new_tcpsock=SDLNet_TCP_Accept(server_tcpsock);
+        if(!new_tcpsock) {
+            printf("SDLNet_TCP_Accept: %s\n", SDLNet_GetError());
+        }
+        else {
+            // communicate over new_tcpsock
+            std::cout << "found" << std::endl;
+            break;
+        }
     }
     
 // close the connection on sock

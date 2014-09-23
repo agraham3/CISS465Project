@@ -6,4 +6,12 @@ run:
 	./BomberMain
 fresh:
 	find -name '*~' -exec rm '{}' \;
-	
+pull:
+	git pull
+add:
+	git add . -A
+commit:
+	git commit
+push: pull fresh add commit
+	git push
+

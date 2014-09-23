@@ -1,4 +1,7 @@
 #include <iostream>
+#include <string>
+#include <vector>
+
 #include "SDL_net.h"
 
 #include "Includes.h"
@@ -6,6 +9,33 @@
 #include "compgeom.h"
 #include "Surface.h"
 #include "Event.h"
+
+class Client
+{
+public:
+    Client(TCPsocet s = NULL, std::string n="",
+           float x1 = 0.0f, float y1 = 0.0f, bool a = false)
+        : sock(s), name(n), x(x1), y(y1), active(a)
+    {}
+
+    TCPsocet sock;
+    std::string name;
+    float x, y;
+    bool active;
+};
+
+const int MAXLEN = 1024;
+std::vector<Client> clients;
+int num_clients = 0;
+TCPsocet server;
+
+void send_client(int, std::string);
+void send_all(std::string buf);
+int find_client_name(std::string name);
+void reconnect(std::string name);
+void add_client(TCPsocet sock, std::string name);
+
+
 
 int main()
 {

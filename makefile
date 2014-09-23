@@ -1,5 +1,5 @@
 all:
-	g++ src/*.cpp src/physics/*.cpp `sdl-config --cflags --libs` -lSDL2 -lSDL2_net -lSDL2_image -lSDL2_ttf -Isrc/includes -Isrc/physics -o BomberMan
+	g++ src/*.cpp src/physics/*.cpp src/txt/*.cpp `sdl-config --cflags --libs` -lSDL2 -lSDL2_net -lSDL2_image -lSDL2_ttf -Isrc/includes -Isrc/physics -Isrc/txt -o BomberMan
 
 r:	run
 run:

@@ -1,9 +1,10 @@
 // created by: A-squared 
 #include <iostream>
 #include "vec2d.h"
+#include "text.h"
 
 int main()
 {
-    std::cout << "It's, running" << std::endl;
+    std::vector<std::vector<std::string> > info;
     return 0;
 }

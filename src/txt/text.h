@@ -16,4 +16,7 @@ std::vector<std::vector<std::string> > get_pieces_of_file(const char file[]);
 std::string combine_strings_to_form_row(const std::vector<std::string> & list);
 std::string combine_strings_for_file(const std::vector<std::string> & list);
 void write_string_to_file(const std::string & to_write, const char filename[]);
+void put_data_to_file(const std::vector<std::vector<std::string> > & data, const char filename[]);
+
+
 #endif

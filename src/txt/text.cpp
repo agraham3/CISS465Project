@@ -17,6 +17,10 @@ std::vector<std::string> read_file_to_rows(const char file[])
     {
         std::string temp;
         std::getline(f, temp);
+        if (temp == "\0")
+        {
+            continue;
+        }
         ret.push_back(temp);
     }
     return ret;
@@ -59,7 +63,7 @@ std::string combine_strings_to_form_row(const std::vector<std::string> & list)
     std::string ret;
     for (int i = 0; i < list.size(); ++i)
     {
-        ret += list[i] + '|';
+        ret += list[i] + SEPARATOR;
     }
     return ret;
 }
@@ -81,5 +85,18 @@ void write_string_to_file(const std::string & to_write, const char filename[])
     std::cout << f.good() << std::endl;
     f << to_write;
     f.close();
+    return;
+}
+
+void put_data_to_file(const std::vector<std::vector<std::string> > & data,
+                      const char filename[])
+{
+    std::vector<std::string> medium;
+    for (int i = 0; i < data.size(); ++i)
+    {
+        medium.push_back(combine_strings_to_form_row(data[i]));
+    }
+    std::string to_write = combine_strings_for_file(medium);
+    write_string_to_file(to_write, filename);
     return;
 }

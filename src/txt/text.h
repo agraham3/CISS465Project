@@ -7,6 +7,7 @@
 #include <fstream>
 #include <string>
 
-std::string read_file_to_string(const std::string & file);
+class NOFILE{};
 
+std::vector<std::string> read_file_to_rows(const std::string & file);
 #endif

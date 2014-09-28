@@ -119,39 +119,211 @@ void handle_login(TCPsocket sock, std::string name)
     return;
 }
 
-int main()
+// Add a client to the list of clients
+void add_client(TCPsock sock, std::string name)
 {
-// create a listening TCP socket on port 8080 (server)
+    Client c;
+    c.name = name;
+    c.sock = sock;
+    c.active = true;
+    clients.push_back(c);
+    num_clients++;
+
+    // send an acknowledgement
+    std::string player_number = "N";
+    player_number = itos(num_clients - 1);
+    playey_number += ";#";
+    // send client their player number
+    send_client(num_clients -1, player_number);
+}
+
+// close the socket of a disconnected client
+void handle_disconnect(int i)
+{
+    std::string name = clients[i].name;
+
+    if (i < 0 | i >= num_clients)
+        return;
+
+    // closes the old socket, even if it's dead
+    SDLNet_TCP_Close(clients[i].sock);
+    clients[i].active = false;
+}
+
+// Reconnecs a client
+void reconnect_client(std::string name)//, std::string password)
+{
+    clients[find_client_name(name)].active = true;
+}
+
+// create a socket set that has the server socket
+//    and all the client sockets
+SDLNet_SocketSet create_sockset()
+{
+    static SDLNet_ScoketSet set = NULL;
+
+    if (set)
+        SDLNet_FreeSocketSet(set);
+    set = SDLNet_AllocSocketSet(num_clients + 1);
+    if (!set)
+    {
+        std::cerr << "SDLNet_AllocSocetSet: "
+                  << SDLNet_GetError()
+                  << std::endl;
+    }
+    SDLNet_TCP_AddSocket(set, server);
+    for (int i = 0; i < num_clients; i++)
+        if (clients[i].active)
+            SDLNet_TCP_AddSocket(set, clients[i].sock);
+    return(set);
+}
+
+// send a buffer to all clients
+void send_all(std::string buf)
+{
+    if(buf == "" || num_clients == 0)
+        return;
+    for (int i = 0; i < num_clients; i++)
+    {
+        if (!send_message(buf, clients[i].sock))
+        {
+            std::cout << "in send_all(std::string buf)\n"
+                      << "client " << i
+                      << "failed to send message"
+                      << std::endl;
+            std::cout << "disconnecting the client" << std::endl;
+            handle_disconnect(i);
+        }
+    }
+}
+
+// Send a string to a particular client
+void send_client(int i, std::string buf)
+{
+    if (buf == "")
+        return;
+    send_message(buf, clients[i].sock);
+}
+
+// Generate the string to be sent
+std::string gnerate_string_for_clients()
+{
+    std::ostringstream ret;
+
+    ret << num_clients << ' ';
+    for (int i = 0; i < num_clients; i++)
+    {
+        ret << clients[i].active << ' ';
+    }
+    return ret.str();
+}
+
+int main(int argc, char **argv)
+{
     IPaddress ip;
-    TCPsocket server_tcpsock;
-    if(SDLNet_ResolveHost(&ip,NULL,8080)==-1) {
-        printf("SDLNet_ResolveHost: %s\n", SDLNet_GetError());
+    TCPsocket sock;
+    SDLNet_SocketSet set;
+
+    std::string message;
+
+    Uint32 ipaddr;
+    Uint16 port;
+
+    // check our commandline
+    if (argc < 2)
+    {
+        std::cout << argv[0] << "port\n";
+        exit(0);
+    }
+
+    // initialize SDL
+    if(SDL_Init(0) == -1)
+    {
+        std::cout << "SDL initialization failed" << std::endl;
         exit(1);
     }
-    server_tcpsock=SDLNet_TCP_Open(&ip);
-    if(!server_tcpsock) {
-        printf("SDLNet_TCP_Open: %s\n", SDLNet_GetError());
+
+    // initialize SDL_net
+    if(SDLNet_Init() == -1)
+    {
+        std::cout << "SDL_Net initialization failed" << std::endl;
+        SDL_Quit();
         exit(2);
     }
 
-    // accept a connection coming in on server_tcpsock
-    TCPsocket new_tcpsock;
-    while (1)
+    // get the port from the commandline
+    port =(Uint16)strtol(argv[1],NULL,0);
+
+    // Resolve the argument into an IPaddress type
+    if(SDLNet_ResolveHost(&ip,NULL,port)==-1)
     {
-        new_tcpsock=SDLNet_TCP_Accept(server_tcpsock);
-        if(!new_tcpsock) {
-            printf("SDLNet_TCP_Accept: %s\n", SDLNet_GetError());
-        }
-        else {
-            // communicate over new_tcpsock
-            std::cout << "found" << std::endl;
+        std::cout << "SDLNet_ResolveHost: ERROR" << std::endl;
+        SDLNet_Quit();
+        SDL_Quit();
+        exit(3);
+    }
+
+    // open the server socket
+    server = SDLNet_TCP_Open(&ip);
+    if(!server)
+    {
+        std::cout << "SDLNet_TCP_Open: ERROR" << std::endl;
+        SDLNet_Quit();
+        SDL_Quit();
+        exit(4);
+    }
+
+    // The running loop: for the server
+    std::cout << "Server initialized" << std::endl;
+    while(1)
+    {
+        int numready;
+        set = create_sockset();
+        numready = SDLNet_CheckSockets(set, (Uint32)1000);
+
+        if (numready == -1)
+        {
+            std::cout << "SDLNet_CheckSockets: ERROR" << std::endl;
             break;
         }
+        if(numready == 0)
+            continue;
+        if(SDLNet_SocketReady(server))
+        {
+            sock = SDLNet_TCP_Accept(server);
+            if(sock)
+            {
+                std::string name;
+                name = recv_message(sock);
+                handle_login(sock,name);
+                std::cout << "New Client Recieved: \n" <<
+                          << "Name: " << name << std::endl;
+            }
+            else
+            {
+                SDLNet_TCP_Close(sock);
+            }
+        }
+        // Loop through the clients
+        for (int i = 0; numready > 0 && i < num_clients; i++)
+        {
+            message = ""
+            if (clients[i].active)
+            {
+                message = recv_message(clients[i].sock);
+                if(message > "")
+                    std::cout << "Client[" << i << "]: " <<
+                              << message << std::endl;
+            }
+        }
+
+        send_all(generate_string_for_clients());
     }
-    
-// close the connection on sock
-//TCPsocket sock;
-    SDLNet_TCP_Close(server_tcpsock);
+
+    // shutdown SDL_net
+    SDLNet_Quit();
+    // shutdown SDL
+    SDL_Quit();
 
     return 0;
 }

@@ -8,7 +8,7 @@ std::vector<std::string> read_file_to_rows(const char file[])
     f.open(file);
     if (!f.good())
     {
-        std::cout << "Failed to open file!\n";
+        std::cout << "Failed to open file " << file << "!\n";
         NOFILE e;
         throw e;
     }
@@ -38,7 +38,7 @@ std::vector<std::string> get_cols(const std::string & row)
             ret.push_back(temp);
             temp.clear();
         }
-        else if (row[i] != ' ')
+        else if (row[i] != ' ' || temp.size() > 0)
         {
             temp += row[i];
         }
@@ -80,12 +80,18 @@ std::string combine_strings_for_file(const std::vector<std::string> & list)
 
 void write_string_to_file(const std::string & to_write, const char filename[])
 {
-    std::fstream f;
-    f.open(filename);
-    std::cout << f.good() << std::endl;
-    f << to_write;
-    f.close();
-    return;
+    try
+    {
+        std::ofstream f;
+        f.open(filename);
+        f << to_write;
+        f.close();
+        
+    }
+    catch (NOFILE e)
+    {
+        return;
+    }
 }
 
 void put_data_to_file(const std::vector<std::vector<std::string> > & data,

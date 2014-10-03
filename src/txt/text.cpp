@@ -1,7 +1,6 @@
 #include "text.h"
 
-const char SEPARATOR = '~';
-
+extern const char SEPARATOR;
 std::vector<std::string> read_file_to_rows(const char file[])
 {
     std::ifstream f;

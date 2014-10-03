@@ -23,3 +23,14 @@ std::string to_string(float val)
     std::string ret(temp);
     return ret;
 }
+/*
+std::string to_string(const User & u)
+{
+    std::vector<std::string> set = u.vstr();
+    std::string ret;
+    for (int i = 0; i < set.size(); ++i)
+    {
+        
+    }
+}
+*/

@@ -7,6 +7,9 @@
 #include <fstream>
 #include <string>
 
+
+const char SEPARATOR = '~';
+
 class NOFILE{};
 
 std::vector<std::string> read_file_to_rows(const char file[]);

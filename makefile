@@ -3,7 +3,7 @@ all:
 
 r:	run
 run:
-	./BomberMan
+	./BomberMan 8080
 fresh:
 	find -name '*~' -exec rm '{}' \;
 pull:

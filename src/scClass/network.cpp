@@ -27,7 +27,7 @@ void Server::send_message_to_all_clients(std::string buf)
             std::cout << "Failed to send message to client["
                       << i << "]\n";
             printf( "SDLNet_TCP_Send: %s\n", SDLNet_GetError());
-            handle_disconnect(i);
+            //handle_disconnect(i);
         }
     }
 }

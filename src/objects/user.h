@@ -18,6 +18,7 @@ public:
     int deaths() const {return total_deaths;}
     int bombs_dropped() const {return num_bombs_dropped;}
     double KDR() const;
+    static void update_file();
 private:
     std::string user_name;
     std::string password; 
@@ -25,6 +26,7 @@ private:
     int total_deaths; // keeps track of total number of times died
     int num_bombs_dropped; //used for keeping track of total number of bombs dropped
     int row; //row in file (used for quick access)
+    static std::vector<std::vector<std::string> > all_info;
     
 };
 

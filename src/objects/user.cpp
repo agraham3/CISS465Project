@@ -1,13 +1,8 @@
 #include "user.h"
 
 extern const char file_name[];
-double User::KDR() const
-{
-    if (deaths() != 0)
-        return (double) kills() / deaths();
-    else
-        return -1; //to represent infinity (there is no infinity)
-}
+
+std::vector<std::vector<std::string> > User::all_info;
 
 User::User(const std::string & user, const std::string & pass)
     : user_name(user), password(pass), total_kills(0),
@@ -15,21 +10,22 @@ User::User(const std::string & user, const std::string & pass)
 {
     
     try {
+        if (all_info.empty())
+        {
+            all_info = get_pieces_of_file(file_name);
+        }
         find();
         if (row == -1)
-        {
-            std::vector<std::vector<std::string> > data = get_pieces_of_file(file_name);
-            data.push_back(vstr());
-            put_data_to_file(data, file_name);
+        {   
+            all_info.push_back(vstr());
+            //put_data_to_file(all_info, file_name);
         }
     }
-    
     catch (NOFILE e)
     {
-        std::vector<std::vector<std::string> > data;
-        data.push_back(vstr());
-        put_data_to_file(data, file_name);
+        all_info.push_back(vstr());
     }
+    
 }
 
 
@@ -47,10 +43,9 @@ std::vector<std::string> User::vstr() const
 
 int User::find()
 {
-    std::vector<std::vector<std::string> > data = get_pieces_of_file(file_name);
-    for (int i = 0; i < data.size(); ++i)
+    for (int i = 0; i < all_info.size(); ++i)
     {
-        if (user() == data[i][0])
+        if (user() == all_info[i][0])
         {
             row = i;
             return row;
@@ -59,6 +54,20 @@ int User::find()
     row = -1;
     return row;
 }
+
+double User::KDR() const
+{
+    if (deaths() != 0)
+        return (double) kills() / deaths();
+    else
+        return -1; //to represent infinity (there is no infinity)
+}
+
+void User::update_file()
+{
+    put_data_to_file(all_info, file_name);
+}
+
 
 std::string to_string(const User & u)
 {

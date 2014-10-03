@@ -60,10 +60,11 @@ std::vector<std::vector<std::string> > get_pieces_of_file(const char file[])
 std::string combine_strings_to_form_row(const std::vector<std::string> & list)
 {
     std::string ret;
-    for (int i = 0; i < list.size(); ++i)
+    for (int i = 0; i < list.size() - 1; ++i)
     {
         ret += list[i] + SEPARATOR;
     }
+    ret += list[list.size() - 1];
     return ret;
 }
 

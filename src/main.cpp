@@ -17,6 +17,5 @@ int main(int argc, char **argv)
     }
     // get port form the commandline
     port = (Uint16)strtol(argv[1],NULL,0);
-    
     return 0;
 }

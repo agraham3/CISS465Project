@@ -59,3 +59,16 @@ int User::find()
     row = -1;
     return row;
 }
+
+std::string to_string(const User & u)
+{
+    std::vector<std::string> set = u.vstr();
+    std::string ret;
+    for (int i = 0; i < set.size() - 1; ++i)
+    {
+        ret += set[i];
+        ret += SEPARATOR;
+    }
+    ret += set[set.size() - 1];
+    return ret;
+}

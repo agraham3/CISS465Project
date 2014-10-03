@@ -28,4 +28,6 @@ private:
     
 };
 
+std::string to_string(const User & u);
+
 #endif

@@ -4,11 +4,10 @@
 #include "text.h"
 #include "functions.h"
 #include "user.h"
+#include "network.h"
 
 int main()
 {
-    User("ThunderBlade", "Pass");
-    User("DarkBlade720", "");
-    User("A Broken Cupcake", "password");
+    
     return 0;
 }

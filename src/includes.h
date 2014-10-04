@@ -8,4 +8,7 @@
 #include <cstdlib>
 #include <ctime>
 #include <cstdio>
+#include <sstream>
+#include "SDL_net.h"
+
 #endif

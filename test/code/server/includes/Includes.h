@@ -25,6 +25,10 @@ This header file also contains some useful inline functions derived from SDL.
 #include "Font.h"
 
 
+// begin classes created by A-squared
+#include "vec2d.h"
+// end classes created by A-squared
+
 inline int getTicks()
 {
 	return SDL_GetTicks();

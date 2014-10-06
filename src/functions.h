@@ -3,8 +3,9 @@
 
 #include "includes.h"
 
-std::string to_string(int val);
-std::string to_string(double val);
+std::string to_string(int int_val);
+std::string to_string(double double_val);
+std::string to_string(float float_val);
 
 #endif
 

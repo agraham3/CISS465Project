@@ -10,5 +10,6 @@
 #include <cstdio>
 #include <sstream>
 #include "SDL_net.h"
+#include "functions.h"
 
 #endif

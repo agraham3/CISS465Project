@@ -27,7 +27,7 @@ void Server::send_message_to_all_clients(std::string buf)
             std::cout << "Failed to send message to client["
                       << i << "]\n";
             printf( "SDLNet_TCP_Send: %s\n", SDLNet_GetError());
-            //handle_disconnect(i);
+            handle_disconnect(i);
         }
     }
 }
@@ -60,4 +60,15 @@ void Server::add_client(TCPsocket sock, std::string name)
     player_number += to_string(num_clients - 1);
     player_number += "\n";
     send_client_message(num_clients - 1, player_number);
+}
+
+void Server::handle_disconnect(int i)
+{
+    std::string name = clients[i].get_name();
+    if (i < 0 || i >= num_clients)
+        return;
+
+    // close the old socket, even if its dead
+    SDLNet_TCP_Close(clients[i].get_socket());
+    clients[i].set_active(false);
 }

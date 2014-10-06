@@ -1,6 +1,6 @@
 #ifndef SURFACE_H
 #define SURFACE_H
-#include <SDL2/SDL.h>
+#include "SDL.h"
 #include "includes.h"
 
 class Surface_ERROR
@@ -14,6 +14,19 @@ private:
     std::string message;
 };
 
+class Renderer
+{
+public:
+    Renderer(SDL_Window * win, int _r, int _g, int _b, int a);
+    ~Renderer();
+    void clear();
+    void set_clear(int _r, int _g, int _b, int a);
+private:
+    int r, g, b, alpha;
+    SDL_Renderer * renderer;
+};
+
+
 class Surface
 {
 public:
@@ -26,5 +39,6 @@ private:
     std::string title;
     SDL_Window * window;
 };
+
 
 #endif

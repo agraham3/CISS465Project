@@ -1,4 +1,32 @@
 #include "Surface.h"
+
+Renderer::Renderer(SDL_Window * win, int _r=0, int _g=0, int _b=0, int a=255)
+    : r(_r), g(_g), b(_b), alpha(a)
+{
+    renderer = SDL_CreateRenderer(win, -1, 0);
+    SDL_SetRenderDrawColor(renderer, r, g, b, alpha);
+}
+
+Renderer::~Renderer()
+{
+    SDL_DestroyRenderer(renderer);
+}
+
+void Renderer::clear()
+{
+    SDL_RenderClear(renderer);
+}
+
+void Renderer::set_clear(int _r, int _g, int _b, int a=255)
+{
+    r = _r;
+    g = _g;
+    b = _b;
+    alpha = a;
+    SDL_SetRenderDrawColor(renderer, r, g, b, a);
+}
+
+
 Surface::Surface(int w, int h, const char * t)
     : WIDTH(w), HEIGHT(h), title(t)
 {
@@ -19,4 +47,10 @@ Surface::Surface(int w, int h, const char * t)
             throw e;
         }
     }
+}
+
+
+Surface::~Surface()
+{
+    SDL_DestroyWindow(window);
 }

@@ -6,6 +6,9 @@
 #include "user.h"
 #include "network.h"
 
+//SDL Classes packaged for SDL
+#include "Surface.h"
+
 int main(int argc, char **argv)
 {
     Uint16 port;
@@ -17,5 +20,7 @@ int main(int argc, char **argv)
     }
     // get port form the commandline
     port = (Uint16)strtol(argv[1],NULL,0);
+
+    Surface test(640, 480, "Testing");
     return 0;
 }

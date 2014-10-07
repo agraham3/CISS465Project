@@ -21,6 +21,7 @@ public:
     void set_socket(const TCPsocket s) { sock = s; }
     void set_name(const std::string n) { name = n; }
     void set_active(const bool a) { active = a; }
+    void set_player_num(const int x) { player_num = x; }
     
 private:
     TCPsocket sock;
@@ -78,6 +79,7 @@ public:
     
     void add_client(TCPsocket sock, std::string name);
     int find_client_name(std::string name);
+    int find_client_index(TCPsocket sock);
     void reconnect(std::string name);//, std::string password)
 
     void handle_login(TCPsocket sock, std::string name,

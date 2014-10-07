@@ -62,6 +62,61 @@ void Server::add_client(TCPsocket sock, std::string name)
     send_client_message(num_clients - 1, player_number);
 }
 
+int Server::find_client_name(std::string name)
+{
+    for(int i = 0; i < num_clients; i++)
+    {
+        if (clients[i].get_name() == name)
+            return i;
+    }
+    return -1;
+}
+
+int Server::find_client_index(TCPsocket sock)
+{
+    for (int i = 0; i < num_clients; i++)
+    {
+        if(clients[i].get_socket() == sock)
+            return i;
+    }
+    return -1;
+}
+
+void Server::reconnect(std::string name) //, std::string password)
+{
+    clients[find_client_name(name)].set_active(true);
+}
+
+void Server::handle_login(TCPsocket sock, std::string name, int client_num)
+{
+    if(!name.length())
+    {
+        send_message("Invalid Nickname!", sock);
+        SDLNet_TCP_Close(sock);
+        return;
+    }
+
+    int cindex = find_client_name(name);
+    
+    if (cindex == -1)
+    {
+        add_client(sock, name);
+        clients[cindex].set_socket(sock);
+        clients[cindex].set_player_num(client_num);
+        clients[cindex].set_active(true);
+        send_message("Account creation successful.", sock);
+        return;
+    }
+
+    if (clients[cindex].get_active())
+    {
+        send_message("Duplicate Nickname!", sock);
+        SDLNet_TCP_Close(sock);
+        return;
+    }
+    return;
+}
+
 void Server::handle_disconnect(int i)
 {
     std::string name = clients[i].get_name();
@@ -71,4 +126,25 @@ void Server::handle_disconnect(int i)
     // close the old socket, even if its dead
     SDLNet_TCP_Close(clients[i].get_socket());
     clients[i].set_active(false);
+}
+
+// Creates a socket set that has the server socket and all the client sockets
+SDLNet_SocketSet Server::create_sockset()
+{
+    static SDLNet_SocketSet set = NULL;
+
+    if(set)
+        SDLNet_FreeSocketSet(set);
+    set = SDLNet_AllocSocketSet(num_clients + 1);
+    if(!set)
+    {
+        std::cerr << "SDLNet_AllocSocketSet: " << SDLNet_GetError()
+                  << std::endl;
+        return 0;
+    }
+
+    SDLNet_TCP_AddSocket(set, server);
+    for(int i = 0; i < num_clients; i++)
+        SDLNet_TCP_AddSocket(set, clients[i].get_socket());
+    return set;
 }

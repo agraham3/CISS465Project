@@ -21,6 +21,9 @@ int main(int argc, char **argv)
     Uint16 port = (Uint16)strtol(argv[2],NULL,0);
     // Client(NULL, argv[3])
     Surface test(640, 480, "Testing");
-    
+
+
+
+    std::cout << "Hello, World!\n";
     return 0;
 }

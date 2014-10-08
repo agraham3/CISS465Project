@@ -19,7 +19,8 @@ int main(int argc, char **argv)
         exit(0);
     }
     Uint16 port = (Uint16)strtol(argv[2],NULL,0);
-    // Client(NULL, argv[3], argv[1])
+    // Server(port);
+    // Client(NULL, argv[3], argv[1], port);
     Surface test("Testing", 640, 480);
     test.clear();
     test.update();

@@ -14,31 +14,25 @@ private:
     std::string message;
 };
 
-class Renderer
-{
-public:
-    Renderer(SDL_Window * win, int _r, int _g, int _b, int a);
-    ~Renderer();
-    void clear();
-    void set_clear(int _r, int _g, int _b, int a);
-private:
-    int r, g, b, alpha;
-    SDL_Renderer * renderer;
-};
 
 
 class Surface
 {
 public:
-    Surface(int W, int H, const char * t);
-    Surface(const char * t, int W, int H);
+    Surface(const char * t, int W, int H, int _r=0, int _g=0, int _b=0, int _a=255);
     ~Surface();
+    void clear();
+    void update();
+    void set_clear(int _r, int _g, int _b, int a);
+    SDL_Window * get_window() const {return window;}
 private:
     int WIDTH;
     int HEIGHT;
     std::string title;
     SDL_Window * window;
+    SDL_Renderer * renderer;
+    SDL_Texture * texture;
+    int r, g, b, alpha;
 };
-
 
 #endif

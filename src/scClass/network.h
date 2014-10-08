@@ -9,25 +9,10 @@ const int MAXLEN = 1024;
 class Client
 {
 public:
-    Client(TCPsocket s=NULL, std::string n="",
-           int argc = 0, char **argv = NULL)
+    Client(TCPsocket s=NULL, std::string n="", std::string host = "")
         : sock(s), name(n), active(false), player_num(-1),
           net_thread(NULL), local_thread(NULL)
     {
-        // check our commandline
-        if (argc < 4)
-        {
-            std::cout << "Must have localhost port_number user_name"
-                      << std::endl;
-            exit(0);
-        }
-        if (argv == NULL)
-        {
-            std::cout << "Failed to recieve argument expressions from"
-                      << " client class" << std::endl;
-        }
-        name = argv[3];
-
         // initilaize SDL
         if (SDL_Init(SDL_INIT_EVERYTHING) == -1)
         {
@@ -53,12 +38,11 @@ public:
         }
 
         // Resolve the argument into an IPAddress type
-        std::cout << "Connecting to " << argv[1]
+        std::cout << "Connecting to " << host
                   << " port " << port
                   << std::endl;
         
-        port = (Uint16)strtol(argv[2],NULL,0);
-        if(SDLNet_ResolveHost(&ip,argv[1],port) == -1)
+        if(SDLNet_ResolveHost(&ip,host,port) == -1)
         {
             std::cout << "SDLNet_ResolveHoast: ERROR" << std::endl;
             SDLNet_Quit();

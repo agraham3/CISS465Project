@@ -10,7 +10,8 @@ class Client
 {
 public:
     Client(TCPsocket s=NULL, std::string n="", bool a=false)
-        : sock(s), name(n), active(a), player_num(-1)
+        : sock(s), name(n), active(a), player_num(-1),
+          net_thread(NULL), local_thread(NULL)
     {}
 
     TCPsocket get_socket() const { return sock; }
@@ -22,12 +23,18 @@ public:
     void set_name(const std::string n) { name = n; }
     void set_active(const bool a) { active = a; }
     void set_player_num(const int x) { player_num = x; }
+
+    std::string recieve_message(TCPsocket sock);
+    int send_message(std::string message, TCPsocket sock);
+    void recieve_player_number(std::string message);
     
 private:
+    IPaddress ip;
     TCPsocket sock;
     std::string name;
     bool active;
     int player_num;
+    SDL_Thread *net_thread, *local_thread;
 };
 
 class Server

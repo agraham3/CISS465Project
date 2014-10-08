@@ -1,5 +1,9 @@
 #include "network.h"
 
+/**************************************************
+ *  Server Section  
+/**************************************************/
+
 int Server::send_message(std::string msg, TCPsocket sock)
 {
     char * buff = (char *)msg.c_str();
@@ -148,3 +152,8 @@ SDLNet_SocketSet Server::create_sockset()
         SDLNet_TCP_AddSocket(set, clients[i].get_socket());
     return set;
 }
+
+
+/**************************************************
+ *  Client Section  
+/**************************************************/

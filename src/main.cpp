@@ -13,9 +13,9 @@ int main(int argc, char **argv)
 {
     Uint16 port;
     // check our commandline
-    if (argc < 2)
+    if (argc < 4)
     {
-        std::cout << "Please insert a port number" << std::endl;
+        std::cerr << "Must have localhost port_number user_name" << std::endl;
         exit(0);
     }
     // get port form the commandline

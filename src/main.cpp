@@ -19,11 +19,11 @@ int main(int argc, char **argv)
         exit(0);
     }
     Uint16 port = (Uint16)strtol(argv[2],NULL,0);
-    // Client(NULL, argv[3])
-    Surface test(640, 480, "Testing");
-
-
-
-    std::cout << "Hello, World!\n";
+    // Client(NULL, argv[3], argv[1])
+    Surface test("Testing", 640, 480);
+    test.clear();
+    test.update();
+    SDL_Delay(3000);
+    
     return 0;
 }

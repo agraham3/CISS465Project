@@ -9,10 +9,63 @@ const int MAXLEN = 1024;
 class Client
 {
 public:
-    Client(TCPsocket s=NULL, std::string n="", bool a=false)
-        : sock(s), name(n), active(a), player_num(-1),
+    Client(TCPsocket s=NULL, std::string n="",
+           int argc = 0, char **argv = NULL)
+        : sock(s), name(n), active(false), player_num(-1),
           net_thread(NULL), local_thread(NULL)
-    {}
+    {
+        // check our commandline
+        if (argc < 4)
+        {
+            std::cout << "Must have localhost port_number user_name"
+                      << std::endl;
+            exit(0);
+        }
+        if (argv == NULL)
+        {
+            std::cout << "Failed to recieve argument expressions from"
+                      << " client class" << std::endl;
+        }
+        name = argv[3];
+
+        // initilaize SDL
+        if (SDL_Init(SDL_INIT_EVERYTHING) == -1)
+        {
+            std::cout << "SDL_Init: Errror" << std::endl;
+            exit(0);
+        }
+
+        // initialize SDL_net
+        if(SDLNet_Init() == -1)
+        {
+            std::cout << "SDLNet_Init: ERROR" << std::endl;
+            SDL_Quit();
+            exit(0);
+        }
+
+        set = SDLNet_AllocSocketSet(1);
+        if(!set)
+        {
+            std::cout << "SDLNet_AllocSocketSet: ERROR" << std::endl;
+            SDLNet_Quit();
+            SDL_Quit();
+            exit(0);
+        }
+
+        // Resolve the argument into an IPAddress type
+        std::cout << "Connecting to " << argv[1]
+                  << " port " << port
+                  << std::endl;
+        
+        port = (Uint16)strtol(argv[2],NULL,0);
+        if(SDLNet_ResolveHost(&ip,argv[1],port) == -1)
+        {
+            std::cout << "SDLNet_ResolveHoast: ERROR" << std::endl;
+            SDLNet_Quit();
+            SDL_Quit();
+            exit(0);
+        }
+    }
 
     TCPsocket get_socket() const { return sock; }
     std::string get_name() const { return name; }
@@ -30,11 +83,13 @@ public:
     
 private:
     IPaddress ip;
+    Uint16 port;
     TCPsocket sock;
     std::string name;
     bool active;
     int player_num;
     SDL_Thread *net_thread, *local_thread;
+    SDLNet_SocketSet set;
 };
 
 class Server

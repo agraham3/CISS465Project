@@ -136,7 +136,6 @@ void Server::handle_disconnect(int i)
 SDLNet_SocketSet Server::create_sockset()
 {
     static SDLNet_SocketSet set = NULL;
-
     if(set)
         SDLNet_FreeSocketSet(set);
     set = SDLNet_AllocSocketSet(num_clients + 1);

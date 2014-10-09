@@ -62,7 +62,7 @@ public:
     void set_active(const bool a) { active = a; }
     void set_player_num(const int x) { player_num = x; }
 
-    std::string recieve_message(TCPsocket sock);
+    std::string receive_message(TCPsocket sock);
     int send_message(std::string message, TCPsocket sock);
     void recieve_player_number(std::string message);
     
@@ -81,7 +81,7 @@ class Server
 {
 public:
     Server(Uint16 _port)
-        : port(_port)
+        : port(_port), num_clients(0)
     {
         // Initialize SDL
         if(SDL_Init(0) == -1)
@@ -136,6 +136,11 @@ public:
     SDLNet_SocketSet create_sockset();
 
     Client get_client(int i) { return clients[i]; }
+    void set_socket_set(SDLNet_SocketSet s) { set = s; }
+
+    SDLNet_SocketSet socket_set() const { return set; }
+    IPaddress get_ip() const { return ip; }
+    TCPsocket get_socket() const { return server; }
     
 private:
     std::vector<Client> clients;

@@ -15,6 +15,7 @@
 
 int main(int argc, char **argv)
 {
+    srand((unsigned int) time(NULL));
      // check our commandline
     if (argc < 4)
     {
@@ -74,6 +75,10 @@ int main(int argc, char **argv)
         test.clear();
         player.draw(test);
         test.update();
+        if (rand() % 17 == 0)
+        {
+            SDL_Delay(200);
+        }
     }
     SDL_Quit();
     return 0;

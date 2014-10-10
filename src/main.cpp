@@ -7,7 +7,7 @@
 #include "network.h"
 
 //SDL Classes packaged for SDL
-#include "Surface.h"
+#include "Screen.h"
 
 int main(int argc, char **argv)
 {
@@ -21,7 +21,7 @@ int main(int argc, char **argv)
     Uint16 port = (Uint16)strtol(argv[2],NULL,0);
     // Server s(port);
     // Client c(NULL, argv[3], argv[1], port);
-    Surface test("Testing", 640, 480);
+    Screen test("Testing", 640, 480);
     test.clear();
     test.update();
     SDL_Delay(3000);

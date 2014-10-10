@@ -3,8 +3,9 @@
 Bomber::Bomber(std::string image_file, Screen & s)
     : animation(NULL), img(Image(image_file, s))
 {
+    travel_distance = 0;
     frame = 0;
-    speed = 3;
+    speed = 140;
     pos[0] = 100;
     pos[1] = 100;
     int x = 2;
@@ -45,7 +46,6 @@ Bomber::Bomber(std::string image_file, Screen & s)
 }
 
 
-
 void Bomber::draw(Screen & s)
 {
     SDL_Rect p;
@@ -57,7 +57,6 @@ void Bomber::draw(Screen & s)
 }
 
 
-
 void Bomber::set_animation(int i)
 {
     if (i == 0) animation = &walk_down;
@@ -66,6 +65,7 @@ void Bomber::set_animation(int i)
     else if (i == 3) animation = &walk_left;
 }
 
+
 void Bomber::reset_frame(int amount, int frames)
 {
     if (amount==-1)frame = 0;
@@ -73,7 +73,7 @@ void Bomber::reset_frame(int amount, int frames)
 }
 
 
-void Bomber::inc_frame(int num_frames)
+void Bomber::inc_frame()
 {
     Uint32 temp = SDL_GetTicks();
     if (temp - frame_timer > 100)
@@ -81,7 +81,7 @@ void Bomber::inc_frame(int num_frames)
         frame += (temp - frame_timer) / 100;
         frame_timer = temp;
     }
-    if (frame > num_frames)
+    if (frame >= animation->size())
         reset_frame(frame,animation->size());
 }
 
@@ -92,30 +92,62 @@ void Bomber::update()
     {
         frame = 0;
         frame_timer = SDL_GetTicks();
+        travel_time = SDL_GetTicks();
+        travel_distance = 0;
     }
 }
 
 
-
 bool Bomber::is_active()
 {
-    return (SDL_GetTicks() - stand_still < 1000/20);
+    return (SDL_GetTicks() - travel_time < 100);
+}
+
+
+double Bomber::get_travel_distance() const
+{
+    Uint32 now = SDL_GetTicks();
+    return (double) speed * (now - travel_time) / 1000;
 }
 
 
 void Bomber::move_up()
 {
-    pos[1] -= speed; stand_still = SDL_GetTicks();
+    travel_distance += get_travel_distance();
+    pos[1] -= travel_distance;
+    travel_distance = 0;
+    travel_time = SDL_GetTicks();
 }
+
+
 void Bomber::move_down()
 {
-    pos[1] += speed; stand_still = SDL_GetTicks();
+    travel_distance += get_travel_distance();
+    if (travel_distance >= 1.0)
+    {
+        pos[1] += get_travel_distance();
+        travel_distance = 0;
+    }
+    travel_time = SDL_GetTicks();
 }
+
+
 void Bomber::move_left()
 {
-    pos[0] -= speed; stand_still = SDL_GetTicks();
+    travel_distance += get_travel_distance();
+    pos[0] -= travel_distance;
+    travel_distance = 0;
+    travel_time = SDL_GetTicks();
 }
+
+
 void Bomber::move_right()
 {
-    pos[0] += speed; stand_still = SDL_GetTicks();
+    travel_distance += get_travel_distance();
+    if (travel_distance >= 1.0)
+    {
+        pos[0] += travel_distance;
+        travel_distance = 0;
+    }
+    travel_time = SDL_GetTicks();
 }

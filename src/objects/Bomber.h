@@ -13,9 +13,11 @@ public:
     void draw(Screen & s);
     void set_animation(int i = 0);
     void reset_frame(int amount=-1, int frames=5);
-    void inc_frame(int num_frames=5);
+    void inc_frame();
     void update();
     bool is_active();
+    double get_travel_distance() const;
+    
     void move_up();
     void move_down();
     void move_left();
@@ -25,9 +27,10 @@ private:
     std::vector<SDL_Rect> walk_right;
     std::vector<SDL_Rect> walk_up;
     std::vector<SDL_Rect> walk_left;
-    int speed;
+    int speed; // pixels per second
     int frame;
-    Uint32 stand_still;
+    Uint32 travel_time;
+    double travel_distance;
     Uint32 frame_timer;
     std::vector<SDL_Rect> *animation;
     Image img;

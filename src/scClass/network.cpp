@@ -156,3 +156,45 @@ SDLNet_SocketSet Server::create_sockset()
 /**************************************************
  *  Client Section  
 /**************************************************/
+
+// Receive a string over TCP/IP
+std::string Client::receive_message(TCPsocket sock)
+{
+    char buff[MAXLEN] = {' '};
+    SDLNet_TCP_Recv(sock, buff, MAXLEN);
+
+    if (buff == NULL)
+    {
+        std::string ret = "";
+        return ret;
+    }
+
+    std::string ret(buff, strlen(buff));
+    return ret;
+}
+
+// Send a string over TCP/IP
+int Client::send_message(std::string msg, TCPsocket sock)
+{
+    char * buff = (char *)msg.c_str();
+    SDLNet_TCP_Send(sock, buff, MAXLEN);
+
+    return 1;
+    
+}
+
+void Client::receive_player_number(std::string message)
+{
+    int i = 0;
+    std::string temp_num = "";
+    if(message[0] == 'N')
+    {
+        i++;
+        while(message[i] != ';')
+        {
+            temp_num += message[i];
+            i++;
+        }
+        player_num = atoi(temp_num.c_str());
+    }
+}

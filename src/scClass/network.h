@@ -64,7 +64,7 @@ public:
 
     std::string receive_message(TCPsocket sock);
     int send_message(std::string message, TCPsocket sock);
-    void recieve_player_number(std::string message);
+    void receive_player_number(std::string message);
     
 private:
     IPaddress ip;

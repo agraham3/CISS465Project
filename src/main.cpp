@@ -70,10 +70,10 @@ int main(int argc, char **argv)
                     //player.reset_frame();
             }
         }
+        player.update();
         test.clear();
         player.draw(test);
         test.update();
-        SDL_Delay(1000/20);
     }
     SDL_Quit();
     return 0;

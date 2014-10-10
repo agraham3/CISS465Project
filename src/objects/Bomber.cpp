@@ -43,3 +43,79 @@ Bomber::Bomber(std::string image_file, Screen & s)
     }
     animation = &walk_down;
 }
+
+
+
+void Bomber::draw(Screen & s)
+{
+    SDL_Rect p;
+    p.x = pos[0];
+    p.y = pos[1];
+    p.w = (*animation)[frame].w;
+    p.h = (*animation)[frame].h;
+    img.draw(s, &(*animation)[frame], &p);
+}
+
+
+
+void Bomber::set_animation(int i)
+{
+    if (i == 0) animation = &walk_down;
+    else if (i == 1) animation = &walk_right;
+    else if (i == 2) animation = &walk_up;
+    else if (i == 3) animation = &walk_left;
+}
+
+void Bomber::reset_frame(int amount, int frames)
+{
+    if (amount==-1)frame = 0;
+    frame = amount % frames;
+}
+
+
+void Bomber::inc_frame(int num_frames)
+{
+    Uint32 temp = SDL_GetTicks();
+    if (temp - frame_timer > 100)
+    {
+        frame += (temp - frame_timer) / 100;
+        frame_timer = temp;
+    }
+    if (frame > num_frames)
+        reset_frame(frame,animation->size());
+}
+
+
+void Bomber::update()
+{
+    if (!is_active())
+    {
+        frame = 0;
+        frame_timer = SDL_GetTicks();
+    }
+}
+
+
+
+bool Bomber::is_active()
+{
+    return (SDL_GetTicks() - stand_still < 1000/20);
+}
+
+
+void Bomber::move_up()
+{
+    pos[1] -= speed; stand_still = SDL_GetTicks();
+}
+void Bomber::move_down()
+{
+    pos[1] += speed; stand_still = SDL_GetTicks();
+}
+void Bomber::move_left()
+{
+    pos[0] -= speed; stand_still = SDL_GetTicks();
+}
+void Bomber::move_right()
+{
+    pos[0] += speed; stand_still = SDL_GetTicks();
+}

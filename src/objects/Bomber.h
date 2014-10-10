@@ -10,28 +10,16 @@ class Bomber
 {
 public:
     Bomber(std::string image_file, Screen & s);
-    
-    void draw(Screen & s)
-    {
-        SDL_Rect p;
-        p.x = pos[0];
-        p.y = pos[1];
-        p.w = (*animation)[frame].w;
-        p.h = (*animation)[frame].h;
-        img.draw(s, &(*animation)[frame], &p);
-    }
-    void set_animation(int i = 0) {
-        if (i == 0) animation = &walk_down;
-        else if (i == 1) animation = &walk_right;
-        else if (i == 2) animation = &walk_up;
-        else if (i == 3) animation = &walk_left;
-    }
-    void reset_frame() {frame = 0;}
-    void inc_frame() {frame++; if (frame > 5) reset_frame();}
-    void move_up() {pos[1] -= speed;}
-    void move_down() {pos[1] += speed;}
-    void move_left() {pos[0] -= speed;}
-    void move_right() {pos[0] += speed;}
+    void draw(Screen & s);
+    void set_animation(int i = 0);
+    void reset_frame(int amount=-1, int frames=5);
+    void inc_frame(int num_frames=5);
+    void update();
+    bool is_active();
+    void move_up();
+    void move_down();
+    void move_left();
+    void move_right();
 private:
     std::vector<SDL_Rect> walk_down;
     std::vector<SDL_Rect> walk_right;
@@ -39,6 +27,8 @@ private:
     std::vector<SDL_Rect> walk_left;
     int speed;
     int frame;
+    Uint32 stand_still;
+    Uint32 frame_timer;
     std::vector<SDL_Rect> *animation;
     Image img;
     vec2d pos;

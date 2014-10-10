@@ -25,3 +25,22 @@ Stage::Stage(Screen & s, std::string image_file)
         }
     }
 }
+
+
+void Stage::draw(Screen & s)
+{
+    img.draw(s, NULL, NULL);
+}
+
+
+int Stage::collision(const SDL_Rect & rect)
+{
+    for (int i = 0; i < blocks.size(); ++i)
+    {
+        if (collided(blocks[i], rect))
+        {
+            return i;
+        }
+    }
+    return -1;
+}

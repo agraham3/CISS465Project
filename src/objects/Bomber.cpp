@@ -109,6 +109,13 @@ void Bomber::update()
 }
 
 
+SDL_Rect Bomber::get_rect()
+{
+    SDL_Rect v = {pos[0], pos[1], (*animation)[frame].w, (*animation)[frame].h};
+    return v;
+}
+
+
 bool Bomber::is_active()
 {
     return (SDL_GetTicks() - active_time < 100);

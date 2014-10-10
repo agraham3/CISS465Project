@@ -16,9 +16,9 @@ public:
     void reset_frame(int amount=-1, int frames=5);
     void inc_frame();
     void update();
+    SDL_Rect get_rect();
     bool is_active();
     int get_travel_distance() const;
-    
     void move_up();
     void move_down();
     void move_left();

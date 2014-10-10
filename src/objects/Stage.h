@@ -7,23 +7,85 @@
 #include "Screen.h"
 #include "Image.h"
 
+#define COLLIDE_TOP 0
+#define COLLIDE_BOT 0
+#define COLLIDE_LEFT 0
+#define COLLIDE_RIGHT 0
+
 struct Line
 {
     vec2d a;
     vec2d b;
 };
+//TODO: move inline to not cpp file.
+//NOTE: Keep "bool between(int, int)" in .h because it's small enough"
+
 inline 
 bool between(int a, int b, int c)
 {
     return (a >= b && a <= c) || (a >= c && a <= b);
 }
 
+inline
+bool x_crossings(SDL_Rect a, SDL_Rect b)
+{
+    return  (between(a.x, b.x, b.x + b.w) ||
+             between(b.x, a.x, a.x + a.w));
+}
+
 
 inline
-bool collided(SDL_Rect & a, SDL_Rect b)
+bool y_crossings(SDL_Rect a, SDL_Rect b)
 {
-    return ((between(a.x, b.x, b.x + b.w) || between(a.x + a.w, b.x, b.x + b.w))
-            && (between(a.y, b.y, b.y + b.h) || between(a.y + a.h, b.y, b.y + b.h)));
+    return  (between(a.y, b.y, b.y + b.h) ||
+             between(b.y, a.y, a.y + a.h));
+}
+
+
+inline
+bool collided_top(SDL_Rect moving_rect, SDL_Rect block)
+{
+    bool across = x_crossings(moving_rect, block);
+    bool over = between(moving_rect.y + moving_rect.h, block.y, block.y + block.h);
+    return across && over;
+}
+
+inline
+bool collided_bottom(SDL_Rect moving_rect, SDL_Rect block)
+{
+    
+    bool across = x_crossings(moving_rect, block);
+    bool under = between(moving_rect.y, block.y, block.y + block.h);
+    return across && under;
+}
+
+inline
+bool collided_left(SDL_Rect moving_rect, SDL_Rect block)
+{
+    bool y_cross = y_crossings(moving_rect, block);
+    bool left = between(block.x, moving_rect.x, moving_rect.x + moving_rect.w);
+    return y_cross & left;
+}
+
+
+inline
+bool collided_right(SDL_Rect moving_rect, SDL_Rect block)
+{
+    
+    bool y_cross = y_crossings(moving_rect, block);
+    bool right = between(moving_rect.x, block.x, block.x + block.w);
+    return y_cross & right;
+}
+
+
+inline
+int collided(SDL_Rect moving_rect, SDL_Rect block)
+{
+    if (collided_top(moving_rect, block)) return COLLIDE_TOP;
+    if (collided_bottom(moving_rect, block)) return COLLIDE_BOT;
+    if (collided_left(moving_rect, block)) return COLLIDE_LEFT;
+    if (collided_right(moving_rect, block)) return COLLIDE_RIGHT;
+    return -1;
 }
 
 

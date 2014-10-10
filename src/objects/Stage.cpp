@@ -37,9 +37,10 @@ int Stage::collision(const SDL_Rect & rect)
 {
     for (int i = 0; i < blocks.size(); ++i)
     {
-        if (collided(blocks[i], rect))
+        int collide = collided(rect, blocks[i]);
+        if (collide != -1)
         {
-            return i;
+            return i * 10 + collide;
         }
     }
     return -1;

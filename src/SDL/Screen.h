@@ -26,6 +26,7 @@ public:
     void update();
     void set_clear(int _r, int _g, int _b, int a);
     SDL_Window * get_window() const {return window;}
+    SDL_Renderer * get_renderer() const {return renderer;}
 private:
     int WIDTH;
     int HEIGHT;

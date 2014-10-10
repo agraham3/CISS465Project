@@ -3,7 +3,9 @@
 Bomber::Bomber(std::string image_file, Screen & s)
     : animation(NULL), img(Image(image_file, s))
 {
-    travel_distance = 0;
+    active_time = SDL_GetTicks();
+    horizontal = 0;
+    vertical = 0;
     frame = 0;
     speed = 140;
     pos[0] = 100;
@@ -93,61 +95,56 @@ void Bomber::update()
         frame = 0;
         frame_timer = SDL_GetTicks();
         travel_time = SDL_GetTicks();
-        travel_distance = 0;
+    }
+    else
+    {
+        if (SDL_GetTicks() - travel_time > 10)
+        {
+            travel_time = SDL_GetTicks();
+            pos[1] += vertical;
+            pos[0] += horizontal;
+            horizontal = vertical = 0;
+        }
     }
 }
 
 
 bool Bomber::is_active()
 {
-    return (SDL_GetTicks() - travel_time < 100);
+    return (SDL_GetTicks() - active_time < 100);
 }
 
 
-double Bomber::get_travel_distance() const
+int Bomber::get_travel_distance() const
 {
     Uint32 now = SDL_GetTicks();
-    return (double) speed * (now - travel_time) / 1000;
+    return speed * (now - travel_time) / 1000;
 }
 
 
 void Bomber::move_up()
 {
-    travel_distance += get_travel_distance();
-    pos[1] -= travel_distance;
-    travel_distance = 0;
-    travel_time = SDL_GetTicks();
+    vertical = -get_travel_distance();
+    active_time = SDL_GetTicks();
 }
 
 
 void Bomber::move_down()
 {
-    travel_distance += get_travel_distance();
-    if (travel_distance >= 1.0)
-    {
-        pos[1] += get_travel_distance();
-        travel_distance = 0;
-    }
-    travel_time = SDL_GetTicks();
+    vertical = get_travel_distance();
+    active_time = SDL_GetTicks();
 }
 
 
 void Bomber::move_left()
 {
-    travel_distance += get_travel_distance();
-    pos[0] -= travel_distance;
-    travel_distance = 0;
-    travel_time = SDL_GetTicks();
+    horizontal = -get_travel_distance();
+    active_time = SDL_GetTicks();
 }
 
 
 void Bomber::move_right()
 {
-    travel_distance += get_travel_distance();
-    if (travel_distance >= 1.0)
-    {
-        pos[0] += travel_distance;
-        travel_distance = 0;
-    }
-    travel_time = SDL_GetTicks();
+    horizontal = get_travel_distance();
+    active_time = SDL_GetTicks();
 }

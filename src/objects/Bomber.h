@@ -16,7 +16,7 @@ public:
     void inc_frame();
     void update();
     bool is_active();
-    double get_travel_distance() const;
+    int get_travel_distance() const;
     
     void move_up();
     void move_down();
@@ -30,7 +30,9 @@ private:
     int speed; // pixels per second
     int frame;
     Uint32 travel_time;
-    double travel_distance;
+    Uint32 active_time;
+    int vertical;
+    int horizontal;
     Uint32 frame_timer;
     std::vector<SDL_Rect> *animation;
     Image img;

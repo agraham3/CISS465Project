@@ -34,6 +34,7 @@ int main(int argc, char **argv)
     a.h = 32;
     Screen test("Testing", 640, 480);
     Bomber player("assets/pic/bomber-ds.png", test);
+    //move Bomber-Man
     while (1)
     {
         while (SDL_PollEvent(&event))

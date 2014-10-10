@@ -11,6 +11,7 @@
 //SDL Classes packaged for SDL
 #include "Screen.h"
 #include "Image.h"
+#include "constants.h"
 
 int main(int argc, char **argv)
 {
@@ -21,20 +22,58 @@ int main(int argc, char **argv)
                   << std::endl;
         exit(0);
     }
+    SDL_Event event;
     Uint16 port = (Uint16)strtol(argv[2],NULL,0);
     // Server s(port);
     // Client c(NULL, argv[3], argv[1], port);
-    Screen test("Testing", 640, 480);
-    test.clear();
+    int frame = 0;
     SDL_Rect a;
-    a.x = 0;
+    a.x = 2;
     a.y = 0;
-    a.w = 20;
+    a.w = 18;
     a.h = 32;
-    Bomber player("/home/student/Documents/classes/ciss465/CISS465Project/assets/pic/bomber-ds.png", test, &a);
-    player.draw(test);
-    test.update();
-    SDL_Delay(3000);
-    
+    Screen test("Testing", 640, 480);
+    Bomber player("assets/pic/bomber-ds.png", test);
+    while (1)
+    {
+        while (SDL_PollEvent(&event))
+        {
+            switch(event.type)
+            {
+                case SDL_QUIT:
+                    SDL_Quit();
+                    exit(0);
+                    break;
+                case SDL_KEYDOWN:
+                    switch(event.key.keysym.sym)
+                    {
+                        case UP: player.set_animation(2);
+                            player.move_up();
+                            player.inc_frame();
+                            break;
+                        case DOWN: player.set_animation(0);
+                            player.move_down();
+                            player.inc_frame();
+                            break;
+                        case LEFT: player.set_animation(3);
+                            player.move_left();
+                            player.inc_frame();
+                            break;
+                        case RIGHT: player.set_animation(1);
+                            player.move_right();
+                            player.inc_frame();
+                            break;
+                    }
+                    //case SDL_KEYUP:
+                    //std::cout << "Hello" << std::endl;
+                    //player.reset_frame();
+            }
+        }
+        test.clear();
+        player.draw(test);
+        test.update();
+        SDL_Delay(1000/20);
+    }
+    SDL_Quit();
     return 0;
 }

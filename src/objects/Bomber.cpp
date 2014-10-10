@@ -98,7 +98,7 @@ void Bomber::update()
     }
     else
     {
-        if (SDL_GetTicks() - travel_time > 10)
+        if (abs(vertical) > 0 || abs(horizontal) > 0)
         {
             travel_time = SDL_GetTicks();
             pos[1] += vertical;

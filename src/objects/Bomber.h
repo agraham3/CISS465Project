@@ -2,6 +2,7 @@
 #define BOMBER_H
 
 #include "includes.h"
+#include <cmath>
 #include "vec2d.h"
 #include "Screen.h"
 #include "Image.h"

@@ -12,6 +12,7 @@
 #include "Screen.h"
 #include "Image.h"
 #include "constants.h"
+#include "Stage.h"
 
 int main(int argc, char **argv)
 {
@@ -32,8 +33,9 @@ int main(int argc, char **argv)
     a.y = 0;
     a.w = 18;
     a.h = 32;
-    Screen test("Testing", 640, 480);
-    Bomber player("assets/pic/bomber-ds.png", test);
+    Screen screen("Testing", 900, 636);
+    Bomber player("assets/pic/bomber-ds.png", screen);
+    Stage stage(screen);
     //move Bomber-Man
     while (1)
     {
@@ -72,9 +74,10 @@ int main(int argc, char **argv)
             }
         }
         player.update();
-        test.clear();
-        player.draw(test);
-        test.update();
+        screen.clear();
+        stage.draw(screen);
+        player.draw(screen);
+        screen.update();
 
         int end = SDL_GetTicks();
         int frame_length = 1000 / FRAMES_PER_SEC;

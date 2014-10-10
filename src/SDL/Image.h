@@ -12,6 +12,8 @@ public:
     {}
     std::string error;
 };
+
+
 class Image
 {
 public:

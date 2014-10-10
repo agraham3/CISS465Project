@@ -12,5 +12,6 @@ Image::Image(const std::string & file_name, Screen & screen)
                       
     }
     texture = SDL_CreateTextureFromSurface(screen.get_renderer(), temp);
+    SDL_FreeSurface(temp);
 }
 

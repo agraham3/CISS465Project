@@ -6,6 +6,8 @@
 #include "user.h"
 #include "network.h"
 
+#include "Bomber.h"
+
 //SDL Classes packaged for SDL
 #include "Screen.h"
 #include "Image.h"
@@ -24,8 +26,13 @@ int main(int argc, char **argv)
     // Client c(NULL, argv[3], argv[1], port);
     Screen test("Testing", 640, 480);
     test.clear();
-    Image bomber("/home/student/Documents/classes/ciss465/CISS465Project/assets/pic/bomber-ds.png", test);
-    bomber.draw(test);
+    SDL_Rect a;
+    a.x = 0;
+    a.y = 0;
+    a.w = 20;
+    a.h = 32;
+    Bomber player("/home/student/Documents/classes/ciss465/CISS465Project/assets/pic/bomber-ds.png", test, &a);
+    player.draw(test);
     test.update();
     SDL_Delay(3000);
     

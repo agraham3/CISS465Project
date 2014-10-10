@@ -8,10 +8,9 @@
 class Bomber
 {
 public:
-    
+    Bomber(Surface);
 private:
-    Surface img;
-    
+     img;
     vec2d pos;
     
 };

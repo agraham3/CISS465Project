@@ -1,12 +1,13 @@
-#ifndef SURFACE_H
-#define SURFACE_H
+#ifndef SCREEN_H
+#define SCREEN_H
 #include "SDL.h"
+#include "SDL_image.h"
 #include "includes.h"
 
-class Surface_ERROR
+class Screen_ERROR
 {
 public:
-    Surface_ERROR(const std::string & m)
+    Screen_ERROR(const std::string & m)
         : message(m)
     {}
     std::string get_message() {return message;}
@@ -16,11 +17,11 @@ private:
 
 
 
-class Surface
+class Screen
 {
 public:
-    Surface(const char * t, int W, int H, int _r=0, int _g=0, int _b=0, int _a=255);
-    ~Surface();
+    Screen(const char * t, int W, int H, int _r=0, int _g=0, int _b=0, int _a=255);
+    ~Screen();
     void clear();
     void update();
     void set_clear(int _r, int _g, int _b, int a);
@@ -31,8 +32,9 @@ private:
     std::string title;
     SDL_Window * window;
     SDL_Renderer * renderer;
-    SDL_Texture * texture;
+    std::vector<SDL_Texture *> textures;
     int r, g, b, alpha;
 };
+
 
 #endif

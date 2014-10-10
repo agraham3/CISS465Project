@@ -1,16 +1,16 @@
-#include "Surface.h"
-void Surface::clear()
+#include "Screen.h"
+void Screen::clear()
 {
     SDL_RenderClear(renderer);
 }
 
-void Surface::update()
+void Screen::update()
 {
     SDL_RenderPresent(renderer);
 }
 
 
-void Surface::set_clear(int _r, int _g, int _b, int a=255)
+void Screen::set_clear(int _r, int _g, int _b, int a=255)
 {
     r = _r;
     g = _g;
@@ -20,12 +20,12 @@ void Surface::set_clear(int _r, int _g, int _b, int a=255)
 }
 
 
-Surface::Surface(const char * t, int w, int h, int _r, int _g, int _b, int _a)
+Screen::Screen(const char * t, int w, int h, int _r, int _g, int _b, int _a)
     : WIDTH(w), HEIGHT(h), title(t), r(_r), g(_g), b(_b), alpha(_a)
 {
     if (SDL_Init(SDL_INIT_EVERYTHING) != 0)
     {
-        Surface_ERROR e(std::string("SDL_Init_Error:") + SDL_GetError());
+        Screen_ERROR e(std::string("SDL_Init_Error:") + SDL_GetError());
         throw e;
     }
     else
@@ -34,9 +34,9 @@ Surface::Surface(const char * t, int w, int h, int _r, int _g, int _b, int _a)
                                   SDL_WINDOWPOS_UNDEFINED, w, h, SDL_WINDOW_SHOWN);
         if (window == NULL)
         {
-            WIDTH=-1;
-            HEIGHT=-1;
-            Surface_ERROR e(std::string("SDL_CreateWindowError") + SDL_GetError());
+            WIDTH = -1;
+            HEIGHT = -1;
+            Screen_ERROR e(std::string("SDL_CreateWindowError") + SDL_GetError());
             throw e;
         }
         else
@@ -48,7 +48,7 @@ Surface::Surface(const char * t, int w, int h, int _r, int _g, int _b, int _a)
 }
 
 
-Surface::~Surface()
+Screen::~Screen()
 {
     SDL_DestroyWindow(window);
     SDL_DestroyRenderer(renderer);

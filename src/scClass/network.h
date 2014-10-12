@@ -50,6 +50,7 @@ public:
             SDL_Quit();
             exit(0);
         }
+        send_message(name, sock);
     }
 
     TCPsocket get_socket() const { return sock; }
@@ -63,7 +64,7 @@ public:
     void set_player_num(const int x) { player_num = x; }
 
     std::string receive_message(TCPsocket sock);
-    int send_message(std::string message, TCPsocket sock);
+    void send_message(std::string message, TCPsocket sock);
     void receive_player_number(std::string message);
     
 private:

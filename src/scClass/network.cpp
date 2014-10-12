@@ -174,13 +174,14 @@ std::string Client::receive_message(TCPsocket sock)
 }
 
 // Send a string over TCP/IP
-int Client::send_message(std::string msg, TCPsocket sock)
+void Client::send_message(std::string msg, TCPsocket sock)
 {
     char * buff = (char *)msg.c_str();
-    SDLNet_TCP_Send(sock, buff, MAXLEN);
-
-    return 1;
-    
+    const int len = strlen(msg.c_str()) + 1;
+    int result = SDLNet_TCP_Send(sock, buff, len);
+    if (result < len)
+        std::cerr << "SDLNet_TCP_Send: " << SDLNet_GetError()
+                  << std::endl;
 }
 
 void Client::receive_player_number(std::string message)

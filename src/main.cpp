@@ -16,7 +16,7 @@
 int main(int argc, char **argv)
 {
     srand((unsigned int) time(NULL));
-     // check our commandline
+    // check our commandline
     if (argc < 4)
     {
         std::cout << "Must have localhost port_number user_name"
@@ -25,8 +25,7 @@ int main(int argc, char **argv)
     }
     SDL_Event event;
     Uint16 port = (Uint16)strtol(argv[2],NULL,0);
-    // Server s(port);
-    // Client c(NULL, argv[3], argv[1], port);
+    //Client c(NULL, argv[3], argv[1], port);
     int frame = 0;
     SDL_Rect a;
     a.x = 2;

@@ -141,6 +141,7 @@ public:
     SDLNet_SocketSet socket_set() const { return set; }
     IPaddress get_ip() const { return ip; }
     TCPsocket get_socket() const { return server; }
+    int get_num_clients() const { return num_clients; }
     
 private:
     std::vector<Client> clients;

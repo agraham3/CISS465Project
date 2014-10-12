@@ -48,6 +48,18 @@ int main(int argc, char **argv)
         }
 
         // Loop through clients -- to write
+        for (int i = 0; numready > 0 && i < s.get_num_clients(); i++)
+        {
+            std::string message = "";
+            if (s.get_client(i).get_active())
+            {
+                message = s.receive_message(s.get_client(i).get_socket());
+                if(message > "")
+                    std::cout << message << std::endl;
+                numready--;
+            }
+        }
+        
     }
     
     return 0;

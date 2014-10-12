@@ -55,7 +55,7 @@ int main(int argc, char **argv)
             {
                 message = s.receive_message(s.get_client(i).get_socket());
                 if(message > "")
-                    std::cout << message << std::endl;
+                    std::cout << "message from client: " << message << std::endl;
                 numready--;
             }
         }

@@ -10,11 +10,11 @@ int Server::send_message(std::string msg, TCPsocket sock)
     return SDLNet_TCP_Send(sock, buff, MAXLEN);
 }
 
-void Server::send_client_message(int i, std::string buff)
+void Server::send_client_message(std::string name, std::string buff)
 {
     if (buff == "")
         return;
-    send_message(buff, get_client(i).get_socket());
+    send_message(buff, clients[name]);
 }
 
 void Server::send_message_to_all_clients(std::string buf)
@@ -22,16 +22,17 @@ void Server::send_message_to_all_clients(std::string buf)
     if(buf == "" || num_clients == 0)
         return;
     int len = buf.size() + 1; // add one for the terminating NULL
-    for(int i = 0; i < num_clients; i++)
+    typedef std::map< std::string, TCPsocket >::iterator it_type;
+    for (it_type i = clients.begin(); i != clients.end(); i++)
     {
-        int result = send_message(buf, clients[i].get_socket());
+        int result = send_message(buf, i->second);
         // number of bytes sent is less than the length of bytes
         if (result < len)
         {
-            std::cout << "Failed to send message to client["
-                      << i << "]\n";
+            std::cout << "Failed to send message to client: "
+                      << i->first << " \n";
             printf( "SDLNet_TCP_Send: %s\n", SDLNet_GetError());
-            handle_disconnect(i);
+            handle_disconnect(i->first);
         }
     }
 }
@@ -52,43 +53,24 @@ std::string Server::receive_message(TCPsocket sock)
 
 void Server::add_client(TCPsocket sock, std::string name)
 {
-    Client c;
-    c.set_name(name);
-    c.set_socket(sock);
-    c.set_active(true);
-    clients.push_back(c);
-    num_clients++;
+    std::cout << "Trying to add a client." << std::endl;
+    clients.insert(std::pair< std::string, TCPsocket >(name, sock));
 
     // Send an acknowledgement to the new client
     std::string player_number = "Your number is: ";
     player_number += to_string(num_clients - 1);
     player_number += "\n";
-    send_client_message(num_clients - 1, player_number);
+    send_client_message(name, player_number);
 }
 
 int Server::find_client_name(std::string name)
 {
-    for(int i = 0; i < num_clients; i++)
+    if(clients.count(name)> 0)
     {
-        if (clients[i].get_name() == name)
-            return i;
+        return 1;
     }
+    
     return -1;
-}
-
-int Server::find_client_index(TCPsocket sock)
-{
-    for (int i = 0; i < num_clients; i++)
-    {
-        if(clients[i].get_socket() == sock)
-            return i;
-    }
-    return -1;
-}
-
-void Server::reconnect(std::string name) //, std::string password)
-{
-    clients[find_client_name(name)].set_active(true);
 }
 
 void Server::handle_login(TCPsocket sock, std::string name, int client_num)
@@ -105,31 +87,20 @@ void Server::handle_login(TCPsocket sock, std::string name, int client_num)
     if (cindex == -1)
     {
         add_client(sock, name);
-        clients[cindex].set_socket(sock);
-        clients[cindex].set_player_num(client_num);
-        clients[cindex].set_active(true);
         send_message("Account creation successful.", sock);
         return;
     }
-
-    if (clients[cindex].get_active())
-    {
-        send_message("Duplicate Nickname!", sock);
-        SDLNet_TCP_Close(sock);
-        return;
-    }
+    
+    send_message("Duplicate Nickname!", sock);
+    SDLNet_TCP_Close(sock);
+    
     return;
 }
 
-void Server::handle_disconnect(int i)
+void Server::handle_disconnect(std::string name)
 {
-    std::string name = clients[i].get_name();
-    if (i < 0 || i >= num_clients)
-        return;
-
     // close the old socket, even if its dead
-    SDLNet_TCP_Close(clients[i].get_socket());
-    clients[i].set_active(false);
+    SDLNet_TCP_Close(clients[name]);
 }
 
 // Creates a socket set that has the server socket and all the client sockets
@@ -147,8 +118,9 @@ SDLNet_SocketSet Server::create_sockset()
     }
 
     SDLNet_TCP_AddSocket(set, server);
-    for(int i = 0; i < num_clients; i++)
-        SDLNet_TCP_AddSocket(set, clients[i].get_socket());
+    typedef std::map< std::string, TCPsocket >::iterator it_type;
+    for (it_type i = clients.begin(); i != clients.end(); i++)
+        SDLNet_TCP_AddSocket(set, i->second);
     return set;
 }
 
@@ -178,6 +150,7 @@ void Client::send_message(std::string msg, TCPsocket sock)
 {
     char * buff = (char *)msg.c_str();
     const int len = strlen(msg.c_str()) + 1;
+    std::cout << sock << ' ' << buff <<  ' '  << len << std::endl;
     int result = SDLNet_TCP_Send(sock, buff, len);
     if (result < len)
         std::cerr << "SDLNet_TCP_Send: " << SDLNet_GetError()

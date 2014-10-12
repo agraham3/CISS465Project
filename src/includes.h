@@ -1,3 +1,4 @@
+
 #ifndef INCLUDES_H
 #define INCLUDES_H
 
@@ -11,4 +12,5 @@
 #include <sstream>
 #include "SDL_net.h"
 #include "functions.h"
+#include <map>
 #endif

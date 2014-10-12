@@ -45,12 +45,34 @@ public:
         
         if(SDLNet_ResolveHost(&ip,host,port) == -1)
         {
-            std::cout << "SDLNet_ResolveHoast: ERROR" << std::endl;
+            std::cout << "SDLNet_ResolveHost: ERROR" << std::endl;
             SDLNet_Quit();
             SDL_Quit();
             exit(0);
         }
+
+        // open the server socket
+        sock = SDLNet_TCP_Open(&ip);
+        if (!sock)
+        {
+            std::cout << "SDLNet_TCP_Open: ERROR" << std::endl;
+            SDLNet_Quit();
+            SDL_Quit();
+            exit(0);
+        }
+
+        if(SDLNet_TCP_AddSocket(set, sock) == -1)
+        {
+            std::cout << "SDLNet_TCP_AddSocket: ERROR" << std::endl;
+            SDLNet_Quit();
+            SDL_Quit();
+            exit(0);
+        }
+        
         send_message(name, sock);
+        std::cout << "Logged in as: " << name << std::endl;
+        receive_player_number(receive_message(sock));
+        std::cout << "Player number: " << player_num << std::endl;
     }
 
     TCPsocket get_socket() const { return sock; }
@@ -102,7 +124,7 @@ public:
         // Resolve the argument into an IPaddress type
         if (SDLNet_ResolveHost(&ip,NULL,port) == -1)
         {
-            std::cout << "SDLNet_ResolveHost: ERROR" << std::endl;
+            std::cout << "SDLNet_ResolveHoast: ERROR" << std::endl;
             SDLNet_Quit();
             SDL_Quit();
             exit(3);
@@ -121,31 +143,29 @@ public:
     }
 
     int send_message(std::string message, TCPsocket sock);
-    void send_client_message(int client_num, std::string message);
+    void send_client_message(std::string name, std::string message);
     void send_message_to_all_clients(std::string buf);
     std::string receive_message(TCPsocket sock);
     
     void add_client(TCPsocket sock, std::string name);
     int find_client_name(std::string name);
-    int find_client_index(TCPsocket sock);
-    void reconnect(std::string name);//, std::string password)
+    //void reconnect(std::string name);//, std::string password)
 
     void handle_login(TCPsocket sock, std::string name,
                       int client_num);
-    void handle_disconnect(int client_num);
+    void handle_disconnect(std::string name);
     
     SDLNet_SocketSet create_sockset();
 
-    Client get_client(int i) { return clients[i]; }
     void set_socket_set(SDLNet_SocketSet s) { set = s; }
 
     SDLNet_SocketSet socket_set() const { return set; }
     IPaddress get_ip() const { return ip; }
     TCPsocket get_socket() const { return server; }
     int get_num_clients() const { return num_clients; }
-    
+   
 private:
-    std::vector<Client> clients;
+    std::map< std::string, TCPsocket > clients;
     int num_clients;
     SDLNet_SocketSet set;
     IPaddress ip;

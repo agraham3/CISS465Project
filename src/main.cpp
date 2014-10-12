@@ -38,6 +38,7 @@ int main(int argc, char **argv)
     //move Bomber-Man
     while (1)
     {
+        int start = SDL_GetTicks();
         while (SDL_PollEvent(&event))
         {
             switch(event.type)
@@ -75,9 +76,13 @@ int main(int argc, char **argv)
         test.clear();
         player.draw(test);
         test.update();
-        if (rand() % 17 == 0)
+
+        int end = SDL_GetTicks();
+        int frame_length = 1000 / FRAMES_PER_SEC;
+        int dt = frame_length - (end - start);
+        if (dt > 0)
         {
-            SDL_Delay(200);
+            SDL_Delay(dt);
         }
     }
     SDL_Quit();

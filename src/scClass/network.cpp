@@ -44,6 +44,18 @@ void Server::send_message_to_all_clients(std::string buf)
     }
 }
 
+void Server::send_message_to_all_other_clients(std::string name, std::string buff)
+{
+    typedef std::map< std::string, TCPsocket >::iterator it_type;
+    for(it_type i = clients.begin(); i != clients.end(); i++)
+    {
+        if (i->first != name)
+        {
+            send_client_message(i->first, buff);
+        }
+    }
+}
+
 std::string Server::receive_message(TCPsocket sock)
 {
     char buff[MAXLEN] = {' '};

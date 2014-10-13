@@ -60,7 +60,7 @@ int main(int argc, char **argv)
             {
                 if(temp != "")
                 {
-                    std::cout << "message from client: " << message << std::endl;
+                    s.send_message_to_all_other_clients(i->first, message);
                     numready--;
                 }
                 else

@@ -144,6 +144,7 @@ public:
     int send_message(std::string message, TCPsocket sock);
     void send_client_message(std::string name, std::string message);
     void send_message_to_all_clients(std::string buf);
+    void send_message_to_all_other_clients(std::string name, std::string buff);
     std::string receive_message(TCPsocket sock);
     
     void add_client(TCPsocket sock, std::string name);

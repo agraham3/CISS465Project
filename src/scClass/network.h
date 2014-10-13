@@ -71,8 +71,7 @@ public:
         
         send_message(name, sock);
         std::cout << "Logged in as: " << name << std::endl;
-        receive_player_number(receive_message(sock));
-        std::cout << "Player number: " << player_num << std::endl;
+        std::cout << receive_message(sock) << std::endl;
     }
 
     TCPsocket get_socket() const { return sock; }

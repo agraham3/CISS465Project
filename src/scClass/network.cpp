@@ -66,7 +66,6 @@ void Server::add_client(TCPsocket sock, std::string name)
     // Send an acknowledgement to the new client
     std::string player_number = "Your number is: ";
     player_number += to_string(num_clients);
-    player_number += "\n";
     send_client_message(name, player_number);
     num_clients++;
 }

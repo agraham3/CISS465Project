@@ -67,6 +67,11 @@ int main(int argc, char **argv)
                             player.move_right();
                             player.inc_frame();
                             break;
+                        case ENTER: std::string input;
+                            std::cout << "Enter message: ";
+                            std::getline(std::cin, input);
+                            c.send_message(input, c.get_socket());
+                            break;
                     }
                     //case SDL_KEYUP:
                     //std::cout << "Hello" << std::endl;

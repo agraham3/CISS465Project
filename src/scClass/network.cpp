@@ -68,6 +68,9 @@ void Server::add_client(TCPsocket sock, std::string name)
     player_number += to_string(num_clients);
     send_client_message(name, player_number);
     num_clients++;
+    std::cout << "Added client: " << name
+              << " to list"
+              << std::endl;
 }
 
 int Server::find_client_name(std::string name)

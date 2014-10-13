@@ -14,7 +14,14 @@ void Server::send_client_message(std::string name, std::string buff)
 {
     if (buff == "")
         return;
-    send_message(buff, clients[name]);
+    int len = buff.size() + 1; // add one for the terminating NULL
+    int result = send_message(buff, clients[name]);
+    if (result < len)
+    {
+        std::cout << "Failed to send message to client: Disconnecting client"
+                  << std::endl;
+        handle_disconnect(name);
+    }
 }
 
 void Server::send_message_to_all_clients(std::string buf)
@@ -58,9 +65,10 @@ void Server::add_client(TCPsocket sock, std::string name)
 
     // Send an acknowledgement to the new client
     std::string player_number = "Your number is: ";
-    player_number += to_string(num_clients - 1);
+    player_number += to_string(num_clients);
     player_number += "\n";
     send_client_message(name, player_number);
+    num_clients++;
 }
 
 int Server::find_client_name(std::string name)
@@ -99,8 +107,11 @@ void Server::handle_login(TCPsocket sock, std::string name, int client_num)
 
 void Server::handle_disconnect(std::string name)
 {
-    // close the old socket, even if its dead
+    std::cout << "Disconnecting client: " << name << std::endl;
     SDLNet_TCP_Close(clients[name]);
+    std::map < std::string, TCPsocket >::iterator it;
+    it = clients.find(name);
+    clients.erase(it);
 }
 
 // Creates a socket set that has the server socket and all the client sockets
@@ -150,7 +161,6 @@ void Client::send_message(std::string msg, TCPsocket sock)
 {
     char * buff = (char *)msg.c_str();
     const int len = strlen(msg.c_str()) + 1;
-    std::cout << sock << ' ' << buff <<  ' '  << len << std::endl;
     int result = SDLNet_TCP_Send(sock, buff, len);
     if (result < len)
         std::cerr << "SDLNet_TCP_Send: " << SDLNet_GetError()

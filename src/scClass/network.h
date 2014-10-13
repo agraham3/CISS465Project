@@ -163,6 +163,8 @@ public:
     IPaddress get_ip() const { return ip; }
     TCPsocket get_socket() const { return server; }
     int get_num_clients() const { return num_clients; }
+
+    std::map< std::string, TCPsocket > get_clients() const { return clients; }
    
 private:
     std::map< std::string, TCPsocket > clients;

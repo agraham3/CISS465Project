@@ -48,15 +48,25 @@ int main(int argc, char **argv)
         }
 
         // Loop through clients -- to write
-        for (int i = 0; numready > 0 && i < s.get_num_clients(); i++)
+        typedef std::map< std::string, TCPsocket >::iterator it_type;
+        std::map< std::string, TCPsocket > m = s.get_clients();
+        for (it_type i = m.begin(); i != m.end(); i++)
         {
             std::string message = "";
-            if (s.get_client(i).get_active())
+            message = s.receive_message(i->second);
+            std::string temp = message;
+            temp.erase(remove_if(temp.begin(), temp.end(), isspace), temp.end());
+            if(message > "")
             {
-                message = s.receive_message(s.get_client(i).get_socket());
-                if(message > "")
+                if(temp != "")
+                {
                     std::cout << "message from client: " << message << std::endl;
-                numready--;
+                    numready--;
+                }
+                else
+                {
+                    s.handle_disconnect(i->first);
+                }
             }
         }
         

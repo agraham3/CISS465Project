@@ -13,4 +13,6 @@
 #include "SDL_net.h"
 #include "functions.h"
 #include <map>
+#include <algorithm>
+#include <cctype>
 #endif

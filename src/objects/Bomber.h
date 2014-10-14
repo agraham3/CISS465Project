@@ -72,6 +72,8 @@ public:
     void stop();
     int get_direction() {return direction;}
     int get_speed() {return speed;}
+
+    SDL_Texture * get_img() {return img.get_texture();}
     
 private:
     std::vector<SDL_Rect> walk_down;

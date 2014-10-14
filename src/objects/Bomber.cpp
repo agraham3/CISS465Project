@@ -57,7 +57,6 @@ Bomber::Bomber()
 
 void Bomber::draw(Screen & s)
 {
-    std::cout << img.get_texture() << std::endl;
     SDL_Rect p;
     p.x = pos[0];
     p.y = pos[1];

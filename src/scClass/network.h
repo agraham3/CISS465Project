@@ -12,7 +12,7 @@ public:
     Client(TCPsocket s=NULL, std::string n="", const char * host = "",
            Uint16 port = 0)
         : sock(s), name(n), active(false), player_num(-1),
-          net_thread(NULL), local_thread(NULL)
+          net_thread(NULL), local_thread(NULL), pos(vec2d(0,0))
     {
         // initilaize SDL
         if (SDL_Init(SDL_INIT_EVERYTHING) == -1)
@@ -87,6 +87,10 @@ public:
     std::string receive_message(TCPsocket sock);
     void send_message(std::string message, TCPsocket sock);
     void receive_player_number(std::string message);
+
+    // player functions
+    void set_xy(int x, int y) { pos[0] = x; pos[1] = y; }
+    void send_xy();
     
 private:
     IPaddress ip;
@@ -97,6 +101,9 @@ private:
     int player_num;
     SDL_Thread *net_thread, *local_thread;
     SDLNet_SocketSet set;
+
+    // player vars
+    vec2d pos;
 };
 
 class Server
@@ -173,6 +180,9 @@ private:
     IPaddress ip;
     TCPsocket server;
     Uint16 port;
+
+    // game data vars
+    std::vector <vec2d > client_positions;
 };
 
 #endif

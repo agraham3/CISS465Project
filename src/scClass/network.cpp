@@ -196,3 +196,13 @@ void Client::receive_player_number(std::string message)
         player_num = atoi(temp_num.c_str());
     }
 }
+
+void Client::send_xy()
+{
+    std::string buf;
+    buf += "pos:";
+    buf += to_string(pos[0]);
+    buf += '|';
+    buf += to_string(pos[1]);
+    send_message(buf, sock);
+}

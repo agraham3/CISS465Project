@@ -70,7 +70,7 @@ int main(int argc, char **argv)
                         case ENTER: std::string input;
                             std::cout << "Enter message: ";
                             std::getline(std::cin, input);
-                            c.send_message(input, c.get_socket());
+                            c.send_message("msg:" + input, c.get_socket());
                             break;
                     }
                     //case SDL_KEYUP:

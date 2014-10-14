@@ -12,6 +12,7 @@
 #include <sstream>
 #include "SDL_net.h"
 #include "functions.h"
+#include "vec2d.h"
 #include <map>
 #include <algorithm>
 #include <cctype>

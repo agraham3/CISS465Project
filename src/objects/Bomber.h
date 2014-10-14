@@ -7,6 +7,7 @@
 #include "constants.h"
 #include "Screen.h"
 #include "Image.h"
+#include "includes.h"
 #include "Stage.h"
 
 
@@ -61,6 +62,10 @@ public:
     void move_down();
     void move_left();
     void move_right();
+    void set_pos(int x, int y) { pos[0] = x; pos[1] = y; }
+    void set_frame(int f) {frame = f;}
+    std::string send_info();
+    void set(const std::string & info);
     void drop_bomb(Screen & s);
     void stop();
     int get_direction() {return direction;}

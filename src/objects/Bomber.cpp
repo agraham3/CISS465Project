@@ -195,6 +195,27 @@ void Bomber::move_right()
 }
 
 
+std::string Bomber::send_info()
+{
+    std::string ret = "bmr:";
+    ret += to_string(pos[0]) + '|';
+    ret += to_string(pos[1]) + '|';
+    ret += to_string(frame) + '|';
+    ret += to_string(direction) + '|';
+    return ret;
+}
+
+void Bomber::set(const std::string & s)
+{
+    std::vector<int> v = get_ints(s);
+    if (v[0] == 0) alive = false;
+    else alive = true;
+    pos[0] = v[1];
+    pos[1] = v[2];
+    frame = v[3];
+    set_animation(v[4]);
+}
+
 void Bomber::drop_bomb(Screen & s)
 {
     Bomb drop(pos, TIME_FOR_BOMB_EX[bombtype], s, "assets/pic/SNES-SuperBomberman4-Bombs Explosions.png");

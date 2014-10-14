@@ -222,7 +222,9 @@ void Bomber::set(const std::string & s)
     pos[1] = v[2];
     frame = v[3];
     direction = v[4];
+    std::cout << v[4] << std::endl;
     set_animation(v[4]);
+    std::cout << animation  << std::endl;
 }
 
 void Bomber::drop_bomb(Screen & s)

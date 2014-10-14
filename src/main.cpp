@@ -97,6 +97,7 @@ int main(int argc, char **argv)
             SDL_Delay(dt);
         }
     }
+    c.send_message("quit", c.get_socket());
     SDL_Quit();
     return 0;
 }

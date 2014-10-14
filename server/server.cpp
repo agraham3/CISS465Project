@@ -52,11 +52,15 @@ int main(int argc, char **argv)
         std::map< std::string, TCPsocket > m = s.get_clients();
         for (it_type i = m.begin(); i != m.end(); i++)
         {
+            if (!SDLNet_SocketReady(i->second))
+                continue;
             std::string message = "";
             message = s.receive_message(i->second);
+            if (message == "quit")
+                s.handle_disconnect(i->first);
             std::string temp = message;
             temp.erase(remove_if(temp.begin(), temp.end(), isspace), temp.end());
-            if(message > "")
+            if(message  != "")
             {
                 if(temp != "")
                 {
@@ -71,6 +75,10 @@ int main(int argc, char **argv)
                 {
                     s.handle_disconnect(i->first);
                 }
+            }
+            else
+            {
+                s.handle_disconnect(i->first);
             }
         }
         

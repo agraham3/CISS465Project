@@ -59,7 +59,10 @@ void Server::send_message_to_all_other_clients(std::string name, std::string buf
 std::string Server::receive_message(TCPsocket sock)
 {
     char buff[MAXLEN] = {' '};
-    SDLNet_TCP_Recv(sock, buff, MAXLEN);
+    int result = SDLNet_TCP_Recv(sock, buff, MAXLEN);
+    if (result <= 0)
+        return "";
+    
     if (buff == NULL)
     {
         std::string s = "";
@@ -159,7 +162,14 @@ SDLNet_SocketSet Server::create_sockset()
 std::string Client::receive_message(TCPsocket sock)
 {
     char buff[MAXLEN] = {' '};
-    SDLNet_TCP_Recv(sock, buff, MAXLEN);
+    int result = SDLNet_TCP_Recv(sock, buff, MAXLEN);
+    if (result <= 0)
+    {
+        std::cout << "TCP connection broken because of error or closure"
+                  << std::endl;
+        SDLNet_TCP_Close(sock);
+        exit(1);
+    }
 
     if (buff == NULL)
     {

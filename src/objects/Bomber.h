@@ -64,7 +64,7 @@ public:
     void move_right();
     void set_pos(int x, int y) { pos[0] = x; pos[1] = y; }
     void set_frame(int f) {frame = f;}
-    std::string send_info();
+    std::string send_info(const std::string & name);
     void set(const std::string & info);
     void drop_bomb(Screen & s);
     void stop();

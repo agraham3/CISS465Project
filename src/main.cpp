@@ -143,8 +143,11 @@ int main(int argc, char **argv)
         typedef std::map< std::string, Bomber >::iterator it_type;
         for (it_type i = enemy.begin(); i != enemy.end(); i++)
         {
-            (i->second).new_image("assets/pic/bomber-ds.png", screen);
-            (i->second).draw(screen);
+            if ((i->second).draw(screen) != 0)
+            {
+                (i->second).new_image("assets/pic/bomber-ds.png", screen);
+                (i->second).draw(screen);
+            }
         }
         screen.update();
         int end = SDL_GetTicks();

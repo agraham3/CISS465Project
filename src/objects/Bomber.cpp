@@ -57,14 +57,14 @@ Bomber::Bomber()
     frame = 0;
 }
 
-void Bomber::draw(Screen & s)
+int Bomber::draw(Screen & s)
 {
     SDL_Rect p;
     p.x = pos[0];
     p.y = pos[1];
     p.w = (*animation)[frame].w;
     p.h = (*animation)[frame].h;
-    img.draw(s, &(*animation)[frame], &p);
+    return img.draw(s, &(*animation)[frame], &p);
 }
 
 
@@ -186,7 +186,7 @@ void Bomber::move_down()
 
 void Bomber::move_left()
 {
-    direction = 1;
+    direction = 3;
     horizontal = -get_travel_distance();
     active_time = SDL_GetTicks();
 }
@@ -194,7 +194,7 @@ void Bomber::move_left()
 
 void Bomber::move_right()
 {
-    direction = 3;
+    direction = 1;
     horizontal = get_travel_distance();
     active_time = SDL_GetTicks();
 }

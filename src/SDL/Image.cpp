@@ -37,7 +37,7 @@ void Image::get_new_texture(const std::string & file_name,
     SDL_FreeSurface(temp);
 }
 
-void Image::draw(Screen & screen, SDL_Rect * srcrect, SDL_Rect * destrect)
+int Image::draw(Screen & screen, SDL_Rect * srcrect, SDL_Rect * destrect)
 {
-    SDL_RenderCopy(screen.get_renderer(), texture, srcrect, destrect);
+    return SDL_RenderCopy(screen.get_renderer(), texture, srcrect, destrect);
 }

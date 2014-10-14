@@ -25,7 +25,7 @@ public:
     SDL_Texture * get_texture() {return texture;}
     void get_new_texture(const std::string & image_name,
                          Screen & screen);
-    void draw(Screen & screen, SDL_Rect * src=NULL, SDL_Rect * dest=NULL);
+    int draw(Screen & screen, SDL_Rect * src=NULL, SDL_Rect * dest=NULL);
 private:
     SDL_Texture * texture;
 };

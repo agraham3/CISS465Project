@@ -4,9 +4,23 @@
 #include "includes.h"
 #include <cmath>
 #include "vec2d.h"
+#include "constants.h"
 #include "Screen.h"
 #include "Image.h"
 #include "Stage.h"
+
+class Bomb
+{
+public:
+    Bomb(vec2d p, Uint32 t, Screen & s, const std::string & file)
+        : pos(p), time(t), img(Image(file, s))
+    {}
+    
+private:
+    vec2d pos;
+    Uint32 time; // time left to explosion
+    Image img;
+};
 
 class Bomber
 {

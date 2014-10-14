@@ -15,7 +15,10 @@ Image::Image(const std::string & file_name, Screen & screen)
     SDL_FreeSurface(temp);
 }
 
-
+Image::~Image()
+{
+    SDL_DestroyTexture(texture);
+}
 void Image::draw(Screen & screen, SDL_Rect * srcrect, SDL_Rect * destrect)
 {
     SDL_RenderCopy(screen.get_renderer(), texture, srcrect, destrect);

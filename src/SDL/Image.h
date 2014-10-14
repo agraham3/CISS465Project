@@ -18,6 +18,7 @@ class Image
 {
 public:
     Image(const std::string & image_name, Screen & screen);
+    ~Image();
     void draw(Screen & screen, SDL_Rect * src=NULL, SDL_Rect * dest=NULL);
 private:
     SDL_Texture * texture;

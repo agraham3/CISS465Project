@@ -43,6 +43,8 @@ int main(int argc, char **argv)
     //move Bomber-Man
     while (1)
     {
+        
+        Bomb test_bomb(20, 20, 2000, screen, "assets/pic/SNES-SuperBomberman4-Bombs Explosions.png");
         int start = SDL_GetTicks();
         while (SDL_PollEvent(&event))
         {
@@ -106,9 +108,7 @@ int main(int argc, char **argv)
                     int cnt = enemy.count(name);
                     if (cnt > 0)
                     {
-                        std::cout << "setting..." << std::endl;;
                         enemy[name].set(data);
-                        std::cout << "finished..." << std::endl;
                     }
                     else
                     {
@@ -129,6 +129,7 @@ int main(int argc, char **argv)
                 }
             }
         }
+
         
         int coll = stage.collision(player.get_rect());
         if (coll != -1)
@@ -142,6 +143,7 @@ int main(int argc, char **argv)
         typedef std::map< std::string, Bomber >::iterator it_type;
         for (it_type i = enemy.begin(); i != enemy.end(); i++)
         {
+            (i->second).new_image("assets/pic/bomber-ds.png", screen);
             (i->second).draw(screen);
         }
         screen.update();

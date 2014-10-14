@@ -106,7 +106,9 @@ int main(int argc, char **argv)
                     int cnt = enemy.count(name);
                     if (cnt > 0)
                     {
+                        std::cout << "setting..." << std::endl;;
                         enemy[name].set(data);
+                        std::cout << "finished..." << std::endl;
                     }
                     else
                     {

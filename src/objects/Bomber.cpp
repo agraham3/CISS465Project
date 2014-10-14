@@ -215,7 +215,9 @@ std::string Bomber::send_info(const std::string & name)
 
 void Bomber::set(const std::string & s)
 {
+    std::cout << "get_ints..." << std::endl;
     std::vector<int> v = get_ints(s);
+    std::cout << "got_ints..." << std::endl;
     if (v[0] == 0) alive = false;
     else alive = true;
     pos[0] = v[1];

@@ -35,9 +35,9 @@ std::vector<int> get_ints(const std::string & s)
         {
             int to_push = 0;
             int product = 1;
-            for (int j = 0; j < temp.size(); ++i)
+            for (int j = 0; j < temp.size(); ++j)
             {
-                to_push += int(temp[i] - '0') * product;
+                to_push += int(temp[j] - '0') * product;
                 product *= 10;
             }
             ret.push_back(to_push);

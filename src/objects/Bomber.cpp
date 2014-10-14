@@ -130,16 +130,16 @@ void Bomber::reposition(const Stage & s, int coll)
     switch(direction)
     {
         case COLLIDE_TOP:
-            pos[1] = blocks[block].y - (*animation)[frame].h;
+            pos[1] = blocks[block].y - (*animation)[frame].h - 1;
             break;
         case COLLIDE_BOT:
-            pos[1] = blocks[block].y + blocks[block].h;
+            pos[1] = blocks[block].y + blocks[block].h + 1;
             break;
         case COLLIDE_LEFT:
-            pos[0] = blocks[block].x - (*animation)[frame].w;
+            pos[0] = blocks[block].x - (*animation)[frame].w - 1;
             break;
         case COLLIDE_RIGHT:
-            pos[0] = blocks[block].x + blocks[block].w;
+            pos[0] = blocks[block].x + blocks[block].w + 1;
             break;
     }
     

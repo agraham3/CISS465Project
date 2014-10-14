@@ -49,6 +49,7 @@ class Bomber
 {
 public:
     Bomber(std::string image_file, Screen & s);
+    Bomber();
     void draw(Screen & s);
     void set_animation(int i = 0);
     void reset_frame(int amount=-1, int frames=5);

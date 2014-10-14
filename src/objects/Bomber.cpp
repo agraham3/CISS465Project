@@ -51,6 +51,9 @@ Bomber::Bomber(std::string image_file, Screen & s)
     animation = &walk_down;
 }
 
+Bomber::Bomber()
+{
+}
 
 void Bomber::draw(Screen & s)
 {

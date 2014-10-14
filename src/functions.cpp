@@ -50,3 +50,13 @@ std::vector<int> get_ints(const std::string & s)
     }
     return ret;
 }
+
+std::string get_name(const std::string & s)
+{
+    std::string ret;
+    for (int i = 0; s[i] != '|'; ++i)
+    {
+        ret += s[i];
+    }
+    return ret;
+}

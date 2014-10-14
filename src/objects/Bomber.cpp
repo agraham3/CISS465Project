@@ -198,6 +198,7 @@ void Bomber::move_right()
 std::string Bomber::send_info()
 {
     std::string ret = "bmr:";
+    ret += (alive ? "1" | "0");
     ret += to_string(pos[0]) + '|';
     ret += to_string(pos[1]) + '|';
     ret += to_string(frame) + '|';

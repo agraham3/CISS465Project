@@ -1,7 +1,7 @@
 all:
-	g++ *.cpp ../src/functions.cpp ../src/physics/*.cpp ../src/txt/*.cpp ../src/objects/*.cpp ../src/scClass/*.cpp ../src/SDL/*.cpp `sdl2-config --cflags --libs` -lSDL2 -lSDL2_net -lSDL2_image -lSDL2_ttf -I../src/ -I../src/physics -I../src/txt -I../src/objects -I../src/scClass -I../src/SDL -o Server
+	g++ *.cpp ../src/functions.cpp ../src/physics/*.cpp ../src/txt/*.cpp ../src/scClass/*.cpp `sdl-config --cflags --libs` -lSDL -lSDL_net -lSDL_image -lSDL_ttf -I../src/ -I../src/physics -I../src/txt -I../src/scClass -o Server
 
 r:
 	make run
 run:
-	./Server 8080
+	./Server 1238

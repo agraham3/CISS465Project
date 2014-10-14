@@ -53,6 +53,8 @@ Bomber::Bomber(std::string image_file, Screen & s)
 
 Bomber::Bomber()
 {
+    direction = 0;
+    frame = 0;
 }
 
 void Bomber::draw(Screen & s)
@@ -219,6 +221,7 @@ void Bomber::set(const std::string & s)
     pos[0] = v[1];
     pos[1] = v[2];
     frame = v[3];
+    direction = v[4];
     set_animation(v[4]);
 }
 

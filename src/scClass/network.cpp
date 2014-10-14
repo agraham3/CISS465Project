@@ -109,7 +109,6 @@ void Server::handle_login(TCPsocket sock, std::string name, int client_num)
     if (cindex == -1)
     {
         add_client(sock, name);
-        send_message("Account creation successful.", sock);
         return;
     }
     
@@ -145,7 +144,9 @@ SDLNet_SocketSet Server::create_sockset()
     SDLNet_TCP_AddSocket(set, server);
     typedef std::map< std::string, TCPsocket >::iterator it_type;
     for (it_type i = clients.begin(); i != clients.end(); i++)
+    {
         SDLNet_TCP_AddSocket(set, i->second);
+    }
     return set;
 }
 

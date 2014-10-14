@@ -9,9 +9,9 @@ const int MAXLEN = 1024;
 class Client
 {
 public:
-    Client(TCPsocket s=NULL, std::string n="", const char * host = "",
+    Client(std::string n="", const char * host = "",
            Uint16 port = 0)
-        : sock(s), name(n), active(false), player_num(-1),
+        : sock(NULL), name(n), active(false), player_num(-1),
           net_thread(NULL), local_thread(NULL), pos(vec2d(0,0))
     {
         // initilaize SDL

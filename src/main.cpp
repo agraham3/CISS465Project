@@ -20,13 +20,13 @@ int main(int argc, char **argv)
     // check our commandline
     if (argc < 4)
     {
-        std::cout << "Must have localhost port_number user_name"
+        std::cout << "Must have localhost or ip, port_number, user_name"
                   << std::endl;
         exit(0);
     }
     SDL_Event event;
     Uint16 port = (Uint16)strtol(argv[2],NULL,0);
-    Client c(NULL, argv[3], argv[1], port);
+    Client c(argv[3], argv[1], port);
     int frame = 0;
     SDL_Rect a;
     a.x = 2;

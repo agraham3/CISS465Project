@@ -15,10 +15,10 @@
 class Bomb
 {
 public:
-    Bomb(vec2d p, Uint32 fuse_length, Screen & s, const std::string & file)
-        : pos(p), time(SDL_GetTicks()), img(Image(file, s)), power(2),
+    Bomb(int x, int y, Uint32 fuse_length, Screen & s, const std::string & file)
+        : time(SDL_GetTicks()), img(Image(file, s)), power(2),
           alive(true), fuse_length(time)
-    {}
+    {pos[0] = x; pos[1] = y;}
     
     
     void tick()
@@ -32,7 +32,10 @@ public:
 
     //implement explosion
     void explode();
-    
+    void draw(Screen & s)
+    {
+        img.draw(s, NULL, NULL);
+    }
     
 private:
     vec2d pos;
@@ -64,6 +67,9 @@ public:
     void move_down();
     void move_left();
     void move_right();
+    void print_pos() {std::cout << "<" << ' '
+                                << pos[0] << ',' << pos[1]
+                                << ">" << std::endl;}
     void set_pos(int x, int y) { pos[0] = x; pos[1] = y; }
     void set_frame(int f) {frame = f;}
     std::string send_info(const std::string & name);
@@ -72,7 +78,11 @@ public:
     void stop();
     int get_direction() {return direction;}
     int get_speed() {return speed;}
-
+    void new_image(const std::string & file_name,
+                   Screen & s)
+    {
+        img.get_new_texture(file_name, s);
+    }
     SDL_Texture * get_img() {return img.get_texture();}
     
 private:

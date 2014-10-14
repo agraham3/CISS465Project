@@ -1,7 +1,7 @@
 #include "Bomber.h"
 
 Bomber::Bomber(std::string image_file, Screen & s)
-    : animation(NULL), img(Image(image_file, s))
+    : img(Image(image_file, s))
 {
     health = 2;
     alive = true;
@@ -215,21 +215,17 @@ std::string Bomber::send_info(const std::string & name)
 
 void Bomber::set(const std::string & s)
 {
-    std::cout << "get_ints..." << std::endl;
     std::vector<int> v = get_ints(s);
-    std::cout << "got_ints..." << std::endl;
     if (v[0] == 0) alive = false;
     else alive = true;
     pos[0] = v[1];
     pos[1] = v[2];
     frame = v[3];
     direction = v[4];
-    std::cout << v[4] << std::endl;
     set_animation(v[4]);
-    std::cout << animation  << std::endl;
 }
 
 void Bomber::drop_bomb(Screen & s)
 {
-    Bomb drop(pos, TIME_FOR_BOMB_EX[bombtype], s, "assets/pic/SNES-SuperBomberman4-Bombs Explosions.png");
+    Bomb drop(pos[0], pos[1], TIME_FOR_BOMB_EX[bombtype], s, "assets/pic/SNES-SuperBomberman4-Bombs Explosions.png");
 }

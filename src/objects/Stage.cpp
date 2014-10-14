@@ -20,7 +20,7 @@ Stage::Stage(Screen & s, std::string image_file)
     {
         for (int j = 0; j < lefts.size(); ++j)
         {
-            SDL_Rect block = {lefts[j], tops[i], 62, 52};
+            SDL_Rect block = {lefts[j], tops[i], 62, 32};
             blocks.push_back(block);
         }
     }

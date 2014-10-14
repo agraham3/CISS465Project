@@ -6,6 +6,7 @@
 #include "vec2d.h"
 #include "Screen.h"
 #include "Image.h"
+#include "Stage.h"
 
 class Bomber
 {
@@ -18,6 +19,7 @@ public:
     void update();
     SDL_Rect get_rect();
     bool is_active();
+    void reposition(const Stage & s, int coll);
     int get_travel_distance() const;
     void move_up();
     void move_down();

@@ -13,7 +13,7 @@ Bomber::Bomber(std::string image_file, Screen & s)
     int x = 2;
     int y = 1;
     int w = 18;
-    int h = 29;
+    int h = 27;
     for (int i = 0; i < 6; ++i)
     {
         SDL_Rect a = {x, y, w, h};
@@ -119,6 +119,30 @@ SDL_Rect Bomber::get_rect()
 bool Bomber::is_active()
 {
     return (SDL_GetTicks() - active_time < 100);
+}
+
+
+void Bomber::reposition(const Stage & s, int coll)
+{
+    int block = coll / 10;
+    int direction = coll % 10;
+    std::vector<SDL_Rect> blocks = s.get_blocks();
+    switch(direction)
+    {
+        case COLLIDE_TOP:
+            pos[1] = blocks[block].y - (*animation)[frame].h;
+            break;
+        case COLLIDE_BOT:
+            pos[1] = blocks[block].y + blocks[block].h;
+            break;
+        case COLLIDE_LEFT:
+            pos[0] = blocks[block].x - (*animation)[frame].w;
+            break;
+        case COLLIDE_RIGHT:
+            pos[0] = blocks[block].x + blocks[block].w;
+            break;
+    }
+    
 }
 
 

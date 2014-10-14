@@ -8,9 +8,9 @@
 #include "Image.h"
 
 #define COLLIDE_TOP 0
-#define COLLIDE_BOT 0
-#define COLLIDE_LEFT 0
-#define COLLIDE_RIGHT 0
+#define COLLIDE_BOT 1
+#define COLLIDE_LEFT 2
+#define COLLIDE_RIGHT 3
 
 struct Line
 {
@@ -45,8 +45,8 @@ bool y_crossings(SDL_Rect a, SDL_Rect b)
 inline
 bool collided_top(SDL_Rect moving_rect, SDL_Rect block)
 {
-    bool across = x_crossings(moving_rect, block);
-    bool over = between(moving_rect.y + moving_rect.h, block.y, block.y + block.h);
+    bool across = moving_rect.x > block.x && moving_rect.x + moving_rect.w < block.x + block.w;
+    bool over = between(moving_rect.y + moving_rect.h, block.y, block.y + block.h) && moving_rect.y < block.y;
     return across && over;
 }
 
@@ -54,8 +54,10 @@ inline
 bool collided_bottom(SDL_Rect moving_rect, SDL_Rect block)
 {
     
-    bool across = x_crossings(moving_rect, block);
-    bool under = between(moving_rect.y, block.y, block.y + block.h);
+    bool across = moving_rect.x > block.x
+        && moving_rect.x + moving_rect.w < block.x + block.w;
+    bool under = between(moving_rect.y, block.y, block.y + block.h)
+        && moving_rect.y > block.y;
     return across && under;
 }
 
@@ -95,7 +97,7 @@ public:
     Stage(Screen & s, std::string image_file="assets/pic/bomberman_stage.jpg");
     int collision(const SDL_Rect & rect); //returns the index of collided block
     void draw(Screen & s);
-    std::vector<SDL_Rect> get_blocks() {return blocks;}
+    std::vector<SDL_Rect> get_blocks() const {return blocks;}
 private:
     Line border[4];
     std::vector<SDL_Rect> blocks;

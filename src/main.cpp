@@ -78,6 +78,11 @@ int main(int argc, char **argv)
                     //player.reset_frame();
             }
         }
+        int coll = stage.collision(player.get_rect());
+        if (coll != -1)
+        {
+            player.reposition(stage, coll);
+        }
         player.update();
         screen.clear();
         stage.draw(screen);

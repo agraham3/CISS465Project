@@ -13,7 +13,7 @@ const Uint32 ENTER = SDLK_RETURN;
 
 
 // important numbers for game mechanics
-const int FRAMES_PER_SEC = 60;
+const int FRAMES_PER_SEC = 30;
 const int TIME_FOR_BOMB_EX[] = {2000}; //time kept in miliseconds
 
 #endif

@@ -96,6 +96,8 @@ void Bomber::update()
 {
     if (!is_active())
     {
+        pos[1] += vertical;
+        pos[0] += horizontal;
         stop();
     }
     else

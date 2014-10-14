@@ -87,7 +87,7 @@ int main(int argc, char **argv)
 
         // receive data from server
         c.set_socket_set(c.create_sockset());
-        int numready = SDLNet_CheckSockets(c.socket_set(), (Uint32)42);
+        int numready = SDLNet_CheckSockets(c.socket_set(), (Uint32)10);
         if (numready)
         {
             if (SDLNet_SocketReady(c.get_socket()))

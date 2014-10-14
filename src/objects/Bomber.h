@@ -9,17 +9,39 @@
 #include "Image.h"
 #include "Stage.h"
 
+
+
 class Bomb
 {
 public:
-    Bomb(vec2d p, Uint32 t, Screen & s, const std::string & file)
-        : pos(p), time(t), img(Image(file, s))
+    Bomb(vec2d p, Uint32 fuse_length, Screen & s, const std::string & file)
+        : pos(p), time(SDL_GetTicks()), img(Image(file, s)), power(2),
+          alive(true), fuse_length(time)
     {}
+    
+    
+    void tick()
+    {
+        int k = SDL_GetTicks();
+        if (k - time > fuse_length)
+        {
+            explode();
+        }
+    }
+
+    //implement explosion
+    void explode();
+    
     
 private:
     vec2d pos;
-    Uint32 time; // time left to explosion
+    Uint32 time;
     Image img;
+    Uint32 fuse_length;
+    bool alive;
+    int power;
+    int animation;
+    std::vector<SDL_Rect> explosion;
 };
 
 class Bomber
@@ -39,6 +61,11 @@ public:
     void move_down();
     void move_left();
     void move_right();
+    void drop_bomb(Screen & s);
+    void stop();
+    int get_direction() {return direction;}
+    int get_speed() {return speed;}
+    
 private:
     std::vector<SDL_Rect> walk_down;
     std::vector<SDL_Rect> walk_right;
@@ -46,14 +73,20 @@ private:
     std::vector<SDL_Rect> walk_left;
     int speed; // pixels per second
     int frame;
+    int direction;
     Uint32 travel_time;
     Uint32 active_time;
     int vertical;
     int horizontal;
     Uint32 frame_timer;
-    std::vector<SDL_Rect> *animation;
+    std::vector<SDL_Rect> * animation;
+    std::vector<Bomb> active;
     Image img;
     vec2d pos;
+    int bombtype;
+    bool alive;
+    int health;
+    int lives;
     
 };
 

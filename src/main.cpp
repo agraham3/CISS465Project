@@ -70,25 +70,24 @@ int main(int argc, char **argv)
                             player.move_right();
                             player.inc_frame();
                             break;
+                            
                         case ENTER: std::string input;
                             std::cout << "Enter message: ";
                             std::getline(std::cin, input);
                             c.send_message("msg:" + c.get_name() + ": " +
                                            input, c.get_socket());
                             break;
+                            
                     }
-                    //case SDL_KEYUP:
-                    //std::cout << "Hello" << std::endl;
-                    //player.reset_frame();
+                    break;
             }
         }
 
         // send data to server
 
-        
         // receive data from server
         c.set_socket_set(c.create_sockset());
-        int numready = SDLNet_CheckSockets(c.socket_set(), (Uint32)1000);
+        int numready = SDLNet_CheckSockets(c.socket_set(), (Uint32)42);
         if (numready)
         {
             if (SDLNet_SocketReady(c.get_socket()))
@@ -96,7 +95,6 @@ int main(int argc, char **argv)
                 std::cout << c.receive_message(c.get_socket()) << std::endl;
             }
         }
-        
         int coll = stage.collision(player.get_rect());
         if (coll != -1)
         {
@@ -107,7 +105,6 @@ int main(int argc, char **argv)
         stage.draw(screen);
         player.draw(screen);
         screen.update();
-
         int end = SDL_GetTicks();
         int frame_length = 1000 / FRAMES_PER_SEC;
         int dt = frame_length - (end - start);
@@ -116,7 +113,9 @@ int main(int argc, char **argv)
             SDL_Delay(dt);
         }
     }
+    /*
     c.send_message("quit", c.get_socket());
+    */
     SDL_Quit();
     return 0;
 }

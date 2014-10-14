@@ -3,11 +3,15 @@
 Bomber::Bomber(std::string image_file, Screen & s)
     : animation(NULL), img(Image(image_file, s))
 {
+    health = 2;
+    alive = true;
+    lives = 3;
+    
     active_time = SDL_GetTicks();
     horizontal = 0;
     vertical = 0;
     frame = 0;
-    speed = 140;
+    speed = 180;
     pos[0] = 100;
     pos[1] = 100;
     int x = 2;
@@ -92,9 +96,7 @@ void Bomber::update()
 {
     if (!is_active())
     {
-        frame = 0;
-        frame_timer = SDL_GetTicks();
-        travel_time = SDL_GetTicks();
+        stop();
     }
     else
     {
@@ -108,6 +110,12 @@ void Bomber::update()
     }
 }
 
+void Bomber::stop()
+{
+    frame = 0;
+    frame_timer = SDL_GetTicks();
+    travel_time = SDL_GetTicks();
+}
 
 SDL_Rect Bomber::get_rect()
 {
@@ -155,6 +163,7 @@ int Bomber::get_travel_distance() const
 
 void Bomber::move_up()
 {
+    direction = 2;
     vertical = -get_travel_distance();
     active_time = SDL_GetTicks();
 }
@@ -162,6 +171,7 @@ void Bomber::move_up()
 
 void Bomber::move_down()
 {
+    direction = 0;
     vertical = get_travel_distance();
     active_time = SDL_GetTicks();
 }
@@ -169,6 +179,7 @@ void Bomber::move_down()
 
 void Bomber::move_left()
 {
+    direction = 1;
     horizontal = -get_travel_distance();
     active_time = SDL_GetTicks();
 }
@@ -176,6 +187,13 @@ void Bomber::move_left()
 
 void Bomber::move_right()
 {
+    direction = 3;
     horizontal = get_travel_distance();
     active_time = SDL_GetTicks();
+}
+
+
+void Bomber::drop_bomb(Screen & s)
+{
+    Bomb drop(pos, TIME_FOR_BOMB_EX[bombtype], s, "assets/pic/SNES-SuperBomberman4-Bombs Explosions.png");
 }

@@ -57,6 +57,7 @@ public:
     void update();
     SDL_Rect get_rect();
     bool is_active();
+    bool is_alive() {return alive;}
     void reposition(const Stage & s, int coll);
     int get_travel_distance() const;
     void move_up();

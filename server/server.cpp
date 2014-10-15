@@ -68,7 +68,9 @@ int main(int argc, char **argv)
                     std::string command = message.substr(0,3);
                     std::string data = message.substr(4);
                     if (command == "msg")
-                        s.send_message_to_all_other_clients(i->first, message);
+                    {
+                        s.send_message_to_all_other_clients(i->first, data);
+                    }
                     numready--;
                 }
                 else

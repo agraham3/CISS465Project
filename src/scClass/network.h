@@ -11,7 +11,7 @@ class Client
 public:
     Client(std::string n="", const char * host = "",
            Uint16 port = 0)
-        : sock(NULL), name(n), active(false), player_num(-1),
+        : sock(NULL), name(n), active(false), player_num(-1), set(NULL),
           net_thread(NULL), local_thread(NULL), pos(vec2d(0,0))
     {
         // initilaize SDL
@@ -68,7 +68,6 @@ public:
             SDL_Quit();
             exit(0);
         }
-        
         send_message(name, sock);
         std::cout << "Logged in as: " << name << std::endl;
         std::cout << receive_message(sock) << std::endl;
@@ -87,6 +86,10 @@ public:
     std::string receive_message(TCPsocket sock);
     void send_message(std::string message, TCPsocket sock);
     void receive_player_number(std::string message);
+
+    SDLNet_SocketSet socket_set() const { return set; }
+    void set_socket_set(SDLNet_SocketSet s) { set = s; }
+    SDLNet_SocketSet create_sockset();
 
     // player functions
     void set_xy(int x, int y) { pos[0] = x; pos[1] = y; }

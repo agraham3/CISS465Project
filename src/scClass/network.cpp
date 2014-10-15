@@ -14,6 +14,8 @@ void Server::send_client_message(std::string name, std::string buff)
 {
     if (buff == "")
         return;
+    std::cout << "Sending message to: " << name
+              << "\nport: " << clients[name] << std::endl;
     int len = buff.size() + 1; // add one for the terminating NULL
     int result = send_message(buff, clients[name]);
     if (result < len)
@@ -77,14 +79,13 @@ void Server::add_client(TCPsocket sock, std::string name)
 {
     std::cout << "Trying to add a client." << std::endl;
     clients.insert(std::pair< std::string, TCPsocket >(name, sock));
-
     // Send an acknowledgement to the new client
     std::string player_number = "Your number is: ";
     player_number += to_string(num_clients);
     send_client_message(name, player_number);
     num_clients++;
     std::cout << "Added client: " << name
-              << " to list"
+              << "\nport: " << sock
               << std::endl;
 }
 
@@ -216,4 +217,22 @@ void Client::send_xy()
     buf += '|';
     buf += to_string(pos[1]);
     send_message(buf, sock);
+}
+
+
+SDLNet_SocketSet Client::create_sockset()
+{
+    static SDLNet_SocketSet set = NULL;
+    if(set)
+        SDLNet_FreeSocketSet(set);
+    set = SDLNet_AllocSocketSet(1);
+    if(!set)
+    {
+        std::cerr << "SDLNet_AllocSocketSet: " << SDLNet_GetError()
+                  << std::endl;
+        return 0;
+    }
+
+    SDLNet_TCP_AddSocket(set, sock);
+    return set;
 }

@@ -70,7 +70,8 @@ int main(int argc, char **argv)
                         case ENTER: std::string input;
                             std::cout << "Enter message: ";
                             std::getline(std::cin, input);
-                            c.send_message("msg:" + input, c.get_socket());
+                            c.send_message("msg:" + c.get_name() + ": " +
+                                           input, c.get_socket());
                             break;
                     }
                     //case SDL_KEYUP:
@@ -78,6 +79,21 @@ int main(int argc, char **argv)
                     //player.reset_frame();
             }
         }
+
+        // send data to server
+
+        
+        // receive data from server
+        c.set_socket_set(c.create_sockset());
+        int numready = SDLNet_CheckSockets(c.socket_set(), (Uint32)1000);
+        if (numready)
+        {
+            if (SDLNet_SocketReady(c.get_socket()))
+            {
+                std::cout << c.receive_message(c.get_socket()) << std::endl;
+            }
+        }
+        
         int coll = stage.collision(player.get_rect());
         if (coll != -1)
         {

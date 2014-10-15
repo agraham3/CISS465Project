@@ -12,7 +12,7 @@ public:
     Client(std::string n="", const char * host = "",
            Uint16 port = 0)
         : sock(NULL), name(n), active(false), player_num(-1), set(NULL),
-          net_thread(NULL), local_thread(NULL), pos(vec2d(0,0))
+          net_thread(NULL), local_thread(NULL)
     {
         // initilaize SDL
         if (SDL_Init(SDL_INIT_EVERYTHING) == -1)
@@ -90,10 +90,6 @@ public:
     SDLNet_SocketSet socket_set() const { return set; }
     void set_socket_set(SDLNet_SocketSet s) { set = s; }
     SDLNet_SocketSet create_sockset();
-
-    // player functions
-    void set_xy(int x, int y) { pos[0] = x; pos[1] = y; }
-    void send_xy();
     
 private:
     IPaddress ip;
@@ -104,9 +100,6 @@ private:
     int player_num;
     SDL_Thread *net_thread, *local_thread;
     SDLNet_SocketSet set;
-
-    // player vars
-    vec2d pos;
 };
 
 class Server
@@ -183,9 +176,6 @@ private:
     IPaddress ip;
     TCPsocket server;
     Uint16 port;
-
-    // game data vars
-    std::vector <vec2d > client_positions;
 };
 
 #endif

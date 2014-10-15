@@ -209,17 +209,6 @@ void Client::receive_player_number(std::string message)
     }
 }
 
-void Client::send_xy()
-{
-    std::string buf;
-    buf += "pos:";
-    buf += to_string(pos[0]);
-    buf += '|';
-    buf += to_string(pos[1]);
-    send_message(buf, sock);
-}
-
-
 SDLNet_SocketSet Client::create_sockset()
 {
     static SDLNet_SocketSet set = NULL;

@@ -3,7 +3,9 @@ all:
 
 r:	run
 run:
-	./BomberMan 69.29.94.105 1238 test_name
+	./BomberMan 69.29.94.105 1238
+local:
+	./BomberMan localhost 1238
 fresh:
 	find -name '*~' -exec rm '{}' \;
 pull:

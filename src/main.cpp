@@ -18,15 +18,18 @@ int main(int argc, char **argv)
 {
     srand((unsigned int) time(NULL));
     // check our commandline
-    if (argc < 4)
+    if (argc < 3)
     {
-        std::cout << "Must have localhost or ip, port_number, user_name"
+        std::cout << "Must have localhost or ip, port_number"
                   << std::endl;
         exit(0);
     }
+    std::string user_name = "";
+    std::cout << "Enter user name: ";
+    std::getline(std::cin, user_name);
     SDL_Event event;
     Uint16 port = (Uint16)strtol(argv[2],NULL,0);
-    Client c(argv[3], argv[1], port);
+    Client c(user_name, argv[1], port);
     int frame = 0;
     SDL_Rect a;
     a.x = 2;

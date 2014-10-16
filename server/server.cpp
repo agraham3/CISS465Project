@@ -42,7 +42,7 @@ int main(int argc, char **argv)
                 name = s.receive_message(sock);
                 s.handle_login(sock, name, client_num);
                 s.send_message_to_all_other_clients(name,
-                                                    "New client connection: "
+                                                    "msg:New client connection: "
                                                     + name);
                 s.send_message_to_all_other_clients(name, "new:" + name);
                 ++client_num;

@@ -104,7 +104,6 @@ int main(int argc, char **argv)
                     std::string name = get_name(data);
                     data = data.substr(name.size() + 1);
                     int cnt = enemy.count(name);
-                    std::cout << data << std::endl;
                     if (cnt > 0)
                     {
                         enemy[name].set(data);

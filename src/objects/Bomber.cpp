@@ -6,7 +6,7 @@ Bomber::Bomber(std::string image_file, Screen & s)
     health = 2;
     alive = true;
     lives = 3;
-    
+    direction = 0;
     active_time = SDL_GetTicks();
     horizontal = 0;
     vertical = 0;

@@ -16,4 +16,5 @@
 #include <map>
 #include <algorithm>
 #include <cctype>
+#include <stdexcept>
 #endif

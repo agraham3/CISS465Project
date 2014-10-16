@@ -18,7 +18,8 @@ void Server::send_client_message(std::string name, std::string buff)
     int result = send_message(buff, clients[name]);
     if (result < len)
     {
-        std::cout << "Failed to send message to client: Disconnecting client"
+        std::cout << "Failed to send message to client: "
+                  << name
                   << std::endl;
         handle_disconnect(name);
     }

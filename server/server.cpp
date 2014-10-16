@@ -61,17 +61,17 @@ int main(int argc, char **argv)
             std::string message = "";
             message = s.receive_message(i->second);
             if (message == "quit")
+            {
                 s.handle_disconnect(i->first);
+            }
             std::string temp = message;
             temp.erase(remove_if(temp.begin(), temp.end(), isspace), temp.end());
-            if(message  != "")
+            if (temp == "" || message =="")
             {
-                if(temp != "")
-                {
-                    s.send_message_to_all_other_clients(i->first, message);
-                    numready--;
-                }
+                continue;
             }
+            s.send_message_to_all_other_clients(i->first, message);
+            numready--;
         }
         
     }

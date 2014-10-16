@@ -49,6 +49,7 @@ int main(int argc, char **argv)
             switch(event.type)
             {
                 case SDL_QUIT:
+                    c.send_message("quit", c.get_socket());
                     SDL_Quit();
                     exit(0);
                     break;
@@ -96,37 +97,46 @@ int main(int argc, char **argv)
                 std::string message = c.receive_message(c.get_socket());
                 if (message.size() >= 3)
                 {
-                
                     // parse what the server has sent
-                    std::string command = message.substr(0,3);
-                    std::string data = message.substr(4);
-                    if (command == "msg")
-                        std::cout << data << std::endl;
-                    else if (command == "bmr")
+                    try
                     {
-                        std::string name = get_name(data);
-                        data = data.substr(name.size() + 1);
-                        int cnt = enemy.count(name);
-                        if (cnt > 0)
+                        std::string command = message.substr(0,3);
+                        std::string data = message.substr(4);
+                        if (command == "msg")
+                            std::cout << data << std::endl;
+                        else if (command == "bmr")
                         {
-                            enemy[name].set(data);
+                            std::string name = get_name(data);
+                            data = data.substr(name.size() + 1);
+                            int cnt = enemy.count(name);
+                            if (cnt > 0)
+                            {
+                                enemy[name].set(data);
+                            }
+                            else
+                            {
+                                enemy.insert(std::pair < std::string, Bomber>
+                                             (name, Bomber("assets/pic/bomber-ds.png", screen)));
+                            }
                         }
-                        else
+                        else if (command == "new")
                         {
                             enemy.insert(std::pair < std::string, Bomber>
-                                         (name, Bomber("assets/pic/bomber-ds.png", screen)));
+                                         (data, Bomber("assets/pic/bomber-ds.png", screen)));
+                        }
+                        else if (command == "rmv")
+                        {
+                            std::map < std::string, Bomber >::iterator it;
+                            it = enemy.find(data);
+                            enemy.erase(it);
                         }
                     }
-                    else if (command == "new")
+                    catch (const std::out_of_range& oor)
                     {
-                        enemy.insert(std::pair < std::string, Bomber>
-                                     (data, Bomber("assets/pic/bomber-ds.png", screen)));
-                    }
-                    else if (command == "rmv")
-                    {
-                        std::map < std::string, Bomber >::iterator it;
-                        it = enemy.find(data);
-                        enemy.erase(it);
+                        std::cerr << "Out of range error: "
+                                  << oor.what()
+                                  << '\n';
+                        continue;
                     }
                 }
             }

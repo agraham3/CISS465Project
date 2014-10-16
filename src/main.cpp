@@ -129,7 +129,6 @@ int main(int argc, char **argv)
                 }
             }
         }
-
         
         int coll = stage.collision(player.get_rect());
         if (coll != -1)

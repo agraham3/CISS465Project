@@ -126,7 +126,7 @@ int main(int argc, char **argv)
         typedef std::map< std::string, TCPsocket >::iterator it_type;
         for (it_type i = clients.begin(); i != clients.end(); i++)
         {
-            (i->second).draw(screen);
+            (i->second)->draw(screen);
         }
         screen.update();
         int end = SDL_GetTicks();

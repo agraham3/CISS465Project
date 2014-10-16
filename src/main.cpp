@@ -39,6 +39,7 @@ int main(int argc, char **argv)
     Screen screen("Testing", 900, 636);
     Bomber player("assets/pic/bomber-ds.png", screen);
     Stage stage(screen);
+    std::map< std::string, Bomber > enemy;
     //move Bomber-Man
     while (1)
     {
@@ -76,25 +77,43 @@ int main(int argc, char **argv)
                             std::getline(std::cin, input);
                             c.send_message("msg:" + c.get_name() + ": " +
                                            input, c.get_socket());
-                            break;
-                            
+                            break;    
                     }
                     break;
             }
         }
 
         // send data to server
+        c.send_message(player.send_info(c.get_name()), c.get_socket());
 
         // receive data from server
         c.set_socket_set(c.create_sockset());
-        int numready = SDLNet_CheckSockets(c.socket_set(), (Uint32)10);
+        int numready = SDLNet_CheckSockets(c.socket_set(), (Uint32)42);
         if (numready)
         {
             if (SDLNet_SocketReady(c.get_socket()))
             {
-                std::cout << c.receive_message(c.get_socket()) << std::endl;
+                std::string message = c.receive_message(c.get_socket());
+                // parse what the server has sent
+                std::string command = message.substr(0,3);
+                std::string data = message.substr(4);
+                if (command == "msg")
+                    std::cout << message << std::endl;
+                else if (command == "bmr")
+                {
+                    std::string name = get_name(data);
+                    data = data.substr(name.size());
+                    enemy[name].set(data);
+                }
+                else if (command == "new")
+                {
+                    enemy.insert(std::pair < std::string, Bomber>
+                                 (data, Bomber("assets/pic/bomber-ds.png", screen)));
+                }
             }
         }
+
+        
         int coll = stage.collision(player.get_rect());
         if (coll != -1)
         {
@@ -104,6 +123,11 @@ int main(int argc, char **argv)
         screen.clear();
         stage.draw(screen);
         player.draw(screen);
+        typedef std::map< std::string, TCPsocket >::iterator it_type;
+        for (it_type i = clients.begin(); i != clients.end(); i++)
+        {
+            (i->second).draw(screen);
+        }
         screen.update();
         int end = SDL_GetTicks();
         int frame_length = 1000 / FRAMES_PER_SEC;

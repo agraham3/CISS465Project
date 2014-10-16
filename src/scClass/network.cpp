@@ -14,8 +14,6 @@ void Server::send_client_message(std::string name, std::string buff)
 {
     if (buff == "")
         return;
-    std::cout << "Sending message to: " << name
-              << "\nport: " << clients[name] << std::endl;
     int len = buff.size() + 1; // add one for the terminating NULL
     int result = send_message(buff, clients[name]);
     if (result < len)

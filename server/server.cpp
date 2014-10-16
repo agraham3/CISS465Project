@@ -41,6 +41,10 @@ int main(int argc, char **argv)
                 std::string name;
                 name = s.receive_message(sock);
                 s.handle_login(sock, name, client_num);
+                s.send_message_to_all_other_clients(name,
+                                                    "New client connection: "
+                                                    + name);
+                s.send_message_to_all_other_clients(name, "new:" + name);
                 ++client_num;
             }
             else
@@ -64,13 +68,7 @@ int main(int argc, char **argv)
             {
                 if(temp != "")
                 {
-                    // parse what that cleint has sent
-                    std::string command = message.substr(0,3);
-                    std::string data = message.substr(4);
-                    if (command == "msg")
-                    {
-                        s.send_message_to_all_other_clients(i->first, data);
-                    }
+                    s.send_message_to_all_other_clients(i->first, message);
                     numready--;
                 }
                 else

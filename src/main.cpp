@@ -101,7 +101,9 @@ int main(int argc, char **argv)
                     std::cout << message << std::endl;
                 else if (command == "bmr")
                 {
+                    std::cout << data << std::endl;
                     std::string name = get_name(data);
+                    std::cout << name << std::endl;
                     data = data.substr(name.size());
                     int cnt = enemy.count(name);
                     if (cnt > 0)

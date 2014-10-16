@@ -71,14 +71,6 @@ int main(int argc, char **argv)
                     s.send_message_to_all_other_clients(i->first, message);
                     numready--;
                 }
-                else
-                {
-                    s.handle_disconnect(i->first);
-                }
-            }
-            else
-            {
-                s.handle_disconnect(i->first);
             }
         }
         

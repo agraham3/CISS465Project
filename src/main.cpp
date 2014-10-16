@@ -98,7 +98,7 @@ int main(int argc, char **argv)
                 std::string command = message.substr(0,3);
                 std::string data = message.substr(4);
                 if (command == "msg")
-                    std::cout << message << std::endl;
+                    std::cout << data << std::endl;
                 else if (command == "bmr")
                 {
                     std::string name = get_name(data);

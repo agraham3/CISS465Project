@@ -23,7 +23,7 @@ int main(int argc, char **argv)
         // check to see if any socket wants to do something
         int numready;
         s.set_socket_set(s.create_sockset());
-        numready = SDLNet_CheckSockets(s.socket_set(), (Uint32)1000);
+        numready = SDLNet_CheckSockets(s.socket_set(), (Uint32)300);
         if (numready == -1)
         {
             std::cout << "SDLNet_CheckSockets: ERROR" << std::endl;

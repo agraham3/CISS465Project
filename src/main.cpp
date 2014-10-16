@@ -123,10 +123,10 @@ int main(int argc, char **argv)
         screen.clear();
         stage.draw(screen);
         player.draw(screen);
-        typedef std::map< std::string, TCPsocket >::iterator it_type;
-        for (it_type i = clients.begin(); i != clients.end(); i++)
+        typedef std::map< std::string, Bomber >::iterator it_type;
+        for (it_type i = enemy.begin(); i != enemy.end(); i++)
         {
-            (i->second)->draw(screen);
+            (i->second).draw(screen);
         }
         screen.update();
         int end = SDL_GetTicks();

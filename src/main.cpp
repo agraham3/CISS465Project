@@ -103,12 +103,27 @@ int main(int argc, char **argv)
                 {
                     std::string name = get_name(data);
                     data = data.substr(name.size());
-                    enemy[name].set(data);
+                    int cnt = enemy.count(name);
+                    if (cnt > 0)
+                    {
+                        enemy[name].set(data);
+                    }
+                    else
+                    {
+                        enemy.insert(std::pair < std::string, Bomber>
+                                 (name, Bomber("assets/pic/bomber-ds.png", screen)));
+                    }
                 }
                 else if (command == "new")
                 {
                     enemy.insert(std::pair < std::string, Bomber>
                                  (data, Bomber("assets/pic/bomber-ds.png", screen)));
+                }
+                else if (command == "rmv")
+                {
+                    std::map < std::string, Bomber >::iterator it;
+                    it = enemy.find(data);
+                    enemy.erase(it);
                 }
             }
         }

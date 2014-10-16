@@ -127,6 +127,7 @@ void Server::handle_disconnect(std::string name)
     std::map < std::string, TCPsocket >::iterator it;
     it = clients.find(name);
     clients.erase(it);
+    send_message_to_all_other_clients(name, "rmv:" + name);
 }
 
 // Creates a socket set that has the server socket and all the client sockets

@@ -43,8 +43,6 @@ int main(int argc, char **argv)
     //move Bomber-Man
     while (1)
     {
-        
-        Bomb test_bomb(20, 20, 2000, screen, "assets/pic/SNES-SuperBomberman4-Bombs Explosions.png");
         int start = SDL_GetTicks();
         while (SDL_PollEvent(&event))
         {

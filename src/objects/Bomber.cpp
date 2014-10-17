@@ -21,6 +21,10 @@ int Bomb::draw(Screen & s, Image & to_draw)
 }
 
 
+void Bomb::explode()
+{
+    return;
+}
 Bomber::Bomber(const std::string & image_file,
                const std::string & bomb_file, Screen & s)
     : img(Image(image_file, s)), bomb_img(Image(bomb_file, s))

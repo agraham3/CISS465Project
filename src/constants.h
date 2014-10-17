@@ -17,5 +17,7 @@ const Uint32 SPACE = SDLK_SPACE;
 const int FRAMES_PER_SEC = 30;
 const int TIME_FOR_BOMB_EX[] = {2000}; //time kept in miliseconds
 
+const int MAX_BOMBS_PER_PLAYER = 10;
+
 #endif
 

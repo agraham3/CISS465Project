@@ -23,8 +23,9 @@ int Bomb::draw(Screen & s, Image & to_draw)
 
 void Bomb::explode()
 {
-    return;
+    
 }
+
 Bomber::Bomber(const std::string & image_file,
                const std::string & bomb_file, Screen & s)
     : img(Image(image_file, s)), bomb_img(Image(bomb_file, s))
@@ -247,6 +248,12 @@ std::string Bomber::send_info(const std::string & name)
     ret += to_string(pos[1]) + '|';
     ret += to_string(frame) + '|';
     ret += to_string(direction) + '|';
+    ret += to_string((int)active_bomb.size()) + '|';
+    for (int i = 0; i < active_bomb.size(); ++i)
+    {
+        ret += to_string(active_bomb[i].get_pos()[0]) + '|';
+        ret += to_string(active_bomb[i].get_pos()[1]) + '|';
+    }
     return ret;
 }
 
@@ -260,10 +267,22 @@ void Bomber::set(const std::string & s)
     frame = v[3];
     direction = v[4];
     set_animation(v[4]);
+    active_bomb.resize(v[5]);
+    int j = 0;
+    for (int i = 6; i < v.size(); ++i)
+    {
+        active_bomb[j].set_x(v[i]);
+        ++i;
+        active_bomb[j].set_y(v[i]);
+    }
 }
 
 void Bomber::drop_bomb()
 {
-    Bomb drop(pos[0], pos[1], TIME_FOR_BOMB_EX[bombtype]);
-    active_bomb.push_back(drop);
+    if (active_bomb.size() < MAX_BOMBS_PER_PLAYER)
+    {
+    
+        Bomb drop(pos[0], pos[1], TIME_FOR_BOMB_EX[bombtype]);
+        active_bomb.push_back(drop);
+    }
 }

@@ -1,7 +1,29 @@
 #include "Bomber.h"
 
-Bomber::Bomber(std::string image_file, Screen & s)
-    : img(Image(image_file, s))
+int Bomb::draw(Screen & s, Image & to_draw)    
+{
+    Uint32 k = SDL_GetTicks() - time;
+    SDL_Rect srcrect;
+    srcrect.y = 0;
+    srcrect.h = 13;
+    srcrect.w = 16;
+    srcrect.x = 0;
+    if (k > fuse_length / 3)
+        srcrect.x = 16;
+    else if (k > fuse_length / 1.5)
+        srcrect.x = 32;
+    SDL_Rect destrect;
+    destrect.w = srcrect.w;
+    destrect.h = srcrect.h;
+    destrect.x = pos[0];
+    destrect.y = pos[1];
+    return to_draw.draw(s, srcrect, destrect);
+}
+
+
+Bomber::Bomber(const std::string & image_file,
+               const std::string & bomb_file, Screen & s)
+    : img(Image(image_file, s)), bomb_img(Image(bomb_file, s))
 {
     health = 2;
     alive = true;
@@ -64,7 +86,14 @@ int Bomber::draw(Screen & s)
     p.y = pos[1];
     p.w = (*animation)[frame].w;
     p.h = (*animation)[frame].h;
-    return img.draw(s, &(*animation)[frame], &p);
+    if (img.draw(s, &(*animation)[frame], &p) != 0)
+        return -1;
+    for (int i = 0; i < active_bomb.size(); ++i)
+    {
+        if (active_bomb[i].draw(s, bomb_img) != 0)
+            return -1;
+    }
+    return 0;
 }
 
 
@@ -99,6 +128,10 @@ void Bomber::inc_frame()
 
 void Bomber::update()
 {
+    for (int i = 0; i < active_bombs.size(); ++i)
+    {
+        active_bombs[i].tick();
+    }
     if (!is_active())
     {
         pos[1] += vertical;
@@ -225,7 +258,8 @@ void Bomber::set(const std::string & s)
     set_animation(v[4]);
 }
 
-void Bomber::drop_bomb(Screen & s)
+void Bomber::drop_bomb()
 {
-    Bomb drop(pos[0], pos[1], TIME_FOR_BOMB_EX[bombtype], s, "assets/pic/SNES-SuperBomberman4-Bombs Explosions.png");
+    Bomb drop(pos[0], pos[1], TIME_FOR_BOMB_EX[bombtype]);
+    active_bombs.push_back(drop);
 }

@@ -15,16 +15,16 @@
 class Bomb
 {
 public:
-    Bomb(int x, int y, Uint32 fuse_length, Screen & s, const std::string & file)
-        : time(SDL_GetTicks()), img(Image(file, s)), power(2),
-          alive(true), fuse_length(time)
+    Bomb(int x, int y, Uint32 fuse)
+        : time(SDL_GetTicks()), power(2),
+          alive(true), fuse_length(fuse)
     {pos[0] = x; pos[1] = y;}
     
     
     void tick()
     {
-        int k = SDL_GetTicks();
-        if (k - time > fuse_length)
+        Uint32 k = SDL_GetTicks() - time;
+        if (k > fuse_length)
         {
             explode();
         }
@@ -32,11 +32,8 @@ public:
 
     //implement explosion
     void explode();
-    void draw(Screen & s)
-    {
-        img.draw(s, NULL, NULL);
-    }
-    
+
+    int draw(Screen & s, Image & to_draw);
 private:
     vec2d pos;
     Uint32 time;
@@ -44,14 +41,13 @@ private:
     Uint32 fuse_length;
     bool alive;
     int power;
-    int animation;
-    std::vector<SDL_Rect> explosion;
+    int frame;
 };
 
 class Bomber
 {
 public:
-    Bomber(std::string image_file, Screen & s);
+    Bomber(const std::string & image_file, const std::string & bomb_name, Screen & s);
     Bomber();
     int draw(Screen & s);
     void set_animation(int i = 0);
@@ -74,14 +70,15 @@ public:
     void set_frame(int f) {frame = f;}
     std::string send_info(const std::string & name);
     void set(const std::string & info);
-    void drop_bomb(Screen & s);
+    void drop_bomb();
     void stop();
     int get_direction() {return direction;}
     int get_speed() {return speed;}
     void new_image(const std::string & file_name,
-                   Screen & s)
+                   const std::string & bomb_name, Screen & s)
     {
         img.get_new_texture(file_name, s);
+        bomb_img.get_new_texture(bomb_name, s);
     }
     SDL_Texture * get_img() {return img.get_texture();}
     
@@ -99,7 +96,8 @@ private:
     int horizontal;
     Uint32 frame_timer;
     std::vector<SDL_Rect> * animation;
-    std::vector<Bomb> active;
+    std::vector<Bomb> active_bomb;
+    Image bomb_img;
     Image img;
     vec2d pos;
     int bombtype;

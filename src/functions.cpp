@@ -35,13 +35,7 @@ std::vector<int> get_ints(const std::string & s)
         {
             int to_push = 0;
             int product = 1;
-            for (int j = 0; j < temp.size(); ++j)
-            {
-                to_push += int(temp[j] - '0');
-                to_push *= 10;
-            }
-            to_push /= 10;
-            ret.push_back(to_push);
+            ret.push_back(atoi(temp.c_str()));
             temp.clear();
         }
         else

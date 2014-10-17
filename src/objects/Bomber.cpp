@@ -7,10 +7,10 @@ int Bomb::draw(Screen & s, Image & to_draw)
     srcrect.h = 13;
     srcrect.w = 16;
     srcrect.x = 0;
-    if (time_left < fuse_length / 3)
-        srcrect.x = 32;
-    else if (time_left < fuse_length / 1.5)
+    if (time_left < fuse_length / 1.5)
         srcrect.x = 16;
+    else if (time_left < fuse_length / 3)
+        srcrect.x = 32;
     SDL_Rect destrect;
     destrect.w = srcrect.w;
     destrect.h = srcrect.h;
@@ -247,7 +247,6 @@ std::string Bomber::send_info(const std::string & name)
     ret += to_string(pos[1]) + '|';
     ret += to_string(frame) + '|';
     ret += to_string(direction) + '|';
-    std::cout << to_string((int) active_bomb.size()) << std::endl;
     ret += to_string((int)active_bomb.size()) + '|';
     for (int i = 0; i < active_bomb.size(); ++i)
     {

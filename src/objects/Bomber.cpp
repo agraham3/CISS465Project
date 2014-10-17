@@ -275,8 +275,8 @@ void Bomber::set(const std::string & s)
     {
         active_bomb[j].set_x(v[i]);
         ++i;
-        ++j;
         active_bomb[j].set_y(v[i]);
+        ++j;
     }
 }
 

@@ -26,8 +26,8 @@ void Bomb::explode()
 }
 
 Bomber::Bomber(const std::string & image_file,
-               const std::string & bomb_file, Screen & s)
-    : img(Image(image_file, s)), bomb_img(Image(bomb_file, s))
+               const std::string & bomb_file, const std::string & exp_file, Screen & s)
+    : img(Image(image_file, s)), bomb_img(Image(bomb_file, s)), exp_img(Image(exp_file, s))
 {
     health = 2;
     alive = true;

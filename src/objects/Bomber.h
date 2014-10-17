@@ -68,7 +68,7 @@ private:
 class Bomber
 {
 public:
-    Bomber(const std::string & image_file, const std::string & bomb_name, Screen & s);
+    Bomber(const std::string & image_file, const std::string & bomb_name, const std::string & explosion_name, Screen & s);
     Bomber();
     int draw(Screen & s);
     void set_animation(int i = 0);
@@ -96,10 +96,11 @@ public:
     int get_direction() {return direction;}
     int get_speed() {return speed;}
     void new_image(const std::string & file_name,
-                   const std::string & bomb_name, Screen & s)
+                   const std::string & bomb_name, const std::string & explosion_name, Screen & s)
     {
         img.get_new_texture(file_name, s);
         bomb_img.get_new_texture(bomb_name, s);
+        exp_img.get_new_texture(explosion_name, s);
     }
     SDL_Texture * get_img() {return img.get_texture();}
     
@@ -119,6 +120,7 @@ private:
     std::vector<SDL_Rect> * animation;
     std::vector<Bomb> active_bomb;
     Image bomb_img;
+    Image exp_img;
     Image img;
     vec2d pos;
     int bombtype;

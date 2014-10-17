@@ -205,6 +205,10 @@ void Bomber::update()
         {
             to_erase.push_back(i);
         }
+        else
+        {
+            active_bomb[i].update();
+        }
         active_bomb[i].tick();
     }
     for (int i = 0; i < to_erase.size(); ++i)

@@ -90,13 +90,13 @@ int Bomber::draw(Screen & s)
     p.y = pos[1];
     p.w = (*animation)[frame].w;
     p.h = (*animation)[frame].h;
-    if (img.draw(s, &(*animation)[frame], &p) != 0)
-        return -1;
     for (int i = 0; i < active_bomb.size(); ++i)
     {
         if (active_bomb[i].draw(s, bomb_img) != 0)
             return -1;
     }
+    if (img.draw(s, &(*animation)[frame], &p) != 0)
+        return -1;
     return 0;
 }
 

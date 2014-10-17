@@ -68,6 +68,7 @@ int main(int argc, char **argv)
             temp.erase(remove_if(temp.begin(), temp.end(), isspace), temp.end());
             if (temp == "" || message =="")
             {
+                s.handle_disconnect(i->first);
                 continue;
             }
             s.send_message_to_all_other_clients(i->first, message);

@@ -18,7 +18,8 @@ public:
     Bomb(int x=0, int y=0, Uint32 fuse=-1)
         : time(SDL_GetTicks()), power(2),
           alive(true), fuse_length(fuse),
-          time_left(fuse), explosion_time(0)
+          time_left(fuse), explosion_time(0),
+          exp_remaining(-1)
     {pos[0] = x; pos[1] = y;}
     
     
@@ -40,6 +41,7 @@ public:
         if (time_left < 0)
         {
             explode();
+            exp_remaining = SDL_GetTicks() - explosion_time;
         }
     }
 
@@ -47,13 +49,16 @@ public:
     {
         return time_left;
     }
-    
+
+    int exp_time() {if (exp_remaining != -1) return exp_remaining; return SDL_GetTicks() - explosion_time;}
+
     //implement explosion
     void explode();
     vec2d get_pos() {return pos;}
     int draw(Screen & s, Image & to_draw);
     void set_x(int _x) {pos[0] = _x;}
     void set_y(int _y) {pos[1] = _y;}
+    void set_exp(int e) {explosion_time = e;}
     bool is_alive() {return alive;}
     bool is_exploding() {return (explosion_time > 0);}
 private:
@@ -65,6 +70,7 @@ private:
     bool alive;
     int power;
     Uint32 explosion_time;
+    Uint32 exp_remaining;
     int frame;
     SDL_Rect exp_rect;
 };

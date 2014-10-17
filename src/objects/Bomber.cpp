@@ -39,7 +39,7 @@ void Bomb::explode()
     }
     else
     {
-        int k = SDL_GetTicks() - explosion_time;
+        int k = exp_time();
         if (k < EXPLOSION_TIME / 20)
         {
             exp_rect.x = 2;
@@ -327,6 +327,7 @@ std::string Bomber::send_info(const std::string & name)
         ret += to_string(active_bomb[i].get_pos()[0]) + '|';
         ret += to_string(active_bomb[i].get_pos()[1]) + '|';
         ret += to_string(active_bomb[i].get_time_left()) + '|';
+        ret += to_string(active_bomb[i].exp_time()) + '|';
     }
     return ret;
 }
@@ -350,6 +351,8 @@ void Bomber::set(const std::string & s)
         active_bomb[j].set_y(v[i]);
         ++i;
         active_bomb[j].set_time_left(v[i]);
+        ++i;
+        active_bomb[j].set_exp(v[i]);
         ++j;
     }
 }

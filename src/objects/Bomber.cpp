@@ -2,6 +2,7 @@
 
 int Bomb::draw(Screen & s, Image & to_draw)    
 {
+    std::cout << "drawing" << std::endl;
     if (explosion_time > 0)
     {
         SDL_Rect destrect;

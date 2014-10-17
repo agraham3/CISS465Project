@@ -34,7 +34,7 @@ public:
         return time_left;
     }
 
-    void set_time_left(Uint32 l) {time_left = l;}
+    void set_time_left(Uint32 l) {time_left = l; if (time_left > 0) explosion_time = 0;}
 
     void update()
     {
@@ -52,6 +52,49 @@ public:
 
     int exp_time() {if (time_left > 0) return -1; if (exp_remaining != -1) return exp_remaining; return SDL_GetTicks() - explosion_time;}
 
+    void get_exp_rect() 
+    {
+        int k = exp_time();
+        if (k < EXPLOSION_TIME / 20)
+        {
+            exp_rect.x = 2;
+            exp_rect.y = 4;
+            exp_rect.h = 12;
+            exp_rect.w = 13;
+        }
+        else if (k < EXPLOSION_TIME / 13)
+        {
+            exp_rect.x = 19;
+            exp_rect.y = 2;
+            exp_rect.w = 15;
+            exp_rect.h = 15;
+        }
+        else if (k < EXPLOSION_TIME / 6)
+        {
+            exp_rect.x = 36;
+            exp_rect.y = 2;
+            exp_rect.w = 15;
+            exp_rect.h = 15;
+        }
+        else if (k < EXPLOSION_TIME / 1.2)
+        {
+            exp_rect.x = 53;
+            exp_rect.y = 2;
+            exp_rect.w = 15;
+            exp_rect.h = 15;
+        }
+        else if (k < EXPLOSION_TIME)
+        {
+            exp_rect.x = 70;
+            exp_rect.y = 2;
+            exp_rect.w = 15;
+            exp_rect.h = 15;
+        }
+        else if (k >= EXPLOSION_TIME)
+        {
+            alive = false;
+        }
+    }
     //implement explosion
     void explode();
     vec2d get_pos() {return pos;}
@@ -113,7 +156,17 @@ public:
         exp_img.get_new_texture(explosion_name, s);
     }
     SDL_Texture * get_img() {return img.get_texture();}
-    
+
+    void fix_bombs()
+    {
+        for (int i = 0; i < active_bomb.size(); ++i)
+        {
+            if (active_bomb[i].get_time_left() < 0)
+            {
+                active_bomb[i].get_exp_rect();
+            }
+        }
+    }
 private:
     std::vector<SDL_Rect> walk_down;
     std::vector<SDL_Rect> walk_right;

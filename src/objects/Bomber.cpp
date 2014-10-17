@@ -2,8 +2,7 @@
 
 int Bomb::draw(Screen & s, Image & to_draw)    
 {
-    std::cout << "drawing" << std::endl;
-    if (explosion_time > 0)
+    if (exp_remaining != -1)
     {
         SDL_Rect destrect;
         destrect.w = exp_rect.w * 6;
@@ -41,7 +40,6 @@ void Bomb::explode()
     else
     {
         int k = exp_time();
-        std::cout << k << std::endl;
         if (k < EXPLOSION_TIME / 20)
         {
             exp_rect.x = 2;

@@ -202,6 +202,7 @@ int main(int argc, char **argv)
         typedef std::map< std::string, Bomber >::iterator it_type;
         for (it_type i = enemy.begin(); i != enemy.end(); i++)
         {
+            (i->second).fix_bombs();
             if ((i->second).draw(screen) != 0)
             {
                 (i->second).new_image(player_image, bomb_image,

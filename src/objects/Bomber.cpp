@@ -248,12 +248,14 @@ std::string Bomber::send_info(const std::string & name)
     ret += to_string(pos[1]) + '|';
     ret += to_string(frame) + '|';
     ret += to_string(direction) + '|';
+    std::cout << to_string((int) active_bomb.size()) << std::endl;
     ret += to_string((int)active_bomb.size()) + '|';
     for (int i = 0; i < active_bomb.size(); ++i)
     {
         ret += to_string(active_bomb[i].get_pos()[0]) + '|';
         ret += to_string(active_bomb[i].get_pos()[1]) + '|';
     }
+    std::cout << ret << std::endl;
     return ret;
 }
 
@@ -273,6 +275,7 @@ void Bomber::set(const std::string & s)
     {
         active_bomb[j].set_x(v[i]);
         ++i;
+        ++j;
         active_bomb[j].set_y(v[i]);
     }
 }

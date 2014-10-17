@@ -88,17 +88,7 @@ void Server::add_client(TCPsocket sock, std::string name)
               << std::endl;
 }
 
-int Server::find_client_name(std::string name)
-{
-    if(clients.count(name)> 0)
-    {
-        return 1;
-    }
-    
-    return -1;
-}
-
-void Server::handle_login(TCPsocket sock, std::string name, int client_num)
+void Server::handle_login(TCPsocket sock, std::string name)
 {
     if(!name.length())
     {
@@ -107,9 +97,16 @@ void Server::handle_login(TCPsocket sock, std::string name, int client_num)
         return;
     }
 
-    int cindex = find_client_name(name);
+
+    bool exists = false;
+    typedef std::map< std::string, TCPsocket >::iterator it_type;
+    for (it_type i = clients.begin(); i != clients.end(); i++)
+    {
+        if (i->first == name)
+            exists = true;
+    }
     
-    if (cindex == -1)
+    if (!exists)
     {
         add_client(sock, name);
         return;
@@ -123,12 +120,18 @@ void Server::handle_login(TCPsocket sock, std::string name, int client_num)
 
 void Server::handle_disconnect(std::string name)
 {
+    int cnt = clients.count(name);
+    if (cnt <= 0)
+    {
+        std::cout << "Client: " + name + " does not exits to disconnect." << std::endl;
+        return;
+    }
     std::cout << "Disconnecting client: " << name << std::endl;
     SDLNet_TCP_Close(clients[name]);
     std::map < std::string, TCPsocket >::iterator it;
     it = clients.find(name);
     clients.erase(it);
-    send_message_to_all_other_clients(name, "Disconnecting: " + name + '\n');
+    send_message_to_all_other_clients(name, "msg:" + name + " has disconnected");
     send_message_to_all_other_clients(name, "rmv:" + name);
 }
 

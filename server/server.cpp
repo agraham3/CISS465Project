@@ -40,7 +40,7 @@ int main(int argc, char **argv)
             {
                 std::string name;
                 name = s.receive_message(sock);
-                s.handle_login(sock, name, client_num);
+                s.handle_login(sock, name);
                 s.send_message_to_all_other_clients(name,
                                                     "msg:New client connection: "
                                                     + name);

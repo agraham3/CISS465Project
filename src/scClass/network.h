@@ -69,7 +69,7 @@ public:
             exit(0);
         }
         send_message(name, sock);
-        std::cout << "Logged in as: " << name << std::endl;
+        std::cout << "Logging in as: " << name << std::endl;
         std::cout << receive_message(sock) << std::endl;
     }
 
@@ -151,11 +151,9 @@ public:
     std::string receive_message(TCPsocket sock);
     
     void add_client(TCPsocket sock, std::string name);
-    int find_client_name(std::string name);
     //void reconnect(std::string name);//, std::string password)
 
-    void handle_login(TCPsocket sock, std::string name,
-                      int client_num);
+    void handle_login(TCPsocket sock, std::string name);
     void handle_disconnect(std::string name);
     
     SDLNet_SocketSet create_sockset();

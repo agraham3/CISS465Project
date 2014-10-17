@@ -43,6 +43,7 @@ int main(int argc, char **argv)
     Stage stage(screen);
     std::map< std::string, Bomber > enemy;
     //move Bomber-Man
+    int dir = -1;
     while (1)
     {
         int start = SDL_GetTicks();
@@ -59,20 +60,16 @@ int main(int argc, char **argv)
                     switch(event.key.keysym.sym)
                     {
                         case UP: player.set_animation(2);
-                            player.move_up();
-                            player.inc_frame();
+                            dir = 2;
                             break;
                         case DOWN: player.set_animation(0);
-                            player.move_down();
-                            player.inc_frame();
+                            dir = 0;
                             break;
                         case LEFT: player.set_animation(3);
-                            player.move_left();
-                            player.inc_frame();
+                            dir = 3;
                             break;
                         case RIGHT: player.set_animation(1);
-                            player.move_right();
-                            player.inc_frame();
+                            dir = 1;
                             break;
                         case ENTER:
                         {
@@ -84,12 +81,52 @@ int main(int argc, char **argv)
                         }
                             break;
                         case SPACE: player.drop_bomb();
-                            break;    
+                            break;
+                            
                     }
                     break;
+                case SDL_KEYUP:
+                    switch(event.key.keysym.sym)
+                    {
+                        case UP: player.set_animation(2);
+                            if (dir == 2)
+                                dir = -1;
+                            break;
+                        case DOWN: player.set_animation(0);
+                            if (dir == 0)
+                                dir = -1;
+                            break;
+                        case LEFT: player.set_animation(3);
+                            if (dir == 3)
+                                dir = -1;
+                            break;
+                        case RIGHT: player.set_animation(1);
+                            if (dir == 1)
+                                dir = -1;
+                            break;   
+                    }
             }
         }
-
+        switch(dir)
+        {
+            case 2:
+                player.move_up();
+                player.inc_frame();
+                break;
+            case 0:
+                player.move_down();
+                player.inc_frame();
+                break;
+            case 3:
+                player.move_left();
+                player.inc_frame();
+                break;
+            case 1:
+                player.move_right();
+                player.inc_frame();
+                break;
+        }
+        
         // send data to server
         c.send_message(player.send_info(c.get_name()), c.get_socket());
 

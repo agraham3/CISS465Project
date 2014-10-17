@@ -50,7 +50,7 @@ public:
         return time_left;
     }
 
-    int exp_time() {if (exp_remaining != -1) return exp_remaining; return SDL_GetTicks() - explosion_time;}
+    int exp_time() {if (time_left > 0) return -1; if (exp_remaining != -1) return exp_remaining; return SDL_GetTicks() - explosion_time;}
 
     //implement explosion
     void explode();

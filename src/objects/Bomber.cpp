@@ -40,6 +40,7 @@ void Bomb::explode()
     else
     {
         int k = exp_time();
+        std::cout << k << std::endl;
         if (k < EXPLOSION_TIME / 20)
         {
             exp_rect.x = 2;

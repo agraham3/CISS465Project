@@ -17,7 +17,7 @@ int Bomb::draw(Screen & s, Image & to_draw)
     destrect.h = srcrect.h;
     destrect.x = pos[0];
     destrect.y = pos[1];
-    return to_draw.draw(s, srcrect, destrect);
+    return to_draw.draw(s, &srcrect, &destrect);
 }
 
 
@@ -130,7 +130,7 @@ void Bomber::update()
 {
     for (int i = 0; i < active_bombs.size(); ++i)
     {
-        active_bombs[i].tick();
+        active_bomb[i].tick();
     }
     if (!is_active())
     {
@@ -261,5 +261,5 @@ void Bomber::set(const std::string & s)
 void Bomber::drop_bomb()
 {
     Bomb drop(pos[0], pos[1], TIME_FOR_BOMB_EX[bombtype]);
-    active_bombs.push_back(drop);
+    active_bomb.push_back(drop);
 }

@@ -2,15 +2,24 @@
 
 int Bomb::draw(Screen & s, Image & to_draw)    
 {
+    if (explosion_time > 0)
+    {
+        SDL_Rect destrect;
+        destrect.w = exp_rect.w * 6;
+        destrect.h = exp_rect.h * 6;
+        destrect.x = pos[0];
+        destrect.y = pos[1];
+        return to_draw.draw(s, &exp_rect, &destrect);
+    }
     SDL_Rect srcrect;
     srcrect.y = 0;
     srcrect.h = 13;
     srcrect.w = 16;
     srcrect.x = 0;
-    if (time_left < fuse_length / 1.5)
-        srcrect.x = 16;
-    else if (time_left < fuse_length / 3)
+    if (time_left < fuse_length / 10)
         srcrect.x = 32;
+    else if (time_left < fuse_length / 2)
+        srcrect.x = 16;
     SDL_Rect destrect;
     destrect.w = srcrect.w;
     destrect.h = srcrect.h;
@@ -22,7 +31,55 @@ int Bomb::draw(Screen & s, Image & to_draw)
 
 void Bomb::explode()
 {
-    
+    if (explosion_time == 0)
+    {
+        pos[0] -= 15 * 3;
+        pos[1] -= 15 * 3;
+        explosion_time = SDL_GetTicks();
+    }
+    else
+    {
+        int k = SDL_GetTicks() - explosion_time;
+        if (k < EXPLOSION_TIME / 20)
+        {
+            exp_rect.x = 2;
+            exp_rect.y = 4;
+            exp_rect.h = 12;
+            exp_rect.w = 13;
+        }
+        else if (k < EXPLOSION_TIME / 13)
+        {
+            exp_rect.x = 19;
+            exp_rect.y = 2;
+            exp_rect.w = 15;
+            exp_rect.h = 15;
+        }
+        else if (k < EXPLOSION_TIME / 6)
+        {
+            exp_rect.x = 36;
+            exp_rect.y = 2;
+            exp_rect.w = 15;
+            exp_rect.h = 15;
+        }
+        else if (k < EXPLOSION_TIME / 1.2)
+        {
+            exp_rect.x = 53;
+            exp_rect.y = 2;
+            exp_rect.w = 15;
+            exp_rect.h = 15;
+        }
+        else if (k < EXPLOSION_TIME)
+        {
+            exp_rect.x = 70;
+            exp_rect.y = 2;
+            exp_rect.w = 15;
+            exp_rect.h = 15;
+        }
+        else if (k >= EXPLOSION_TIME)
+        {
+            alive = false;
+        }
+    }
 }
 
 Bomber::Bomber(const std::string & image_file,
@@ -92,8 +149,16 @@ int Bomber::draw(Screen & s)
     p.h = (*animation)[frame].h;
     for (int i = 0; i < active_bomb.size(); ++i)
     {
-        if (active_bomb[i].draw(s, bomb_img) != 0)
-            return -1;
+        if (!active_bomb[i].is_exploding())
+        {
+            if (active_bomb[i].draw(s, bomb_img) != 0)
+                return -1;
+        }
+        else
+        {
+            if (active_bomb[i].draw(s, exp_img) != 0)
+                return -1;
+        }
     }
     if (img.draw(s, &(*animation)[frame], &p) != 0)
         return -1;
@@ -132,9 +197,18 @@ void Bomber::inc_frame()
 
 void Bomber::update()
 {
+    std::vector<int> to_erase;
     for (int i = 0; i < active_bomb.size(); ++i)
     {
+        if (!active_bomb[i].is_alive())
+        {
+            to_erase.push_back(i);
+        }
         active_bomb[i].tick();
+    }
+    for (int i = 0; i < to_erase.size(); ++i)
+    {
+        active_bomb.erase(active_bomb.begin() + i);
     }
     if (!is_active())
     {

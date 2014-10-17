@@ -9,7 +9,9 @@ int Bomb::draw(Screen & s, Image & to_draw)
         destrect.h = exp_rect.h * 6;
         destrect.x = pos[0];
         destrect.y = pos[1];
-        return to_draw.draw(s, &exp_rect, &destrect);
+        int k = to_draw.draw(s, &exp_rect, &destrect);
+        std::cout << k << std::endl;
+        return k;
     }
     SDL_Rect srcrect;
     srcrect.y = 0;

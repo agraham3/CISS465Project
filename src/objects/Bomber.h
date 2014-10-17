@@ -101,9 +101,9 @@ public:
     int draw(Screen & s, Image & to_draw);
     void set_x(int _x) {pos[0] = _x;}
     void set_y(int _y) {pos[1] = _y;}
-    void set_exp(int e) {explosion_time = e;}
+    void set_exp(int e) {exp_remaining = e;}
     bool is_alive() {return alive;}
-    bool is_exploding() {return (explosion_time > 0);}
+    bool is_exploding() {return (exp_remaining != -1);}
 private:
     vec2d pos;
     Uint32 time;

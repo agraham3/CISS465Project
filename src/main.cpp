@@ -40,7 +40,7 @@ int main(int argc, char **argv)
     std::string bomb_image = "assets/pic/bombStages.png";
     std::string exp_image = "assets/pic/expStages.png";
     Screen screen("Bomberman", 900, 636);
-    Bomber player(player_image, bomb_image, screen);
+    Bomber player(player_image, bomb_image, exp_image, screen);
     Stage stage(screen);
     std::map< std::string, Bomber > enemy;
     //move Bomber-Man

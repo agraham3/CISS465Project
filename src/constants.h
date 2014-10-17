@@ -10,6 +10,7 @@ const Uint32 RIGHT = SDLK_RIGHT;
 const Uint32 UP = SDLK_UP;
 const Uint32 DOWN = SDLK_DOWN;
 const Uint32 ENTER = SDLK_RETURN;
+const Uint32 SPACE = SDLK_SPACE;
 
 
 // important numbers for game mechanics

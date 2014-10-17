@@ -36,8 +36,10 @@ int main(int argc, char **argv)
     a.y = 0;
     a.w = 18;
     a.h = 32;
-    Screen screen("Testing", 900, 636);
-    Bomber player("assets/pic/bomber-ds.png", screen);
+    std::string player_image = "assets/pic/bomber-ds.png";
+    std::string bomb_image = "assets/pic/bombStages.png";
+    Screen screen("Bomberman", 900, 636);
+    Bomber player(player_image, bomb_image, screen);
     Stage stage(screen);
     std::map< std::string, Bomber > enemy;
     //move Bomber-Man
@@ -72,12 +74,16 @@ int main(int argc, char **argv)
                             player.move_right();
                             player.inc_frame();
                             break;
-                            
-                        case ENTER: std::string input;
+                        case ENTER:
+                        {
+                            std::string input;
                             std::cout << "Enter message: ";
                             std::getline(std::cin, input);
                             c.send_message("msg:" + c.get_name() + ": " +
                                            input, c.get_socket());
+                        }
+                            break;
+                        case SPACE: player.drop_bomb();
                             break;    
                     }
                     break;
@@ -116,13 +122,13 @@ int main(int argc, char **argv)
                             else
                             {
                                 enemy.insert(std::pair < std::string, Bomber>
-                                             (name, Bomber("assets/pic/bomber-ds.png", screen)));
+                                             (name, Bomber(player_image, bomb_image, screen)));
                             }
                         }
                         else if (command == "new")
                         {
                             enemy.insert(std::pair < std::string, Bomber>
-                                         (data, Bomber("assets/pic/bomber-ds.png", screen)));
+                                         (data, Bomber(player_image, bomb_image, screen)));
                         }
                         else if (command == "rmv")
                         {
@@ -136,6 +142,7 @@ int main(int argc, char **argv)
                         std::cerr << "Out of range error: "
                                   << oor.what()
                                   << '\n';
+                        std::cout << "msg: " << message << std::endl;
                         continue;
                     }
                 }
@@ -157,7 +164,7 @@ int main(int argc, char **argv)
         {
             if ((i->second).draw(screen) != 0)
             {
-                (i->second).new_image("assets/pic/bomber-ds.png", screen);
+                (i->second).new_image(player_image, bomb_image, screen);
                 (i->second).draw(screen);
             }
         }

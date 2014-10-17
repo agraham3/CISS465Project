@@ -128,7 +128,7 @@ void Bomber::inc_frame()
 
 void Bomber::update()
 {
-    for (int i = 0; i < active_bombs.size(); ++i)
+    for (int i = 0; i < active_bomb.size(); ++i)
     {
         active_bomb[i].tick();
     }

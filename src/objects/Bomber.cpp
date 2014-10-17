@@ -2,16 +2,15 @@
 
 int Bomb::draw(Screen & s, Image & to_draw)    
 {
-    Uint32 k = SDL_GetTicks() - time;
     SDL_Rect srcrect;
     srcrect.y = 0;
     srcrect.h = 13;
     srcrect.w = 16;
     srcrect.x = 0;
-    if (k > fuse_length / 3)
-        srcrect.x = 16;
-    else if (k > fuse_length / 1.5)
+    if (time_left < fuse_length / 3)
         srcrect.x = 32;
+    else if (time_left < fuse_length / 1.5)
+        srcrect.x = 16;
     SDL_Rect destrect;
     destrect.w = srcrect.w;
     destrect.h = srcrect.h;
@@ -254,8 +253,8 @@ std::string Bomber::send_info(const std::string & name)
     {
         ret += to_string(active_bomb[i].get_pos()[0]) + '|';
         ret += to_string(active_bomb[i].get_pos()[1]) + '|';
+        ret += to_string(active_bomb[i].get_time_left()) + '|';
     }
-    std::cout << ret << std::endl;
     return ret;
 }
 
@@ -276,6 +275,8 @@ void Bomber::set(const std::string & s)
         active_bomb[j].set_x(v[i]);
         ++i;
         active_bomb[j].set_y(v[i]);
+        ++i;
+        active_bomb[j].set_time_left(v[i]);
         ++j;
     }
 }

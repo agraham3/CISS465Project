@@ -17,20 +17,37 @@ class Bomb
 public:
     Bomb(int x=0, int y=0, Uint32 fuse=-1)
         : time(SDL_GetTicks()), power(2),
-          alive(true), fuse_length(fuse)
+          alive(true), fuse_length(fuse),
+          time_left(fuse)
     {pos[0] = x; pos[1] = y;}
     
     
-    void tick()
+    Uint32 tick()
     {
-        if (fuse_length == -1) return;
-        Uint32 k = SDL_GetTicks() - time;
-        if (k > fuse_length)
+        if (fuse_length == -1) return 1000;
+        time_left = (int) fuse_length - (int) (SDL_GetTicks() - time);
+        if (time_left < 0)
+        {
+            explode();
+        }
+        return time_left;
+    }
+
+    void set_time_left(Uint32 l) {time_left = l;}
+
+    void update()
+    {
+        if (time_left < 0)
         {
             explode();
         }
     }
 
+    int get_time_left()
+    {
+        return time_left;
+    }
+    
     //implement explosion
     void explode();
     vec2d get_pos() {return pos;}
@@ -41,6 +58,7 @@ private:
     vec2d pos;
     Uint32 time;
     Image img;
+    int time_left;
     Uint32 fuse_length;
     bool alive;
     int power;

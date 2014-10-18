@@ -36,17 +36,28 @@ int main(int argc, char **argv)
         SDL_Quit();
         exit(0);
     }
+    
     // main login screen
-    bool run_screen = true;
     Image logo("assets/pic/logo.png", screen);
     SDL_Rect logorect = {0, 0, 900, 313};
     SDL_Rect logopos = {10, 0, 900, 313};
     bool typing_user = true;
     Image textbox("assets/pic/loginBoxes.png", screen);
     SDL_Rect textboxrect = {13, 27, 295, 214};
-    SDL_Rect textboxpos = {320, 340, 295, 214};
-    SDL_Rect userpos = {320, 340, 295, 99};
-    SDL_Rect passpos = {320, 462, 295, 99};
+    SDL_Rect textboxpos = {320, 340, 440, 214};
+    SDL_Rect userpos = {320, 340, 440, 99};
+    SDL_Rect passpos = {320, 462, 440, 99};
+    Image login_register_buttons("assets/pic/LoginorRegister.png", screen);
+    SDL_Rect buttonrect = {8, 9, 420, 60};
+    SDL_Rect buttonpos = {320, 565, 420, 60};
+    SDL_Rect log_butpos = {320, 565, 200, 60};
+    SDL_Rect reg_butpos = {540, 565, 200, 60};
+
+    SDL_Rect msgrect = {320, 320, 295, 25};
+    Text msg(screen, msgrect, false, WHITE);
+retrylog:
+    bool run_screen = true;
+    bool login = true;
     Text user(screen, userpos);
     Text pass(screen, passpos, true);
     while(run_screen)
@@ -72,7 +83,7 @@ int main(int argc, char **argv)
         
         int x, y;
         if (SDL_GetMouseState(&x, &y) &&
-            SDL_BUTTON(SDL_BUTTON_LEFT))
+               SDL_BUTTON(SDL_BUTTON_LEFT))
         {
             if(clicked(x,y, userpos))
             {
@@ -82,21 +93,41 @@ int main(int argc, char **argv)
             {
                 typing_user = false;
             }
+            else if(clicked(x,y,log_butpos))
+            {
+                login = true;
+                run_screen = false;
+            }
+            else if(clicked(x,y,reg_butpos))
+            {
+                login = false;
+                run_screen = false;
+            }
         }
         screen.clear();
         logo.draw(screen, &logorect, &logopos);
         textbox.draw(screen, &textboxrect, &textboxpos);
         user.draw(screen);
+        msg.draw(screen);
         pass.draw(screen);
+        login_register_buttons.draw(screen, &buttonrect, &buttonpos);
         //std::cout << user.get_message() << std::endl;
         screen.update();
     }
     
-    std::string user_name = "";
-    std::cout << "Enter user name: ";
-    std::getline(std::cin, user_name);
     Uint16 port = (Uint16)strtol(argv[2],NULL,0);
-    Client c(user_name, argv[1], port);
+    Client c(user.get_message(), pass.get_message(), login, argv[1], port);
+    std::string Loginmessage = c.receive_message(c.get_socket());
+    std::cout << Loginmessage << std::endl;
+    SDL_Delay(1000);
+    if (Loginmessage != "Login successful!")
+    {
+        msg.set_message(Loginmessage);
+        goto retrylog;
+    }
+    User user;
+    std::string usertxt = c.recieve_message(c.get_socket());
+    
     int frame = 0;
     SDL_Rect a;
     a.x = 2;

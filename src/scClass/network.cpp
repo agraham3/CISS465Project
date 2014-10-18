@@ -79,16 +79,13 @@ void Server::add_client(TCPsocket sock, std::string name)
     std::cout << "Trying to add a client." << std::endl;
     clients.insert(std::pair< std::string, TCPsocket >(name, sock));
     // Send an acknowledgement to the new client
-    std::string player_number = "Your number is: ";
-    player_number += to_string(num_clients);
-    send_client_message(name, player_number);
     num_clients++;
     std::cout << "Added client: " << name
               << "\nport: " << sock
               << std::endl;
 }
 
-void Server::handle_login(TCPsocket sock, std::string name)
+void Server::handle_login(TCPsocket sock, std::string name, std::string pass)
 {
     if(!name.length())
     {
@@ -97,24 +94,49 @@ void Server::handle_login(TCPsocket sock, std::string name)
         return;
     }
 
-
-    bool exists = false;
-    typedef std::map< std::string, TCPsocket >::iterator it_type;
-    for (it_type i = clients.begin(); i != clients.end(); i++)
+    try
     {
-        if (i->first == name)
-            exists = true;
-    }
-    
-    if (!exists)
-    {
+        User user(name, pass, true);
+        
+        // check if user is already logged in
+        bool exists = false;
+        typedef std::map< std::string, TCPsocket >::iterator it_type;
+        for (it_type i = clients.begin(); i != clients.end(); i++)
+        {
+            if (i->first == name)
+                exists = true;
+        }
+        if (exists)
+        {
+            send_message("This account is already logged in.", sock);
+            SDLNet_TCP_Close(sock);
+            return;
+        }
+        send_message("Login successful!", sock);
         add_client(sock, name);
-        return;
+        send_message(user.to_string(), sock);
+    }
+    catch (USER_ERROR err)
+    {
+        send_message(err.message, sock);
+        SDLNet_TCP_Close(sock);
     }
     
-    send_message("Duplicate Nickname!", sock);
-    SDLNet_TCP_Close(sock);
-    
+    return;
+}
+
+void Server::handle_register(TCPsocket sock, std::string name, std::string pass)
+{
+    try
+    {
+        User user(name, pass, false);
+        send_message("Registration successful!", sock);
+    }
+    catch (USER_ERROR err)
+    {
+        send_message(err.message, sock);
+        SDLNet_TCP_Close(sock);
+    }
     return;
 }
 
@@ -133,6 +155,8 @@ void Server::handle_disconnect(std::string name)
     clients.erase(it);
     send_message_to_all_other_clients(name, "msg:" + name + " has disconnected");
     send_message_to_all_other_clients(name, "rmv:" + name);
+
+    User::update_file();
 }
 
 // Creates a socket set that has the server socket and all the client sockets

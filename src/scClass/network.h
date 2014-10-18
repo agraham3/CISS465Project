@@ -10,9 +10,9 @@ const int MAXLEN = 1024;
 class Client
 {
 public:
-    Client(std::string n="", const char * host = "",
+    Client(std::string n="", std::string pas = "",  bool login = true, const char * host = "",
            Uint16 port = 0)
-        : sock(NULL), name(n), active(false), player_num(-1), set(NULL),
+        : sock(NULL), name(n),active(false), player_num(-1), set(NULL),
           net_thread(NULL), local_thread(NULL)
     {
         // initilaize SDL
@@ -69,9 +69,8 @@ public:
             SDL_Quit();
             exit(0);
         }
-        send_message(name, sock);
-        std::cout << "Logging in as: " << name << std::endl;
-        std::cout << receive_message(sock) << std::endl;
+        
+        send_message(name+'|'+pas+'|'+(login ? '1' : '0'), sock);
     }
 
     TCPsocket get_socket() const { return sock; }
@@ -152,9 +151,8 @@ public:
     std::string receive_message(TCPsocket sock);
     
     void add_client(TCPsocket sock, std::string name);
-    //void reconnect(std::string name);//, std::string password)
-
-    void handle_login(TCPsocket sock, std::string name);
+    void handle_login(TCPsocket sock, std::string name, std::string pass);
+    void handle_register(TCPsocket sock, std::string name, std::string pass);
     void handle_disconnect(std::string name);
     
     SDLNet_SocketSet create_sockset();

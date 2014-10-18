@@ -38,9 +38,16 @@ int main(int argc, char **argv)
             sock = SDLNet_TCP_Accept(s.get_socket());
             if(sock)
             {
-                std::string name;
-                name = s.receive_message(sock);
-                s.handle_login(sock, name);
+                std::string message;
+                message = s.receive_message(sock);
+                std::vector< std::string > temp= get_parts(message);
+                std::string name = temp[0];
+                std::string pass = temp[1];
+                bool login = (temp[2] == "1");
+                if (login)
+                    s.handle_login(sock, name, pass);
+                else
+                    s.handle_register(sock, name, pass);
                 s.send_message_to_all_other_clients(name,
                                                     "msg:New client connection: "
                                                     + name);

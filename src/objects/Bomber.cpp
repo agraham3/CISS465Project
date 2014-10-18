@@ -343,11 +343,10 @@ bool Bomber::is_active()
 }
 
 
-void Bomber::reposition(const Stage & s, int coll)
+void Bomber::reposition(const std::vector<SDL_Rect> & blocks, int coll)
 {
     int block = coll / 10;
     int direction = coll % 10;
-    std::vector<SDL_Rect> blocks = s.get_blocks();
     switch(direction)
     {
         case COLLIDE_TOP:

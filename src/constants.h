@@ -68,5 +68,6 @@ const int TIME_FOR_BOMB_EX[] = {2000}; //time kept in miliseconds
 const int EXPLOSION_TIME = 2000;
 const int MAX_BOMBS_PER_PLAYER = 10;
 
+
 #endif
 

@@ -294,7 +294,7 @@ retrylog:
             }
         }
         int hits = player.any_collisions(player.get_actives());
-
+        
         if (hits != -1)
         {
             player.take_damage(player.get_actives()[hits].get_power());
@@ -313,7 +313,12 @@ retrylog:
         int coll = stage.collision(player.get_rect());
         if (coll != -1)
         {
-            player.reposition(stage, coll);
+            player.reposition(stage.get_blocks(), coll);
+        }
+        coll = stage.hit_destructible(player.get_rect());
+        if (coll != -1)
+        {
+            player.reposition(stage.get_destructibles(), coll);
         }
         player.update();
         screen.clear();

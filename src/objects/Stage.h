@@ -95,13 +95,19 @@ class Stage
 {
 public:
     Stage(Screen & s, std::string image_file="assets/pic/bomberman_stage.jpg");
-    int collision(const SDL_Rect & rect); //returns the index of collided block
+    int collision(const SDL_Rect & rect) const; //returns the index of collided block
     void draw(Screen & s);
     std::vector<SDL_Rect> get_blocks() const {return blocks;}
+    std::vector<SDL_Rect> get_destructibles() {return destructibles;}
+    
+    void set_destructibles(const std::string & s);
+    int hit_destructible(const SDL_Rect & s) const;
 private:
     Line border[4];
     std::vector<SDL_Rect> blocks;
+    std::vector<SDL_Rect> destructibles;
     Image img;
+    Image dest_img;
 };
 
 #endif

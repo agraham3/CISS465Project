@@ -25,10 +25,44 @@ int main(int argc, char **argv)
                   << std::endl;
         exit(0);
     }
+
+    Screen screen("Bomberman", 900, 636);
+    SDL_Event event;
+    
+    // main login screen
+    bool run_screen = true;
+    Image logo("assets/pic/logo.png", screen);
+    SDL_Rect logorect = {0, 0, 900, 313};
+    SDL_Rect logopos = {10, 0, 900, 313};
+    while(run_screen)
+    {
+        while (SDL_PollEvent(&event))
+        {
+            switch(event.type)
+            {
+                case SDL_QUIT:
+                    SDL_Quit();
+                    exit(0);
+                    break;
+                case SDL_KEYDOWN:
+                    switch(event.key.keysym.sym)
+                    {
+                        case SPACE:
+                            run_screen = false;
+                            break; 
+                    }
+                    break;
+            }
+        }
+        
+        screen.clear();
+        logo.draw(screen, &logorect, &logopos);
+        screen.update();
+    }
+    
     std::string user_name = "";
     std::cout << "Enter user name: ";
     std::getline(std::cin, user_name);
-    SDL_Event event;
     Uint16 port = (Uint16)strtol(argv[2],NULL,0);
     Client c(user_name, argv[1], port);
     int frame = 0;
@@ -42,7 +76,6 @@ int main(int argc, char **argv)
     std::string exp_image = "assets/pic/expStages.png";
     std::string green_arrow = "assets/pic/pointer-green.png";
     std::string red_arrow = "assets/pic/pointer-red.png";
-    Screen screen("Bomberman", 900, 636);
     Bomber player(player_image, bomb_image, exp_image, green_arrow, screen);
     Stage stage(screen);
     std::map< std::string, Bomber > enemy;

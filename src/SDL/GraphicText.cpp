@@ -1,7 +1,7 @@
 #include "GraphicText.h"
 
 
-Text::Text(Screen & s, SDL_Rect loc, bool _secret, std::string hider, int fontsize, SDL_Color clr, std::string m)
+Text::Text(Screen & s, SDL_Rect loc, bool _secret, SDL_Color clr, std::string hider, int fontsize, std::string m)
     : message(m), color(clr), rect(loc), secret(_secret), text_hider(Image(hider, s))
 {
     font = TTF_OpenFont("fonts/FreeSans.ttf", fontsize);

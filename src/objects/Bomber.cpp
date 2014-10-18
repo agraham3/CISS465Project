@@ -226,8 +226,9 @@ int Bomber::draw(Screen & s, int okay)
         p.x += 3;
         p.w = 10;
         p.h = 12;
-        if (arrow.draw(s, &a, &p) != 0)
-            return -1;
+        if (is_alive())
+            if (arrow.draw(s, &a, &p) != 0)
+                return -1;
     }
     
     if (okay != 2 && !is_alive()) //draw skull to show self is dead

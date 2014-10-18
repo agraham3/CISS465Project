@@ -3,14 +3,14 @@
 
 
 #include <SDL.h>
-/*
+
 //COLORS
-SDL_Color WHITE = {255, 255, 255};
-SDL_Color BLACK = {255, 255, 255};
-SDL_Color GREEN = {0, 255, 0};
-SDL_Color RED = {255, 0, 0};
-SDL_Color BLUE = {0, 0, 255};
-*/
+const SDL_Color WHITE = {255, 255, 255};
+const SDL_Color BLACK = {255, 255, 255};
+const SDL_Color GREEN = {0, 255, 0};
+const SDL_Color RED = {255, 0, 0};
+const SDL_Color BLUE = {0, 0, 255};
+
 //SDL key shortcuts
 const Uint32 LEFT = SDLK_LEFT;
 const Uint32 RIGHT = SDLK_RIGHT;
@@ -57,6 +57,7 @@ const Uint32 NINE = SDLK_9;
 const Uint32 RSHIFT = SDLK_RSHIFT;
 const Uint32 LSHIFT = SDLK_LSHIFT;
 const Uint32 BACKSPACE = SDLK_BACKSPACE;
+const Uint32 MINUS = SDLK_MINUS;
 
 // important numbers for game mechanics
 const int FRAMES_PER_SEC = 30;

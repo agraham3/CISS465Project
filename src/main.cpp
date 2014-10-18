@@ -13,7 +13,7 @@
 #include "Image.h"
 #include "constants.h"
 #include "Stage.h"
-#include "Text.h"
+#include "GraphicText.h"
 
 typedef std::map< std::string, Bomber >::iterator it_type;
 int main(int argc, char **argv)
@@ -29,7 +29,13 @@ int main(int argc, char **argv)
 
     Screen screen("Bomberman", 900, 636);
     SDL_Event event;
-    
+    if (TTF_Init() < 0)
+    {
+        std::cout << "Could not initialize True Type Font! " << SDL_GetError()
+                  << std::endl;
+        SDL_Quit();
+        exit(0);
+    }
     // main login screen
     bool run_screen = true;
     Image logo("assets/pic/logo.png", screen);
@@ -38,20 +44,32 @@ int main(int argc, char **argv)
     bool typing_user = true;
     Image textbox("assets/pic/loginBoxes.png", screen);
     SDL_Rect textboxrect = {13, 27, 295, 214};
-    SDL_Rect userpos = {320, 340, 295, 214};
-    SDL_Rect passpos = {320, 540, 295, 214};
+    SDL_Rect textboxpos = {320, 340, 295, 214};
+    SDL_Rect userpos = {320, 340, 295, 99};
+    SDL_Rect passpos = {320, 462, 295, 99};
     Text user(screen, userpos);
     Text pass(screen, passpos);
     while(run_screen)
     {
         if (typing_user)
         {
-            get_typed_char(user.get_message());
+            int k = get_typed_char(user.get_message());
+            if (k == -1)
+            {
+                SDL_Quit();
+                exit(0);
+            }
         }
         else
         {
-            get_typed_char(pass.get_message());
+            int k = get_typed_char(pass.get_message());
+            if (k == -1)
+            {
+                SDL_Quit();
+                exit(0);
+            }
         }
+        
         int x, y;
         if (SDL_GetMouseState(&x, &y) &&
             SDL_BUTTON(SDL_BUTTON_LEFT))
@@ -65,22 +83,12 @@ int main(int argc, char **argv)
                 typing_user = false;
             }
         }
-        while (SDL_PollEvent(&event))
-        {
-            switch(event.type)
-            {
-                case SDL_QUIT:
-                    SDL_Quit();
-                    exit(0);
-                    break;
-            }
-        }
-        
         screen.clear();
         logo.draw(screen, &logorect, &logopos);
-        textbox.draw(screen, &textboxrect, &userpos);
+        textbox.draw(screen, &textboxrect, &textboxpos);
         user.draw(screen);
         pass.draw(screen);
+        //std::cout << user.get_message() << std::endl;
         screen.update();
     }
     

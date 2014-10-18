@@ -57,7 +57,7 @@ std::string get_name(const std::string & s)
 }
 
 
-void get_typed_char(std::string & ret)
+int get_typed_char(std::string & ret)
 {
     SDL_Event event;
     static int v = 0;
@@ -67,6 +67,9 @@ void get_typed_char(std::string & ret)
     {
         switch(event.type)
         {
+            case SDL_QUIT:
+                return -1;
+                break;
             case SDL_KEYDOWN:
                 switch(event.key.keysym.sym)
             {
@@ -154,6 +157,9 @@ void get_typed_char(std::string & ret)
                 case Z:
                     ret += ('z' + v);
                     break;
+                case SPACE:
+                    ret += ' ';
+                    break;
                 case ZERO:
                     ret += '0';
                     break;
@@ -184,6 +190,10 @@ void get_typed_char(std::string & ret)
                 case NINE:
                     ret += '9';
                     break;
+                case MINUS:
+                    if (v == -32) ret += '_';
+                    else ret += '-';
+                    break;
                 case BACKSPACE:
                     ret = ret.substr(0, ret.size() - 1);
                     break;
@@ -205,6 +215,7 @@ void get_typed_char(std::string & ret)
         v = -32;
     else
         v = 0;
+    return 0;
 }
 
 

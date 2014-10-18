@@ -309,13 +309,12 @@ retrylog:
             int hit = stage.hit_destructible(player_bombs[i]);
             if (hits != -1)
             {
-                std::cout << "hello" << std::endl;
                 c.send_message("dst:" + to_string(hit/10), c.get_socket());
             }
         }
         for (it_type i = enemy.begin(); i != enemy.end(); i++)
         {
-            int hit = player.any_collisions((i->second).get_actives(), 6);
+            int hit = player.any_collisions((i->second).get_actives());
             if (hit != -1)
             {
                 player.take_damage((i->second).get_actives()[hit].get_power());

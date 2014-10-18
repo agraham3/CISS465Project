@@ -423,13 +423,11 @@ std::string Bomber::send_info(const std::string & name)
         ret += to_string(active_bomb[i].get_time_left()) + '|';
         ret += to_string(active_bomb[i].exp_time()) + '|';
     }
-    std::cout << ret << std::endl;
     return ret;
 }
 
 void Bomber::set(const std::string & s)
 {
-    std::cout << s << std::endl;
     std::vector<int> v = get_ints(s);
     if (v[0] == 0) alive = false;
     else alive = true;
@@ -473,13 +471,13 @@ bool Bomber::collide(const SDL_Rect & danger) const
 
 
 
-int Bomber::any_collisions(const std::vector<Bomb> & dangers, int d) const
+int Bomber::any_collisions(const std::vector<Bomb> & dangers) const
 {
     for (int i = 0; i < dangers.size(); ++i)
     {
         if (dangers[i].is_exploding())
         {
-            if (collide(dangers[i].get_rect(d)))
+            if (collide(dangers[i].get_rect()))
             {
                 return i;
             }

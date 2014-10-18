@@ -278,7 +278,7 @@ retrylog:
                         }
                         else if(command == "kil")
                         {
-                            if (user_player.get_name() == data)
+                            if (user_player.user() == data)
                                 player.inc_kills();
                         }
                     }

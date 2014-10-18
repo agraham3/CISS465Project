@@ -3,6 +3,10 @@
 extern const char file_name[];
 
 std::vector<std::vector<std::string> > User::all_info;
+User::User(const std::string & user)
+    : user_name(user)
+{}
+
 
 User::User(const std::string & user, const std::string & pass, bool login)
     : user_name(user), password(pass), total_kills(0),
@@ -108,4 +112,14 @@ std::string to_string(const User & u)
     }
     ret += set[set.size() - 1];
     return ret;
+}
+
+User from_string(const std::string & s)
+{
+    std::vector<std::string> info = get_parts(s, SEPARATOR);
+    User k(info[0]);
+    k.set_kills(atoi(info[2]));
+    k.set_deaths(atoi(info[3]));
+    k.set_dropped(atoi(info[4]));
+    return k;
 }

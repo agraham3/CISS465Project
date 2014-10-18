@@ -47,13 +47,13 @@ std::vector<int> get_ints(const std::string & s)
 }
 
 
-std::vector<std::string> get_parts(const std::string & s)
+std::vector<std::string> get_parts(const std::string & s, char split)
 {
     std::vector<std::string> ret;
     std::string temp;
     for (int i = 0; i < s.size(); ++i)
     {
-        if (s[i] == '|')
+        if (s[i] == split)
         {
             ret.push_back(temp);
             temp.clear();

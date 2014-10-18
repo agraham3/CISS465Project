@@ -83,7 +83,7 @@ int main(int argc, char **argv)
             {
                 for(int i = 0; i < blocks.size(); i++)
                 {
-                    if (blocks[i] == to_string(data))
+                    if (blocks[i] == data)
                     {
                         blocks.erase(blocks.begin() + i);
                         break;

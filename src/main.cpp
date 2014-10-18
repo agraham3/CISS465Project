@@ -40,8 +40,10 @@ int main(int argc, char **argv)
     std::string player_image = "assets/pic/bomber-ds.png";
     std::string bomb_image = "assets/pic/bombStages.png";
     std::string exp_image = "assets/pic/expStages.png";
+    std::string green_arrow = "assets/pic/pointer-green.png";
+    std::string red_arrow = "assets/pic/pointer-red.png";
     Screen screen("Bomberman", 900, 636);
-    Bomber player(player_image, bomb_image, exp_image, screen);
+    Bomber player(player_image, bomb_image, exp_image, green_arrow, screen);
     Stage stage(screen);
     std::map< std::string, Bomber > enemy;
     //move Bomber-Man
@@ -162,14 +164,14 @@ int main(int argc, char **argv)
                             {
                                 enemy.insert(std::pair < std::string, Bomber>
                                              (name, Bomber(player_image, bomb_image,
-                                                           exp_image, screen)));
+                                                           exp_image, red_arrow, screen)));
                             }
                         }
                         else if (command == "new")
                         {
                             enemy.insert(std::pair < std::string, Bomber>
                                          (data, Bomber(player_image, bomb_image,
-                                                       exp_image, screen)));
+                                                       exp_image, red_arrow, screen)));
                         }
                         else if (command == "rmv")
                         {
@@ -220,7 +222,7 @@ int main(int argc, char **argv)
             if ((i->second).draw(screen, 2) != 0)
             {
                 (i->second).new_image(player_image, bomb_image,
-                                      exp_image, screen);
+                                      exp_image, red_arrow, screen);
                 (i->second).draw(screen, 2);
             }
         }

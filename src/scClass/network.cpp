@@ -115,6 +115,10 @@ void Server::handle_login(TCPsocket sock, std::string name, std::string pass)
         send_message("Login successful!", sock);
         add_client(sock, name);
         send_message(to_string(user), sock);
+        send_message_to_all_other_clients(name,
+                                            "msg:New client connection: "
+                                            + name);
+        send_message_to_all_other_clients(name, "new:" + name);
     }
     catch (USER_ERROR err)
     {

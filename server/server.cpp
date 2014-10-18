@@ -48,10 +48,6 @@ int main(int argc, char **argv)
                     s.handle_login(sock, name, pass);
                 else
                     s.handle_register(sock, name, pass);
-                s.send_message_to_all_other_clients(name,
-                                                    "msg:New client connection: "
-                                                    + name);
-                s.send_message_to_all_other_clients(name, "new:" + name);
                 ++client_num;
             }
             else

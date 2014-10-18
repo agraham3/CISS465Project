@@ -132,7 +132,7 @@ Bomber::Bomber(const std::string & image_file,
                const std::string & bomb_file, const std::string & exp_file, Screen & s)
     : img(Image(image_file, s)), bomb_img(Image(bomb_file, s)), exp_img(Image(exp_file, s))
 {
-    health = 2;
+    health = MAX_HEALTH;
     alive = true;
     lives = 3;
     direction = 0;
@@ -186,8 +186,9 @@ Bomber::Bomber()
     frame = 0;
 }
 
-int Bomber::draw(Screen & s)
+int Bomber::draw(Screen & s, int okay)
 {
+    static Image skull("assets/pic/skull-crossbones.png", s);
     SDL_Rect p;
     p.x = pos[0];
     p.y = pos[1];
@@ -206,8 +207,27 @@ int Bomber::draw(Screen & s)
                 return -1;
         }
     }
-    if (img.draw(s, &(*animation)[frame], &p) != 0)
-        return -1;
+    if (okay != 2 || is_alive()) //don't draw if not main player and is dead
+    {
+        if (img.draw(s, &(*animation)[frame], &p) != 0)
+            return -1;
+    }
+    
+    if (okay != 2 && !is_alive()) //draw skull to show self is dead
+    {
+        SDL_Rect sk;
+        sk.x = pos[0];
+        sk.y = pos[1] - 17;
+        sk.w = 18;
+        sk.h = 14;
+        SDL_Rect losk;
+        losk.x = 0;
+        losk.y = 0;
+        losk.w = sk.w;
+        losk.h = sk.h;
+        skull.draw(s, &losk, &sk);
+    }
+    
     return 0;
 }
 
@@ -252,6 +272,7 @@ void Bomber::update()
             {
                 alive = true;
                 --lives;
+                health = MAX_HEALTH;
             }
         }
     }

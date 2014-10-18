@@ -189,12 +189,11 @@ int main(int argc, char **argv)
                 }
             }
         }
-
         int hits = player.any_collisions(player.get_actives());
 
         if (hits != -1)
         {
-            std::cout << hits << std::endl;
+            player.take_damage(player.get_actives()[hits].get_power());
         }
         
         for (it_type i = enemy.begin(); i != enemy.end(); i++)
@@ -202,7 +201,7 @@ int main(int argc, char **argv)
             int hit = player.any_collisions((i->second).get_actives());
             if (hit != -1)
             {
-                std::cout << hit << std::endl;
+                player.take_damage((i->second).get_actives()[hit].get_power());
             }
         }
         

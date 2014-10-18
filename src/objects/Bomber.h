@@ -67,6 +67,7 @@ public:
     void set_exp(int e) {exp_remaining = e;}
     bool is_alive() {return alive;}
     bool is_exploding() const {return (exp_remaining != -1);}
+    int get_power() {return power;}
 private:
     vec2d pos;
     Uint32 time;
@@ -86,7 +87,7 @@ class Bomber
 public:
     Bomber(const std::string & image_file, const std::string & bomb_name, const std::string & explosion_name, Screen & s);
     Bomber();
-    int draw(Screen & s);
+    int draw(Screen & s, int okay=1);
     void set_animation(int i = 0);
     void reset_frame(int amount=-1, int frames=5);
     void inc_frame();

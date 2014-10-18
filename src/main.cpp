@@ -217,11 +217,11 @@ int main(int argc, char **argv)
         for (it_type i = enemy.begin(); i != enemy.end(); i++)
         {
             (i->second).fix_bombs();
-            if ((i->second).draw(screen) != 0)
+            if ((i->second).draw(screen, 2) != 0)
             {
                 (i->second).new_image(player_image, bomb_image,
                                       exp_image, screen);
-                (i->second).draw(screen);
+                (i->second).draw(screen, 2);
             }
         }
         screen.update();

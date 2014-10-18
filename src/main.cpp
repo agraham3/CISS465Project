@@ -126,7 +126,7 @@ retrylog:
         goto retrylog;
     }
     
-    std::string usertxt = c.recieve_message(c.get_socket());
+    std::string usertxt = c.receive_message(c.get_socket());
     User user_player = from_string(usertxt);
     
     int frame = 0;
@@ -278,7 +278,7 @@ retrylog:
                         }
                         else if(command == "kil")
                         {
-                            if (user_player.name == data)
+                            if (user_player.get_name() == data)
                                 player.inc_kills();
                         }
                     }
@@ -306,7 +306,7 @@ retrylog:
             if (hit != -1)
             {
                 player.take_damage((i->second).get_actives()[hit].get_power());
-                c.send_message("kil:"+ i->first, sock);
+                c.send_message("kil:"+ i->first, c.get_socket());
             }
         }
         

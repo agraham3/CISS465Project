@@ -83,7 +83,7 @@ int main(int argc, char **argv)
             {
                 for(int i = 0; i < blocks.size(); i++)
                 {
-                    if (blocks[i] == data)
+                    if (blocks[i] == atoi(data.c_str()))
                     {
                         blocks.erase(blocks.begin() + i);
                         break;

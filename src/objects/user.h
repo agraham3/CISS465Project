@@ -26,7 +26,7 @@ public:
     static void update_file();
     void set_kills(int k) {total_kills = k;}
     void set_deaths(int d) {total_deaths = d;}
-    void set_dropped(int d) {num_bombs_dropped = n;}
+    void set_dropped(int d) {num_bombs_dropped = d;}
     void inc_kills(int a) {total_kills += a;}
     void inc_deaths(int a) {total_deaths += a;}
     void inc_dropped(int a) {num_bombs_dropped += a;}

@@ -76,9 +76,11 @@ void Stage::set_destructibles(const std::string & s)
 {
     std::vector<int> spots = get_ints(s);
     destructibles.resize(0);
+    index.resize(0);
     for (int i = 0; i < spots.size(); ++i)
     {
-        SDL_Rect to_add = {49 + (58 * (spots[i] % 13)), 43 + (49 * (spots[i] / 13)), 62, 52};
+        SDL_Rect to_add = {49 + (61 * (spots[i] % 13)), 40 + (50 * (spots[i] / 13)), 62, 52};
+        index.push_back(spots[i]);
         destructibles.push_back(to_add);
     }
     return;

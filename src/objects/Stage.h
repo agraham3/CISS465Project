@@ -99,13 +99,14 @@ public:
     void draw(Screen & s);
     std::vector<SDL_Rect> get_blocks() const {return blocks;}
     std::vector<SDL_Rect> get_destructibles() {return destructibles;}
-    
+    std::vector<int> get_index() {return index;}
     void set_destructibles(const std::string & s);
     int hit_destructible(const SDL_Rect & s) const;
 private:
     Line border[4];
     std::vector<SDL_Rect> blocks;
     std::vector<SDL_Rect> destructibles;
+    std::vector<int> index;
     Image img;
     Image dest_img;
 };

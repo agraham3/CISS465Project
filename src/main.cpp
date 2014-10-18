@@ -307,9 +307,10 @@ retrylog:
         for (int i = 0; i < player_bombs.size(); i++)
         {
             int hit = stage.hit_destructible(player_bombs[i]);
-            if (hits != -1)
+            if (hit != -1)
             {
-                c.send_message("dst:" + to_string(hit/10), c.get_socket());
+                int h = stage.get_index()[hit/10];
+                c.send_message("dst:" + to_string(h), c.get_socket());
             }
         }
         for (it_type i = enemy.begin(); i != enemy.end(); i++)

@@ -54,9 +54,9 @@ public:
 
     void get_exp_rect();
     //implement explosion
-    SDL_Rect get_rect() const
+    SDL_Rect get_rect(int d = 1) const
     {
-        SDL_Rect collidible = {pos[0], pos[1], exp_rect.w * 6, exp_rect.h * 6};
+        SDL_Rect collidible = {pos[0], pos[1], exp_rect.w * (6/d), exp_rect.h * (6/d)};
         return collidible;
     }
     void explode();
@@ -125,7 +125,7 @@ public:
 
     bool collide(const SDL_Rect & danger) const;
     SDL_Texture * get_img() {return img.get_texture();}
-    int any_collisions(const std::vector<Bomb> & dangers) const;
+    int any_collisions(const std::vector<Bomb> & dangers, int d=1) const;
     void die()
     {
         alive = false;

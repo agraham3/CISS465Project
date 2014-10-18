@@ -472,13 +472,13 @@ bool Bomber::collide(const SDL_Rect & danger) const
 
 
 
-int Bomber::any_collisions(const std::vector<Bomb> & dangers) const
+int Bomber::any_collisions(const std::vector<Bomb> & dangers, int d) const
 {
     for (int i = 0; i < dangers.size(); ++i)
     {
         if (dangers[i].is_exploding())
         {
-            if (collide(dangers[i].get_rect()))
+            if (collide(dangers[i].get_rect(d)))
             {
                 return i;
             }

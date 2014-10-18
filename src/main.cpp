@@ -302,7 +302,7 @@ retrylog:
         
         for (it_type i = enemy.begin(); i != enemy.end(); i++)
         {
-            int hit = player.any_collisions((i->second).get_actives());
+            int hit = player.any_collisions((i->second).get_actives(), 6);
             if (hit != -1)
             {
                 player.take_damage((i->second).get_actives()[hit].get_power());

@@ -306,7 +306,7 @@ retrylog:
         std::vector < SDL_Rect > player_bombs = player.get_explosion_rects();
         for (int i = 0; i < player_bombs.size(); i++)
         {
-            int hit = stage.hit_destructibles(player_bombs[i]);
+            int hit = stage.hit_destructible(player_bombs[i]);
             if (hits != -1)
             {
                 c.send_message("dst:" + to_string(hit/10), c.get_socket());
@@ -327,7 +327,7 @@ retrylog:
         {
             player.reposition(stage.get_blocks(), coll);
         }
-        coll = stage.hit_destructibles(player.get_rect());
+        coll = stage.hit_destructible(player.get_rect());
         if (coll != -1)
         {
             player.reposition(stage.get_destructibles(), coll);

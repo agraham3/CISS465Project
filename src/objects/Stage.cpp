@@ -68,6 +68,7 @@ int Stage::hit_destructible(const SDL_Rect & rect) const
             return i * 10 + collide;
         }
     }
+    return -1;
 }
 
 

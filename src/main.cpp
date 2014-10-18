@@ -13,6 +13,7 @@
 #include "Image.h"
 #include "constants.h"
 #include "Stage.h"
+#include "Text.h"
 
 typedef std::map< std::string, Bomber >::iterator it_type;
 int main(int argc, char **argv)
@@ -34,12 +35,36 @@ int main(int argc, char **argv)
     Image logo("assets/pic/logo.png", screen);
     SDL_Rect logorect = {0, 0, 900, 313};
     SDL_Rect logopos = {10, 0, 900, 313};
-    std::string user = "";
-    std::string pass = "";
-    bool typing_user;
-    bool typing_pass;
+    bool typing_user = true;
+    Image textbox("assets/pic/loginBoxes.png", screen);
+    SDL_Rect textboxrect = {13, 27, 295, 214};
+    SDL_Rect userpos = {320, 340, 295, 214};
+    SDL_Rect passpos = {320, 540, 295, 214};
+    Text user(screen, userpos);
+    Text pass(screen, passpos);
     while(run_screen)
     {
+        if (typing_user)
+        {
+            get_typed_char(user.get_message());
+        }
+        else
+        {
+            get_typed_char(pass.get_message());
+        }
+        int x, y;
+        if (SDL_GetMouseState(&x, &y) &&
+            SDL_BUTTON(SDL_BUTTON_LEFT))
+        {
+            if(clicked(x,y, userpos))
+            {
+                typing_user = true;
+            }
+            else if(clicked(x,y,passpos))
+            {
+                typing_user = false;
+            }
+        }
         while (SDL_PollEvent(&event))
         {
             switch(event.type)
@@ -48,19 +73,14 @@ int main(int argc, char **argv)
                     SDL_Quit();
                     exit(0);
                     break;
-                case SDL_KEYDOWN:
-                    switch(event.key.keysym.sym)
-                    {
-                        case SPACE:
-                            run_screen = false;
-                            break; 
-                    }
-                    break;
             }
         }
         
         screen.clear();
         logo.draw(screen, &logorect, &logopos);
+        textbox.draw(screen, &textboxrect, &userpos);
+        user.draw(screen);
+        pass.draw(screen);
         screen.update();
     }
     

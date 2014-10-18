@@ -46,6 +46,31 @@ std::vector<int> get_ints(const std::string & s)
     return ret;
 }
 
+
+std::vector<std::string> get_parts(const std::string & s)
+{
+    std::vector<std::string> ret;
+    std::string temp;
+    for (int i = 0; i < s.size(); ++i)
+    {
+        if (s[i] == '|')
+        {
+            ret.push_back(temp);
+            temp.clear();
+        }
+        else
+        {
+            temp += s[i];
+        }
+    }
+    if (temp != "")
+    {
+        ret.push_back(temp);
+    }
+    return ret;
+}
+
+
 std::string get_name(const std::string & s)
 {
     std::string ret;

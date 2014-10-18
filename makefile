@@ -14,7 +14,10 @@ add:
 	git add . -A
 commit:
 	git commit
-push: pull fresh add commit
+push: rmexe pull fresh add commit
 	git push
 bilbo:
 	scp -r ./server/ ./src/ amwoods3@bilbo.ccis.edu:~/ciss465/
+rmexe:
+	rm BomberMan
+	rm server/Server

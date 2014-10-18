@@ -20,7 +20,6 @@ int main(int argc, char **argv)
     int client_num = 0;
 
     std::vector < int > blocks = generate_block_positions();
-    std::string strBlocks = to_string(blocks);
     while(1)
     {
         // check to see if any socket wants to do something
@@ -48,7 +47,7 @@ int main(int argc, char **argv)
                 std::string pass = temp[1];
                 bool login = (temp[2] == "1");
                 if (login)
-                    s.handle_login(sock, name, pass, strBlocks);
+                    s.handle_login(sock, name, pass, to_string(blocks));
                 else
                     s.handle_register(sock, name, pass);
                 ++client_num;

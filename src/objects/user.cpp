@@ -11,7 +11,13 @@ User::User(const std::string & user, const std::string & pass, bool login)
     try {
         if (all_info.empty())
         {
-            all_info = get_pieces_of_file(file_name);
+            try {
+                all_info = get_pieces_of_file(file_name);
+            }
+            catch (NOFILE e)
+            {
+                
+            }
         }
         find();
         if (row == -1)

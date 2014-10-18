@@ -7,7 +7,7 @@ std::vector<std::string> read_file_to_rows(const char file[])
     f.open(file);
     if (!f.good())
     {
-        std::cout << "Failed to open file " << file << "!\n";
+        //std::cout << "Failed to open file " << file << "!\n";
         NOFILE e;
         throw e;
     }

@@ -132,7 +132,7 @@ void Bomb::explode()
 Bomber::Bomber(const std::string & image_file,
                const std::string & bomb_file, const std::string & exp_file,
                const std::string & arrow_name, Screen & s)
-    : img(Image(image_file, s)), bomb_img(Image(bomb_file, s)), exp_img(Image(exp_file, s)), arrow(Image(arrow_name)), skull(Image("assets/pic/skull-crossbones.png", s))
+    : img(Image(image_file, s)), bomb_img(Image(bomb_file, s)), exp_img(Image(exp_file, s)), arrow(Image(arrow_name, s)), skull(Image("assets/pic/skull-crossbones.png", s))
 {
     
     sk.w = 18;
@@ -143,7 +143,7 @@ Bomber::Bomber(const std::string & image_file,
     losk.h = sk.h;
     health = MAX_HEALTH;
     alive = true;
-    lives = 3;
+    lives = MAX_LIVES;
     direction = 0;
     active_time = SDL_GetTicks();
     horizontal = 0;

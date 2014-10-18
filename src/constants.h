@@ -16,6 +16,7 @@ const Uint32 SPACE = SDLK_SPACE;
 // important numbers for game mechanics
 const int FRAMES_PER_SEC = 30;
 const int MAX_HEALTH = 2;
+const int MAX_LIVES = 3;
 const int RESPAWN_TIME = 10000;
 const int TIME_FOR_BOMB_EX[] = {2000}; //time kept in miliseconds
 const int EXPLOSION_TIME = 2000;

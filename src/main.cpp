@@ -48,7 +48,7 @@ int main(int argc, char **argv)
     SDL_Rect userpos = {320, 340, 295, 99};
     SDL_Rect passpos = {320, 462, 295, 99};
     Text user(screen, userpos);
-    Text pass(screen, passpos);
+    Text pass(screen, passpos, true);
     while(run_screen)
     {
         if (typing_user)

@@ -44,12 +44,18 @@ User::User(const std::string & user, const std::string & pass, bool login)
                 e.message = "User " + user + " already exists!";
                 throw e;
             }
-            if (pass != all_info[row][1])
+            else if (pass != all_info[row][1])
             {
                 row = -1;
                 USER_ERROR e;
                 e.message = "Incorrect password!";
                 throw e;
+            }
+            else
+            {
+                set_kills(atoi(all_info[row][2]));
+                set_deaths(atoi(all_info[row][3]));
+                set_dropped(atoi(all_info[row][4]));
             }
         }
     }

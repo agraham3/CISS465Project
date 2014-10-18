@@ -85,7 +85,8 @@ void Server::add_client(TCPsocket sock, std::string name)
               << std::endl;
 }
 
-void Server::handle_login(TCPsocket sock, std::string name, std::string pass)
+void Server::handle_login(TCPsocket sock, std::string name,
+                          std::string pass, std::string blocks)
 {
     if(!name.length())
     {
@@ -119,6 +120,7 @@ void Server::handle_login(TCPsocket sock, std::string name, std::string pass)
                                             "msg:New client connection: "
                                             + name);
         send_message_to_all_other_clients(name, "new:" + name);
+        send_message("blk:" + blocks, sock);
     }
     catch (USER_ERROR err)
     {

@@ -6,6 +6,7 @@
 
 int main(int argc, char **argv)
 {
+    srand((unsigned int) time(NULL));
      // check our commandline
     if (argc < 2)
     {
@@ -18,6 +19,8 @@ int main(int argc, char **argv)
     TCPsocket sock;
     int client_num = 0;
 
+    std::vector < int > blocks = generate_block_positions();
+    std::string strBlocks = to_string(blocks);
     while(1)
     {
         // check to see if any socket wants to do something
@@ -45,7 +48,7 @@ int main(int argc, char **argv)
                 std::string pass = temp[1];
                 bool login = (temp[2] == "1");
                 if (login)
-                    s.handle_login(sock, name, pass);
+                    s.handle_login(sock, name, pass, strBlocks);
                 else
                     s.handle_register(sock, name, pass);
                 ++client_num;
@@ -74,7 +77,24 @@ int main(int argc, char **argv)
                 s.handle_disconnect(i->first);
                 continue;
             }
-            s.send_message_to_all_other_clients(i->first, message);
+            std::string command = message.substr(0,3);
+            std::string data = message.substr(4);
+            if (command == "dst")
+            {
+                for(int i = 0; i < blocks.size(); i++)
+                {
+                    if (blocks[i] == to_string(data))
+                    {
+                        blocks.erase(blocks.begin() + i);
+                        break;
+                    }
+                }
+                s.send_message_to_all_clients("blk:" + to_string(blocks));
+            }
+            else
+            {
+                s.send_message_to_all_other_clients(i->first, message);
+            }
             numready--;
         }
         

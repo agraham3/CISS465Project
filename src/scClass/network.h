@@ -151,7 +151,7 @@ public:
     std::string receive_message(TCPsocket sock);
     
     void add_client(TCPsocket sock, std::string name);
-    void handle_login(TCPsocket sock, std::string name, std::string pass);
+    void handle_login(TCPsocket sock, std::string name, std::string pass, std::string blocks);
     void handle_register(TCPsocket sock, std::string name, std::string pass);
     void handle_disconnect(std::string name);
     

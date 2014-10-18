@@ -249,3 +249,42 @@ bool clicked(int x, int y, SDL_Rect subject)
     return (x >= subject.x && x <= subject.x + subject.w
             && y >= subject.y && y <= subject.y + subject.h);
 }
+
+bool in_array(int num, std::vector <int> x)
+{
+    if (x.size() == 0)
+        return false;
+    for (int i = 0; i < x.size(); i++)
+    {
+        if (x[i] == num)
+            return true;
+    }
+    return false;
+}
+
+std::vector< int > generate_block_positions()
+{
+    int num_blocks = rand() % 40 + 10;
+    std::vector < int > block_list;
+    for (int i = 0; i < num_blocks; i++)
+    {
+        int x = rand() % 143;
+        while (in_array(x, block_list))
+        {
+            x = rand() % 143;
+        }
+        block_list.push_back(x);
+    }
+    return block_list;
+}
+
+std::string to_string(std::vector < int > x)
+{
+    std::string s;
+    for(int i = 0; i < x.size(); i++)
+    {
+        s += to_string(x[i]);
+        s += '|';
+    }
+    return s;
+}

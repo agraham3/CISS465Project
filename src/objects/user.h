@@ -5,11 +5,16 @@
 #include "text.h"
 
 const char file_name[] = "User.txt";
+class USER_ERROR
+{
+public:
+    std::string message;
+};
 class User
 {
 public:
     User(const std::string & user);
-    User(const std::string & user, const std::string & pass);
+    User(const std::string & user, const std::string & pass, bool login);
     std::vector<std::string> vstr() const;
     int find();
     std::string user() const {return user_name;}

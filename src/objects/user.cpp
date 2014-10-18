@@ -4,11 +4,10 @@ extern const char file_name[];
 
 std::vector<std::vector<std::string> > User::all_info;
 
-User::User(const std::string & user, const std::string & pass)
+User::User(const std::string & user, const std::string & pass, bool login)
     : user_name(user), password(pass), total_kills(0),
       total_deaths(0), num_bombs_dropped(0), row(-1)
 {
-    
     try {
         if (all_info.empty())
         {
@@ -16,9 +15,32 @@ User::User(const std::string & user, const std::string & pass)
         }
         find();
         if (row == -1)
-        {   
+        {
+            if (login)
+            {
+                USER_ERROR e;
+                e.message = "No user " + user + "!";
+                throw e;
+            }
             all_info.push_back(vstr());
             //put_data_to_file(all_info, file_name);
+        }
+        else
+        {
+            if (!login)
+            {
+                row = -1;
+                USER_ERROR e;
+                e.message = "User " + user + " already exists!";
+                throw e;
+            }
+            if (pass != all_info[row][1])
+            {
+                row = -1;
+                USER_ERROR e;
+                e.message = "Incorrect password!";
+                throw e;
+            }
         }
     }
     catch (NOFILE e)

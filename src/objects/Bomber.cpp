@@ -442,7 +442,7 @@ void Bomber::set(const std::string & s)
 
 void Bomber::drop_bomb()
 {
-    if (active_bomb.size() < MAX_BOMBS_PER_PLAYER)
+    if (active_bomb.size() < MAX_BOMBS_PER_PLAYER && is_alive())
     {
     
         Bomb drop(pos[0], pos[1], TIME_FOR_BOMB_EX[bombtype]);

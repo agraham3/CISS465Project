@@ -180,12 +180,12 @@ int main(int argc, char **argv)
                             enemy.erase(it);
                         }
                     }
-                    catch (const std::out_of_range& oor)
+                    catch (const std::out_of_range &oor)
                     {
                         std::cerr << "Out of range error: "
                                   << oor.what()
                                   << '\n';
-                        std::cout << "msg: " << message << std::endl;
+                        c.send_message("quit", c.get_socket());
                         continue;
                     }
                 }

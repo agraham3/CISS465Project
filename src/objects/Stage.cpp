@@ -24,6 +24,14 @@ Stage::Stage(Screen & s, std::string image_file)
             blocks.push_back(block);
         }
     }
+    SDL_Rect left_block = {0, 0, 50, 600};
+    blocks.push_back(left_block);
+    SDL_Rect top_block = {0, 0, 840, 21};
+    blocks.push_back(top_block);
+    SDL_Rect right_block = {840, 0, 30, 600};
+    blocks.push_back(right_block);
+    SDL_Rect bot_block = {0, 590, 840, 21};
+    blocks.push_back(bot_block);
 }
 
 

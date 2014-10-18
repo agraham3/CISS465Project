@@ -22,6 +22,10 @@ int main(int argc, char **argv)
     std::vector < int > blocks = generate_block_positions();
     while(1)
     {
+        if (blocks.size() == 0)
+        {
+            blocks = generate_block_positions();
+        }
         // check to see if any socket wants to do something
         int numready;
         s.set_socket_set(s.create_sockset());

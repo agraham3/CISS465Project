@@ -125,8 +125,9 @@ retrylog:
         msg.set_message(Loginmessage);
         goto retrylog;
     }
-    User user;
+    
     std::string usertxt = c.recieve_message(c.get_socket());
+    User user_player = from_string(usertxt);
     
     int frame = 0;
     SDL_Rect a;
@@ -275,6 +276,11 @@ retrylog:
                             it = enemy.find(data);
                             enemy.erase(it);
                         }
+                        else if(command == "kil")
+                        {
+                            if (user_player.name == data)
+                                player.inc_kills();
+                        }
                     }
                     catch (const std::out_of_range &oor)
                     {
@@ -300,6 +306,7 @@ retrylog:
             if (hit != -1)
             {
                 player.take_damage((i->second).get_actives()[hit].get_power());
+                c.send_message("kil:"+ i->first, sock);
             }
         }
         

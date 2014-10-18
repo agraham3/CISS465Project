@@ -14,6 +14,7 @@
 #include "constants.h"
 #include "Stage.h"
 
+typedef std::map< std::string, Bomber >::iterator it_type;
 int main(int argc, char **argv)
 {
     srand((unsigned int) time(NULL));
@@ -189,6 +190,21 @@ int main(int argc, char **argv)
             }
         }
 
+        int hits = player.any_collisions(player.get_actives());
+
+        if (hits != -1)
+        {
+            std::cout << hits << std::endl;
+        }
+        
+        for (it_type i = enemy.begin(); i != enemy.end(); i++)
+        {
+            int hit = player.any_collisions((i->second).get_actives());
+            if (hit != -1)
+            {
+                std::cout << hit << std::endl;
+            }
+        }
         
         int coll = stage.collision(player.get_rect());
         if (coll != -1)
@@ -199,7 +215,6 @@ int main(int argc, char **argv)
         screen.clear();
         stage.draw(screen);
         player.draw(screen);
-        typedef std::map< std::string, Bomber >::iterator it_type;
         for (it_type i = enemy.begin(); i != enemy.end(); i++)
         {
             (i->second).fix_bombs();

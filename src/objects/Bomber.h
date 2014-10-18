@@ -52,50 +52,13 @@ public:
 
     int exp_time() {if (time_left > 0) return -1; if (exp_remaining != -1) return exp_remaining; return SDL_GetTicks() - explosion_time;}
 
-    void get_exp_rect() 
-    {
-        int k = exp_time();
-        if (k < EXPLOSION_TIME / 20)
-        {
-            exp_rect.x = 2;
-            exp_rect.y = 4;
-            exp_rect.h = 12;
-            exp_rect.w = 13;
-        }
-        else if (k < EXPLOSION_TIME / 13)
-        {
-            exp_rect.x = 19;
-            exp_rect.y = 2;
-            exp_rect.w = 15;
-            exp_rect.h = 15;
-        }
-        else if (k < EXPLOSION_TIME / 6)
-        {
-            exp_rect.x = 36;
-            exp_rect.y = 2;
-            exp_rect.w = 15;
-            exp_rect.h = 15;
-        }
-        else if (k < EXPLOSION_TIME / 1.2)
-        {
-            exp_rect.x = 53;
-            exp_rect.y = 2;
-            exp_rect.w = 15;
-            exp_rect.h = 15;
-        }
-        else if (k < EXPLOSION_TIME)
-        {
-            exp_rect.x = 70;
-            exp_rect.y = 2;
-            exp_rect.w = 15;
-            exp_rect.h = 15;
-        }
-        else if (k >= EXPLOSION_TIME)
-        {
-            alive = false;
-        }
-    }
+    void get_exp_rect();
     //implement explosion
+    SDL_Rect get_rect() const
+    {
+        SDL_Rect collidible = {pos[0], pos[1], exp_rect.w * 6, exp_rect.h * 6};
+        return collidible;
+    }
     void explode();
     vec2d get_pos() {return pos;}
     int draw(Screen & s, Image & to_draw);
@@ -103,7 +66,7 @@ public:
     void set_y(int _y) {pos[1] = _y;}
     void set_exp(int e) {exp_remaining = e;}
     bool is_alive() {return alive;}
-    bool is_exploding() {return (exp_remaining != -1);}
+    bool is_exploding() const {return (exp_remaining != -1);}
 private:
     vec2d pos;
     Uint32 time;
@@ -131,6 +94,7 @@ public:
     SDL_Rect get_rect();
     bool is_active();
     bool is_alive() {return alive;}
+    int get_lives() {return lives;}
     void reposition(const Stage & s, int coll);
     int get_travel_distance() const;
     void move_up();
@@ -146,6 +110,7 @@ public:
     void set(const std::string & info);
     void drop_bomb();
     void stop();
+    std::vector<Bomb> get_actives() {return active_bomb;}
     int get_direction() {return direction;}
     int get_speed() {return speed;}
     void new_image(const std::string & file_name,
@@ -155,8 +120,11 @@ public:
         bomb_img.get_new_texture(bomb_name, s);
         exp_img.get_new_texture(explosion_name, s);
     }
-    SDL_Texture * get_img() {return img.get_texture();}
 
+    bool collide(const SDL_Rect & danger) const;
+    SDL_Texture * get_img() {return img.get_texture();}
+    int any_collisions(const std::vector<Bomb> & dangers) const;
+    void take_damage(int amt) {health -= amt; if (health <= 0) alive = false; time_died = SDL_GetTicks();}
     void fix_bombs()
     {
         for (int i = 0; i < active_bomb.size(); ++i)
@@ -180,6 +148,7 @@ private:
     int vertical;
     int horizontal;
     Uint32 frame_timer;
+    Uint32 time_died;
     std::vector<SDL_Rect> * animation;
     std::vector<Bomb> active_bomb;
     Image bomb_img;

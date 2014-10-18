@@ -30,6 +30,51 @@ int Bomb::draw(Screen & s, Image & to_draw)
 }
 
 
+void Bomb::get_exp_rect() 
+{
+    int k = exp_time();
+    if (k < EXPLOSION_TIME / 20)
+    {
+        exp_rect.x = 2;
+        exp_rect.y = 4;
+        exp_rect.h = 12;
+        exp_rect.w = 13;
+    }
+    else if (k < EXPLOSION_TIME / 13)
+    {
+        exp_rect.x = 19;
+        exp_rect.y = 2;
+        exp_rect.w = 15;
+        exp_rect.h = 15;
+    }
+    else if (k < EXPLOSION_TIME / 6)
+    {
+        exp_rect.x = 36;
+        exp_rect.y = 2;
+        exp_rect.w = 15;
+        exp_rect.h = 15;
+    }
+    else if (k < EXPLOSION_TIME / 1.2)
+    {
+        exp_rect.x = 53;
+        exp_rect.y = 2;
+        exp_rect.w = 15;
+        exp_rect.h = 15;
+    }
+    else if (k < EXPLOSION_TIME)
+    {
+        exp_rect.x = 70;
+        exp_rect.y = 2;
+        exp_rect.w = 15;
+        exp_rect.h = 15;
+    }
+    else if (k >= EXPLOSION_TIME)
+    {
+        alive = false;
+    }
+}
+
+
 void Bomb::explode()
 {
     if (explosion_time == 0)
@@ -198,6 +243,18 @@ void Bomber::inc_frame()
 
 void Bomber::update()
 {
+    if (!is_alive())
+    {
+        if (get_lives() > 0)
+        {
+            Uint32 resp = SDL_GetTicks() - time_died;
+            if (resp > RESPAWN_TIME)
+            {
+                alive = true;
+                --lives;
+            }
+        }
+    }
     std::vector<int> to_erase;
     for (int i = 0; i < active_bomb.size(); ++i)
     {
@@ -370,4 +427,28 @@ void Bomber::drop_bomb()
         Bomb drop(pos[0], pos[1], TIME_FOR_BOMB_EX[bombtype]);
         active_bomb.push_back(drop);
     }
+}
+
+
+bool Bomber::collide(const SDL_Rect & danger) const 
+{
+    SDL_Rect self_rect = {pos[0], pos[1], (*animation)[frame].w, (*animation)[frame].h};
+    return (collided(self_rect, danger) != -1);
+}
+
+
+
+int Bomber::any_collisions(const std::vector<Bomb> & dangers) const
+{
+    for (int i = 0; i < dangers.size(); ++i)
+    {
+        if (dangers[i].is_exploding())
+        {
+            if (collide(dangers[i].get_rect()))
+            {
+                return i;
+            }
+        }
+    }
+    return -1;
 }

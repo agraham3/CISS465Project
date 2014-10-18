@@ -53,9 +53,9 @@ User::User(const std::string & user, const std::string & pass, bool login)
             }
             else
             {
-                set_kills(atoi(all_info[row][2]));
-                set_deaths(atoi(all_info[row][3]));
-                set_dropped(atoi(all_info[row][4]));
+                set_kills(atoi(all_info[row][2].c_str()));
+                set_deaths(atoi(all_info[row][3].c_str()));
+                set_dropped(atoi(all_info[row][4].c_str()));
             }
         }
     }
@@ -124,8 +124,8 @@ User from_string(const std::string & s)
 {
     std::vector<std::string> info = get_parts(s, SEPARATOR);
     User k(info[0]);
-    k.set_kills(atoi(info[2]));
-    k.set_deaths(atoi(info[3]));
-    k.set_dropped(atoi(info[4]));
+    k.set_kills(atoi(info[2].c_str()));
+    k.set_deaths(atoi(info[3].c_str()));
+    k.set_dropped(atoi(info[4].c_str()));
     return k;
 }

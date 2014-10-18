@@ -126,7 +126,12 @@ public:
     bool collide(const SDL_Rect & danger) const;
     SDL_Texture * get_img() {return img.get_texture();}
     int any_collisions(const std::vector<Bomb> & dangers) const;
-    void take_damage(int amt) {health -= amt; if (health <= 0) alive = false; time_died = SDL_GetTicks();}
+    void die()
+    {
+        alive = false;
+        deaths++;
+    }
+    void take_damage(int amt) {health -= amt; if (health <= 0) die(); time_died = SDL_GetTicks();}
     void fix_bombs()
     {
         for (int i = 0; i < active_bomb.size(); ++i)
@@ -137,6 +142,8 @@ public:
             }
         }
     }
+
+    void inc_kills() {kills++;}
 private:
     std::vector<SDL_Rect> walk_down;
     std::vector<SDL_Rect> walk_right;
@@ -165,6 +172,11 @@ private:
     bool alive;
     int health;
     int lives;
+
+
+    int kills;
+    int deaths;
+    int drops;
     
 };
 

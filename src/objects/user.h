@@ -42,6 +42,6 @@ private:
 };
 
 std::string to_string(const User & u);
-User from_string(std::string & s);
+User from_string(const std::string & s);
 
 #endif

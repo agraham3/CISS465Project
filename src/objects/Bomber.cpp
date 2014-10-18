@@ -134,7 +134,9 @@ Bomber::Bomber(const std::string & image_file,
                const std::string & arrow_name, Screen & s)
     : img(Image(image_file, s)), bomb_img(Image(bomb_file, s)), exp_img(Image(exp_file, s)), arrow(Image(arrow_name, s)), skull(Image("assets/pic/skull-crossbones.png", s))
 {
-    
+    kills = 0;
+    deaths = 0;
+    drops = 0;
     sk.w = 18;
     sk.h = 14;
     losk.x = 0;
@@ -454,7 +456,8 @@ void Bomber::drop_bomb()
 {
     if (active_bomb.size() < MAX_BOMBS_PER_PLAYER && is_alive())
     {
-    
+
+        drops++;
         Bomb drop(pos[0], pos[1], TIME_FOR_BOMB_EX[bombtype]);
         active_bomb.push_back(drop);
     }

@@ -264,7 +264,7 @@ bool in_array(int num, const std::vector <int> & x)
 
 std::vector< int > generate_block_positions()
 {
-    int num_blocks = rand() % 40 + 10;
+    int num_blocks = rand() % 60 + 10;
     std::vector < int > block_list;
     for (int i = 0; i < num_blocks; i++)
     {

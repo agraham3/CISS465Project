@@ -2,6 +2,7 @@
 
 int Bomb::draw(Screen & s, Image & to_draw)    
 {
+    
     if (exp_remaining != -1)
     {
         SDL_Rect destrect;
@@ -129,9 +130,17 @@ void Bomb::explode()
 }
 
 Bomber::Bomber(const std::string & image_file,
-               const std::string & bomb_file, const std::string & exp_file, Screen & s)
-    : img(Image(image_file, s)), bomb_img(Image(bomb_file, s)), exp_img(Image(exp_file, s))
+               const std::string & bomb_file, const std::string & exp_file,
+               const std::string & arrow_name, Screen & s)
+    : img(Image(image_file, s)), bomb_img(Image(bomb_file, s)), exp_img(Image(exp_file, s)), arrow(Image(arrow_name)), skull(Image("assets/pic/skull-crossbones.png", s))
 {
+    
+    sk.w = 18;
+    sk.h = 14;
+    losk.x = 0;
+    losk.y = 0;
+    losk.w = sk.w;
+    losk.h = sk.h;
     health = MAX_HEALTH;
     alive = true;
     lives = 3;
@@ -188,7 +197,6 @@ Bomber::Bomber()
 
 int Bomber::draw(Screen & s, int okay)
 {
-    static Image skull("assets/pic/skull-crossbones.png", s);
     SDL_Rect p;
     p.x = pos[0];
     p.y = pos[1];
@@ -215,16 +223,8 @@ int Bomber::draw(Screen & s, int okay)
     
     if (okay != 2 && !is_alive()) //draw skull to show self is dead
     {
-        SDL_Rect sk;
         sk.x = pos[0];
         sk.y = pos[1] - 17;
-        sk.w = 18;
-        sk.h = 14;
-        SDL_Rect losk;
-        losk.x = 0;
-        losk.y = 0;
-        losk.w = sk.w;
-        losk.h = sk.h;
         skull.draw(s, &losk, &sk);
     }
     

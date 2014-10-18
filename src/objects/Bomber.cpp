@@ -215,12 +215,19 @@ int Bomber::draw(Screen & s, int okay)
                 return -1;
         }
     }
+    
     if (okay != 2 || is_alive()) //don't draw if not main player and is dead
     {
         if (img.draw(s, &(*animation)[frame], &p) != 0)
             return -1;
     }
     
+    SDL_Rect a = {0, 0, 10, 12};
+    p.y -= 13;
+    p.w = 10;
+    p.h = 12;
+    if (arrow.draw(s, &a, &p) != 0)
+        return -1;
     if (okay != 2 && !is_alive()) //draw skull to show self is dead
     {
         sk.x = pos[0];

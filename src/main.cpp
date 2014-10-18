@@ -34,6 +34,10 @@ int main(int argc, char **argv)
     Image logo("assets/pic/logo.png", screen);
     SDL_Rect logorect = {0, 0, 900, 313};
     SDL_Rect logopos = {10, 0, 900, 313};
+    std::string user = "";
+    std::string pass = "";
+    bool typing_user;
+    bool typing_pass;
     while(run_screen)
     {
         while (SDL_PollEvent(&event))

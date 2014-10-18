@@ -2,6 +2,7 @@
 #define NETWORK_H
 
 #include "includes.h"
+#include "user.h"
 
 const int MAXLEN = 1024;
 

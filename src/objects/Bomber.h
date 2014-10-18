@@ -112,6 +112,16 @@ public:
     void drop_bomb();
     void stop();
     std::vector<Bomb> get_actives() {return active_bomb;}
+    std::vector<SDL_Rect> get_explosion_rects()
+    {
+        std::vector<SDL_Rect> ret;
+        for (int i = 0; i < active_bomb.size(); ++i)
+        {
+            if (active_bomb[i].is_exploding())
+                ret.push_back(active_bomb[i].get_rect());
+        }
+        return ret;
+    }
     int get_direction() {return direction;}
     int get_speed() {return speed;}
     void new_image(const std::string & file_name,

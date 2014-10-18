@@ -309,6 +309,7 @@ retrylog:
             int hit = stage.hit_destructible(player_bombs[i]);
             if (hits != -1)
             {
+                std::cout << "hello" << std::endl;
                 c.send_message("dst:" + to_string(hit/10), c.get_socket());
             }
         }

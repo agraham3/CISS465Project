@@ -423,11 +423,13 @@ std::string Bomber::send_info(const std::string & name)
         ret += to_string(active_bomb[i].get_time_left()) + '|';
         ret += to_string(active_bomb[i].exp_time()) + '|';
     }
+    std::cout << ret << std::endl;
     return ret;
 }
 
 void Bomber::set(const std::string & s)
 {
+    std::cout << s << std::endl;
     std::vector<int> v = get_ints(s);
     if (v[0] == 0) alive = false;
     else alive = true;

@@ -62,7 +62,7 @@ int Stage::hit_destructible(const SDL_Rect & rect) const
 {
     for (int i = 0; i < destructibles.size(); ++i)
     {
-        int collide = collided(rect, blocks[i]);
+        int collide = collided(rect, destructibles[i]);
         if (collide != -1)
         {
             return i * 10 + collide;
@@ -78,7 +78,7 @@ void Stage::set_destructibles(const std::string & s)
     destructibles.resize(0);
     for (int i = 0; i < spots.size(); ++i)
     {
-        SDL_Rect to_add = {49 + (62 * (spots[i] % 13)), 43 + (52 * (spots[i] / 13)), 62, 52};
+        SDL_Rect to_add = {49 + (58 * (spots[i] % 13)), 43 + (49 * (spots[i] / 13)), 62, 52};
         destructibles.push_back(to_add);
     }
     return;

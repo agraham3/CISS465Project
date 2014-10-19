@@ -21,7 +21,8 @@ int main(int argc, char **argv)
     int client_num = 0;
 
     std::string blocks = to_string(generate_block_positions());
-    Uint32 delayer = SDL_GetTicks();
+    std::vector <int> destroyed;
+    Uint32 timer = SDL_GetTicks();
     while(1)
     {
         // check to see if any socket wants to do something
@@ -82,15 +83,13 @@ int main(int argc, char **argv)
             std::string data = message.substr(4);
             if (command == "dst")
             {
-                if (SDL_GetTicks() > delayer + 152)
+                std::vector <int> add = get_ints(data);
+                for(int i = 0; i < add.size(); i++)
                 {
-                    blocks = data;
-                    s.send_message_to_all_clients("blk:" + blocks);
-                    delayer = SDL_GetTicks();
-                }
-                else
-                {
-                    std::cout << "wait!" << std::endl;
+                    if (!in_array(add[i], destroyed))
+                    {
+                        destroyed.push_back(add[i]);
+                    }
                 }
             }
             else
@@ -98,6 +97,11 @@ int main(int argc, char **argv)
                 s.send_message_to_all_other_clients(i->first, message);
             }
             numready--;
+        }
+        if(SDL_GetTicks() > timer + 120)
+        {
+            s.send_message_to_all_clients("dts:" + to_string(destroyed));
+            timer = SDL_GetTicks();
         }
         
     }

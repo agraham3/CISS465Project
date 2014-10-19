@@ -98,9 +98,9 @@ int main(int argc, char **argv)
             }
             numready--;
         }
-        if(SDL_GetTicks() > timer + 120)
+        if(SDL_GetTicks() > timer + 70)
         {
-            s.send_message_to_all_clients("dts:" + to_string(destroyed));
+            s.send_message_to_all_clients("dst:" + to_string(destroyed));
             timer = SDL_GetTicks();
         }
         

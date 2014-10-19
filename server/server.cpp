@@ -19,7 +19,7 @@ int main(int argc, char **argv)
     TCPsocket sock;
     int client_num = 0;
 
-    std::vector < int > blocks = generate_block_positions();
+    std::string blocks = to_string(generate_block_positions());
     while(1)
     {
         // check to see if any socket wants to do something
@@ -80,7 +80,8 @@ int main(int argc, char **argv)
             std::string data = message.substr(4);
             if (command == "dst")
             {
-                s.send_message_to_all_clients("blk:" + to_string(blocks));
+                blocks = data;
+                s.send_message_to_all_clients("blk:" + blocks);
             }
             else
             {

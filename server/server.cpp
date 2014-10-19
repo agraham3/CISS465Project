@@ -34,11 +34,6 @@ int main(int argc, char **argv)
         if (numready == 0)
             continue;
         
-        if (blocks.size() == 0)
-        {
-            blocks = generate_block_positions();
-        }
-        
         if(SDLNet_SocketReady(s.get_socket()))
         {
             numready--;

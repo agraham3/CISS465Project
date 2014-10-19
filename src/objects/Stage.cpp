@@ -88,3 +88,17 @@ void Stage::set_destructibles(const std::string & s)
     return;
 }
 
+
+
+void Stage::remove(int k)
+{
+    for (int i = 0; i < index.size(); ++i)
+    {
+        if (index[i] == k)
+        {
+            index.erase(index.begin() + i);
+            destructibles.erase(destructibles.begin() + i);
+            return;
+        }
+    }
+}

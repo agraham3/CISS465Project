@@ -310,7 +310,8 @@ retrylog:
             if (hit != -1)
             {
                 int h = stage.get_index()[hit/10];
-                c.send_message("dst:" + to_string(h), c.get_socket());
+                stage.remove(h);
+                c.send_message("dst:" + to_string(stage.get_index()), c.get_socket());
             }
         }
         for (it_type i = enemy.begin(); i != enemy.end(); i++)

@@ -101,6 +101,7 @@ public:
     std::vector<SDL_Rect> get_destructibles() {return destructibles;}
     std::vector<int> get_index() {return index;}
     void set_destructibles(const std::string & s);
+    void remove(int k);
     int hit_destructible(const SDL_Rect & s, bool sub=false) const;
 private:
     Line border[4];

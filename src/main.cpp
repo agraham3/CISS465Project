@@ -145,6 +145,7 @@ retrylog:
     std::map< std::string, Bomber > enemy;
     //move Bomber-Man
     int dir = -1;
+    Uint32 delayer = SDL_GetTicks();
     while (1)
     {
         int start = SDL_GetTicks();
@@ -229,8 +230,10 @@ retrylog:
         }
         
         // send data to server
-        c.send_message(player.send_info(c.get_name()), c.get_socket());
-
+        //if (SDL_GetTicks() > delayer + 150)
+        //{
+            //delayer = SDL_GetTicks();
+            //}
         // receive data from server
         c.set_socket_set(c.create_sockset());
         int numready = SDLNet_CheckSockets(c.socket_set(), (Uint32)42);
@@ -314,6 +317,7 @@ retrylog:
             }
         }
         
+        c.send_message(player.send_info(c.get_name()), c.get_socket());
         c.send_message("dst:" + to_string(stage.get_index()), c.get_socket());
         for (it_type i = enemy.begin(); i != enemy.end(); i++)
         {
@@ -353,10 +357,10 @@ retrylog:
         int end = SDL_GetTicks();
         int frame_length = 1000 / FRAMES_PER_SEC;
         int dt = frame_length - (end - start);
-        if (dt > 0)
-        {
-            SDL_Delay(dt);
-        }
+        //if (dt > 0)
+        //{
+        //    SDL_Delay(dt);
+        //}
     }
     c.send_message("quit", c.get_socket());
     

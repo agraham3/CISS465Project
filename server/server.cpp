@@ -57,7 +57,6 @@ int main(int argc, char **argv)
         }
 
         // Loop through clients -- to write
-        std::vector < int > to_remove;
         typedef std::map< std::string, TCPsocket >::iterator it_type;
         std::map< std::string, TCPsocket > m = s.get_clients();
         for (it_type i = m.begin(); i != m.end(); i++)
@@ -81,7 +80,7 @@ int main(int argc, char **argv)
             std::string data = message.substr(4);
             if (command == "dst")
             {
-                to_remove.push_back(atoi(data.c_str()));
+                s.send_message_to_all_clients("blk:" + to_string(blocks));
             }
             else
             {
@@ -89,20 +88,6 @@ int main(int argc, char **argv)
             }
             numready--;
         }
-
-        // remove the terrain that has been destroyed
-        for (int a = 0; a < to_remove.size(); a++)
-        {
-            for(int i = 0; i < blocks.size(); i++)
-            {
-                if (blocks[i] == to_remove[a])
-                {
-                    blocks.erase(blocks.begin() + i);
-                    break;
-                }
-            }
-        }
-        s.send_message_to_all_clients("blk:" + to_string(blocks));
         
     }
     

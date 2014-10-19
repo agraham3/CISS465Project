@@ -60,7 +60,7 @@ const Uint32 BACKSPACE = SDLK_BACKSPACE;
 const Uint32 MINUS = SDLK_MINUS;
 
 // important numbers for game mechanics
-const int FRAMES_PER_SEC = 30;
+const int FRAMES_PER_SEC = 24;
 const int MAX_HEALTH = 2;
 const int MAX_LIVES = 3;
 const int RESPAWN_TIME = 10000;

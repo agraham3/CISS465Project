@@ -81,7 +81,7 @@ int main(int argc, char **argv)
             std::string data = message.substr(4);
             if (command == "dst")
             {
-                to_remove(atoi(data));
+                to_remove.push_back(atoi(data.c_str()));
             }
             else
             {
@@ -91,7 +91,7 @@ int main(int argc, char **argv)
         }
 
         // remove the terrain that has been destroyed
-        for (int a = 0; i < to_remove.size(); a++)
+        for (int a = 0; a < to_remove.size(); a++)
         {
             for(int i = 0; i < blocks.size(); i++)
             {

@@ -233,7 +233,7 @@ retrylog:
 
         // receive data from server
         c.set_socket_set(c.create_sockset());
-        int numready = SDLNet_CheckSockets(c.socket_set(), (Uint32)84);
+        int numready = SDLNet_CheckSockets(c.socket_set(), (Uint32)42);
         if (numready)
         {
             if (SDLNet_SocketReady(c.get_socket()))
@@ -311,9 +311,10 @@ retrylog:
             {
                 int h = stage.get_index()[hit/10];
                 stage.remove(h);
-                c.send_message("dst:" + to_string(stage.get_index()), c.get_socket());
             }
         }
+        
+        c.send_message("dst:" + to_string(stage.get_index()), c.get_socket());
         for (it_type i = enemy.begin(); i != enemy.end(); i++)
         {
             int hit = player.any_collisions((i->second).get_actives());
@@ -329,10 +330,10 @@ retrylog:
         {
             player.reposition(stage.get_blocks(), coll);
         }
-        coll = stage.hit_destructible(player.get_rect());
+        coll = stage.hit_destructible(player.get_rect(), true);
         if (coll != -1)
         {
-            player.reposition(stage.get_destructibles(), coll);
+            player.reposition(stage.get_destructibles(), coll, true);
         }
         player.update();
         screen.clear();

@@ -3,6 +3,7 @@
 #include "vec2d.h"
 #include "functions.h"
 #include "network.h"
+#include "SDL.h"
 
 int main(int argc, char **argv)
 {
@@ -20,6 +21,7 @@ int main(int argc, char **argv)
     int client_num = 0;
 
     std::string blocks = to_string(generate_block_positions());
+    Uint32 delayer = SDL_GetTicks();
     while(1)
     {
         // check to see if any socket wants to do something
@@ -80,8 +82,16 @@ int main(int argc, char **argv)
             std::string data = message.substr(4);
             if (command == "dst")
             {
-                blocks = data;
-                s.send_message_to_all_clients("blk:" + blocks);
+                if (SDL_GetTicks() > delayer + 152)
+                {
+                    blocks = data;
+                    s.send_message_to_all_clients("blk:" + blocks);
+                    delayer = SDL_GetTicks();
+                }
+                else
+                {
+                    std::cout << "wait!" << std::endl;
+                }
             }
             else
             {

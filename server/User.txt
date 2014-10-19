@@ -4,3 +4,7 @@ student~student~0~0~0
 Test~test~0~0~0
 Me~me~0~0~0
 6907~6907~0~0~0
+Yusuke~student~0~0~0
+Tenshi~student~0~0~0
+Andrew~student~0~0~0
+CS2014~computer~0~0~0

@@ -343,7 +343,7 @@ bool Bomber::is_active()
 }
 
 
-void Bomber::reposition(const std::vector<SDL_Rect> & blocks, int coll)
+void Bomber::reposition(const std::vector<SDL_Rect> & blocks, int coll, bool up)
 {
     int block = coll / 10;
     int direction = coll % 10;
@@ -354,6 +354,7 @@ void Bomber::reposition(const std::vector<SDL_Rect> & blocks, int coll)
             break;
         case COLLIDE_BOT:
             pos[1] = blocks[block].y + blocks[block].h + 1;
+            if (up) pos[1] -= 22;
             break;
         case COLLIDE_LEFT:
             pos[0] = blocks[block].x - (*animation)[frame].w - 1;

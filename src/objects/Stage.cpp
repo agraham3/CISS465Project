@@ -63,8 +63,11 @@ int Stage::hit_destructible(const SDL_Rect & rect, bool sub) const
     for (int i = 0; i < destructibles.size(); ++i)
     {
         SDL_Rect x = destructibles[i];
-        
-        int collide = collided(rect, destructibles[i]);
+        if (sub)
+        {
+            x.h -= 20;
+        }
+        int collide = collided(rect, x);
         if (collide != -1)
         {
             return i * 10 + collide;

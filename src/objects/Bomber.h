@@ -96,7 +96,7 @@ public:
     bool is_active();
     bool is_alive() {return alive;}
     int get_lives() {return lives;}
-    void reposition(const std::vector<SDL_Rect> & blocks, int coll);
+    void reposition(const std::vector<SDL_Rect> & blocks, int coll, bool up=false);
     int get_travel_distance() const;
     void move_up();
     void move_down();

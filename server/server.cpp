@@ -86,10 +86,7 @@ int main(int argc, char **argv)
                 std::vector <int> add = get_ints(data);
                 for(int i = 0; i < add.size(); i++)
                 {
-                    if (!in_array(add[i], destroyed))
-                    {
-                        destroyed.push_back(add[i]);
-                    }
+                    destroyed.push_back(add[i]);
                 }
             }
             else

@@ -80,6 +80,7 @@ int main(int argc, char **argv)
             std::string data = message.substr(4);
             if (command == "dst")
             {
+                std::cout << data << std::endl;
                 for(int i = 0; i < blocks.size(); i++)
                 {
                     if (blocks[i] == atoi(data.c_str()))
@@ -88,6 +89,8 @@ int main(int argc, char **argv)
                         break;
                     }
                 }
+                if (blocks.size() == 0)
+                    blocks = generate_block_positions();
                 s.send_message_to_all_clients("blk:" + to_string(blocks));
             }
             else

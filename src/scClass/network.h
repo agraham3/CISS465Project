@@ -47,6 +47,7 @@ public:
         if(SDLNet_ResolveHost(&ip,host,port) == -1)
         {
             std::cout << "SDLNet_ResolveHost: ERROR" << std::endl;
+            std::cout << SDL_GetError() << std::endl;
             SDLNet_Quit();
             SDL_Quit();
             exit(0);
@@ -57,6 +58,7 @@ public:
         if (!sock)
         {
             std::cout << "SDLNet_TCP_Open: ERROR" << std::endl;
+            std::cout << SDL_GetError() << std::endl;
             SDLNet_Quit();
             SDL_Quit();
             exit(0);
@@ -127,6 +129,7 @@ public:
         if (SDLNet_ResolveHost(&ip,NULL,port) == -1)
         {
             std::cout << "SDLNet_ResolveHoast: ERROR" << std::endl;
+            std::cout << SDL_GetError() << std::endl;
             SDLNet_Quit();
             SDL_Quit();
             exit(3);

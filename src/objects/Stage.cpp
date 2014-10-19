@@ -58,10 +58,12 @@ int Stage::collision(const SDL_Rect & rect) const
     return -1;
 }
 
-int Stage::hit_destructible(const SDL_Rect & rect) const
+int Stage::hit_destructible(const SDL_Rect & rect, bool sub) const
 {
     for (int i = 0; i < destructibles.size(); ++i)
     {
+        SDL_Rect x = destructibles[i];
+        
         int collide = collided(rect, destructibles[i]);
         if (collide != -1)
         {

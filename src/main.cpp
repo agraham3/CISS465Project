@@ -145,7 +145,7 @@ retrylog:
     std::map< std::string, Bomber > enemy;
     //move Bomber-Man
     int dir = -1;
-    Uint32 delayer = SDL_GetTicks();
+    std::vector<int> destroyed;
     while (1)
     {
         int start = SDL_GetTicks();
@@ -229,11 +229,6 @@ retrylog:
                 break;
         }
         
-        // send data to server
-        //if (SDL_GetTicks() > delayer + 150)
-        //{
-            //delayer = SDL_GetTicks();
-            //}
         // receive data from server
         c.set_socket_set(c.create_sockset());
         int numready = SDLNet_CheckSockets(c.socket_set(), (Uint32)42);
@@ -288,6 +283,10 @@ retrylog:
                         {
                             stage.set_destructibles(data);
                         }
+                        else if(command == "dst")
+                        {
+                            stage.destroy_destructibles(data);
+                        }
                     }
                     catch (const std::out_of_range &oor)
                     {
@@ -309,16 +308,11 @@ retrylog:
         std::vector < SDL_Rect > player_bombs = player.get_explosion_rects();
         for (int i = 0; i < player_bombs.size(); i++)
         {
-            int hit = stage.hit_destructible(player_bombs[i]);
-            if (hit != -1)
-            {
-                int h = stage.get_index()[hit/10];
-                stage.remove(h);
-            }
+            stage.hit_destructibles(player_bombs[i], destroyed);
         }
-        
         c.send_message(player.send_info(c.get_name()), c.get_socket());
-        c.send_message("dst:" + to_string(stage.get_index()), c.get_socket());
+        SDL_Delay(50);
+        c.send_message("dst:" + to_string(destroyed), c.get_socket());
         for (it_type i = enemy.begin(); i != enemy.end(); i++)
         {
             int hit = player.any_collisions((i->second).get_actives());

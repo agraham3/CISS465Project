@@ -103,6 +103,8 @@ public:
     void set_destructibles(const std::string & s);
     void remove(int k);
     int hit_destructible(const SDL_Rect & s, bool sub=false) const;
+    void destroy_destructibles(const std::string & s);
+    void hit_destructibles(const SDL_Rect & rect, std::vector<int> & d) const;
 private:
     Line border[4];
     std::vector<SDL_Rect> blocks;

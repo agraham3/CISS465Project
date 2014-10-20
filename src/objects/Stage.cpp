@@ -76,6 +76,20 @@ int Stage::hit_destructible(const SDL_Rect & rect, bool sub) const
     return -1;
 }
 
+void Stage::hit_destructibles(const SDL_Rect & rect, std::vector<int> & d) const
+{
+    for (int i = 0; i < destructibles.size(); ++i)
+    {
+        int collide = collided(rect, destructibles[i]);
+        if (collide != -1)
+        {
+            if (!in_array(index[i], d))
+            {
+                d.push_back(index[i]);
+            }
+        }
+    }
+}
 
 void Stage::set_destructibles(const std::string & s)
 {
@@ -91,7 +105,14 @@ void Stage::set_destructibles(const std::string & s)
     return;
 }
 
-
+void Stage::destroy_destructibles(const std::string & s)
+{
+    std::vector<int> victims = get_ints(s);
+    for (int i = 0; i < victims.size(); ++i)
+    {
+        remove(victims[i]);
+    }
+}
 
 void Stage::remove(int k)
 {

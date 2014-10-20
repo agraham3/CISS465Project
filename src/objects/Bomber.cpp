@@ -195,6 +195,7 @@ Bomber::Bomber()
 {
     direction = 0;
     frame = 0;
+    lives = MAX_LIVES;
 }
 
 int Bomber::draw(Screen & s, int okay)

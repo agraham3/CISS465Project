@@ -22,7 +22,7 @@ const SDL_Rect KILLS_RECT = {(WIDTH - 100) / 2, END_GAME_RECT.y + 40, 100, 20};
 const SDL_Rect DEATHS_RECT = {(WIDTH - 100) / 2, KILLS_RECT.y + 30, 100, 20};
 const SDL_Rect DROPS_RECT = {(WIDTH - 100) / 2, DEATHS_RECT.y + 30, 100, 20};
 const SDL_Rect KDA_RECT = {(WIDTH - 120) / 2, DROPS_RECT.y + 30, 120, 25};
-const SDL_Rect PROMPT_RECT = {(WIDTH - 100) / 2, KDA_RECT.y + 30, 100, 20};
+const SDL_Rect PROMPT_RECT = {(WIDTH - 120) / 2, KDA_RECT.y + 30, 120, 30};
 
 //SDL key shortcuts
 const Uint32 LEFT = SDLK_LEFT;

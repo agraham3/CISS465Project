@@ -414,6 +414,7 @@ status:
     kda_msg.set_color(WHITE);
     Text prompt(screen, PROMPT_RECT);
     prompt.set_message("Hit Enter Key to continue...");
+    prompt.set_color(WHITE);
     while(1)
     {
         while (SDL_PollEvent(&event))

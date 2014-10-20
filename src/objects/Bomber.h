@@ -138,8 +138,11 @@ public:
     int any_collisions(const std::vector<Bomb> & dangers) const;
     void die()
     {
-        alive = false;
-        deaths++;
+        if (alive)
+        {
+            alive = false;
+            deaths++;
+        }
     }
     void take_damage(int amt) {health -= amt; if (health <= 0) die(); time_died = SDL_GetTicks();}
     void fix_bombs()

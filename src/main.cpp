@@ -379,6 +379,7 @@ retrylog:
         {
             if((i->second).get_lives() != 0)
             {
+                std::cout << "Okay..." << std::endl;
                 all_dead = false;
                 end_game_msg.set_message("You Win!");
                 end_game_msg.set_color(GREEN);

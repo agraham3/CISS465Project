@@ -72,6 +72,14 @@ int main(int argc, char **argv)
             {
                 s.handle_disconnect(i->first);
             }
+            else if(message == "new game")
+            {
+                blocks = to_string(generate_block_positions());
+                s.send_message_to_all_clients("dst:" + blocks);
+                SDL_Delay(20);
+                s.send_message_to_all_clients("win:" + i->first);
+                break;
+            }
             std::string temp = message;
             temp.erase(remove_if(temp.begin(), temp.end(), isspace), temp.end());
             if (temp == "" || message =="")

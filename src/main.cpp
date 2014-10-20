@@ -27,6 +27,7 @@ int main(int argc, char **argv)
         exit(0);
     }
 
+restart_game:
     Screen screen("Bomberman", 900, 636);
     SDL_Event event;
     if (TTF_Init() < 0)
@@ -146,6 +147,7 @@ retrylog:
     //move Bomber-Man
     int dir = -1;
     std::vector<int> destroyed;
+    Text END_GAME_MSG(screen, END_GAME_RECT);
     while (1)
     {
         int start = SDL_GetTicks();
@@ -295,6 +297,20 @@ retrylog:
                             }
                             stage.destroy_destructibles(data);
                         }
+                        else if(command == "win")
+                        {
+                            if (c.get_name() == data)
+                            {
+                                END_GAME_MSG.set_message("You Win!");
+                                END_GAME_MSG.set_color(GREEN);
+                            }
+                            else
+                            {
+                                END_GAME_MSG.set_message("You Lose!");
+                                END_GAME_MSG.set_color(RED);
+                            }
+                            goto status;
+                        }
                     }
                     catch (const std::out_of_range &oor)
                     {
@@ -356,16 +372,36 @@ retrylog:
             }
         }
         screen.update();
+
+        // check for winner
+        bool all_dead = (!enemy.empty());
+        for (it_type i = enemy.begin(); i != enemy.end(); i++)
+        {
+            if((i->second).get_lives() != 0)
+            {
+                all_dead = false;
+                break;
+            }
+        }
+        
+        if (all_dead)
+        {
+            c.send_message("new game", c.get_socket());
+            goto status
+        }
+        
         int end = SDL_GetTicks();
         int frame_length = 1000 / FRAMES_PER_SEC;
         int dt = frame_length - (end - start);
-        //if (dt > 0)
-        //{
-        //    SDL_Delay(dt);
-        //}
     }
+
+status:
     c.send_message("quit", c.get_socket());
+    while(1)
+    {
+    }
     
     SDL_Quit();
+    goto restart_game
     return 0;
 }

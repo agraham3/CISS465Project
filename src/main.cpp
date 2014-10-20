@@ -379,7 +379,6 @@ retrylog:
         {
             if((i->second).get_lives() != 0)
             {
-                std::cout << "Okay..." << std::endl;
                 all_dead = false;
                 end_game_msg.set_message("You Win!");
                 end_game_msg.set_color(GREEN);
@@ -389,6 +388,7 @@ retrylog:
         
         if (all_dead)
         {
+            std::cout << "it's a new game!\n" << std::endl;
             c.send_message("new game", c.get_socket());
             goto status;
         }

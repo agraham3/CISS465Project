@@ -425,7 +425,7 @@ std::string Bomber::send_info(const std::string & name)
         ret += to_string(active_bomb[i].get_time_left()) + '|';
         ret += to_string(active_bomb[i].exp_time()) + '|';
     }
-    ret += to_string(lives);
+    ret += to_string(lives) + '|';
     return ret;
 }
 
@@ -453,6 +453,7 @@ void Bomber::set(const std::string & s)
         active_bomb[j].set_exp(v[i]);
         ++i;
     }
+    std::cout << v[v.size() - 1] << std::endl;
     lives = v[v.size() - 1];
 }
 

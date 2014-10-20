@@ -453,7 +453,6 @@ void Bomber::set(const std::string & s)
         active_bomb[j].set_exp(v[i]);
         ++i;
     }
-    std::cout << v[v.size() - 1] << std::endl;
     lives = v[v.size() - 1];
 }
 

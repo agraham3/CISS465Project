@@ -442,6 +442,7 @@ status:
         deaths_msg.draw(screen);
         drops_msg.draw(screen);
         kda_msg.draw(screen);
+        prompt.draw(screen);
         screen.update();
     }
     

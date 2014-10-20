@@ -285,6 +285,14 @@ retrylog:
                         }
                         else if(command == "dst")
                         {
+                            std::vector<int> others = get_ints(data);
+                            for (int i = 0; i < others.size(); ++i)
+                            {
+                                if (!in_array(others[i], destroyed))
+                                {
+                                    destroyed.push_back(others[i]);
+                                }
+                            }
                             stage.destroy_destructibles(data);
                         }
                     }

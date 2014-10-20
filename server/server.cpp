@@ -87,15 +87,26 @@ int main(int argc, char **argv)
                 s.handle_disconnect(i->first);
                 continue;
             }
-            std::string command = message.substr(0,3);
-            std::string data = message.substr(4);
-            if (command == "dst")
+            try
             {
-                s.send_message_to_all_clients("dst:" + data);
+                std::string command = message.substr(0,3);
+                std::string data = message.substr(4);
+                if (command == "dst")
+                {
+                    s.send_message_to_all_clients("dst:" + data);
+                }
+                else
+                {
+                    s.send_message_to_all_other_clients(i->first, message);
+                }
             }
-            else
+            catch (const std::out_of_range &oor)
             {
-                s.send_message_to_all_other_clients(i->first, message);
+                std::cerr << "Out of range error: "
+                          << oor.what()
+                          << '\n';
+                s.handle_disconnect(i->first);
+                continue;
             }
             numready--;
         }

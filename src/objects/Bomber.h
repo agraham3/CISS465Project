@@ -152,7 +152,11 @@ public:
             }
         }
     }
-
+    int get_kills() {return kills;}
+    int get_deaths() {return deaths;}
+    int get_drops() {return drops;}
+    double get_kda() {return (double) kills / deaths;}
+    
     void inc_kills() {kills++;}
 private:
     std::vector<SDL_Rect> walk_down;

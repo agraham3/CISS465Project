@@ -147,7 +147,7 @@ retrylog:
     //move Bomber-Man
     int dir = -1;
     std::vector<int> destroyed;
-    Text END_GAME_MSG(screen, END_GAME_RECT);
+    Text end_game_msg(screen, END_GAME_RECT);
     while (1)
     {
         int start = SDL_GetTicks();
@@ -301,13 +301,13 @@ retrylog:
                         {
                             if (c.get_name() == data)
                             {
-                                END_GAME_MSG.set_message("You Win!");
-                                END_GAME_MSG.set_color(GREEN);
+                                end_game_msg.set_message("You Win!");
+                                end_game_msg.set_color(GREEN);
                             }
                             else
                             {
-                                END_GAME_MSG.set_message("You Lose!");
-                                END_GAME_MSG.set_color(RED);
+                                end_game_msg.set_message("You Lose!");
+                                end_game_msg.set_color(RED);
                             }
                             goto status;
                         }
@@ -380,6 +380,8 @@ retrylog:
             if((i->second).get_lives() != 0)
             {
                 all_dead = false;
+                end_game_msg.set_message("You Win!");
+                end_game_msg.set_color(GREEN);
                 break;
             }
         }
@@ -387,7 +389,7 @@ retrylog:
         if (all_dead)
         {
             c.send_message("new game", c.get_socket());
-            goto status
+            goto status;
         }
         
         int end = SDL_GetTicks();
@@ -397,11 +399,53 @@ retrylog:
 
 status:
     c.send_message("quit", c.get_socket());
+    Text kills_msg(screen, KILLS_RECT);
+    Text deaths_msg(screen, DEATHS_RECT);
+    Text drops_msg(screen, DROPS_RECT);
+    Text kda_msg(screen, KDA_RECT);
+    kills_msg.set_message("Kills: " + to_string(player.get_kills()));
+    deaths_msg.set_message("Deaths: " + to_string(player.get_deaths()));
+    drops_msg.set_message("Drops: " + to_string(player.get_drops()));
+    kda_msg.set_message("KD: " + to_string(player.get_kda()));
+    kills_msg.set_color(WHITE);
+    deaths_msg.set_color(WHITE);
+    drops_msg.set_color(WHITE);
+    kda_msg.set_color(WHITE);
+    Text prompt(screen, PROMPT_RECT);
+    prompt.set_message("Hit Enter Key to continue...");
     while(1)
     {
+        while (SDL_PollEvent(&event))
+        {
+            switch(event.type)
+            {
+                case SDL_QUIT:
+                    c.send_message("quit", c.get_socket());
+                    SDL_Quit();
+                    exit(0);
+                    break;
+                case SDL_KEYDOWN:
+                    switch(event.key.keysym.sym)
+                    {
+                        case ENTER:
+                        {
+                            SDL_Quit();
+                            goto restart_game;
+                        }   
+                    }
+                    break;
+            }
+        }
+        screen.clear();
+        end_game_msg.draw(screen);
+        kills_msg.draw(screen);
+        deaths_msg.draw(screen);
+        drops_msg.draw(screen);
+        kda_msg.draw(screen);
+        screen.update();
     }
     
     SDL_Quit();
-    goto restart_game
+    goto restart_game;
     return 0;
 }

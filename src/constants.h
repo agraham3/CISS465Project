@@ -4,12 +4,25 @@
 
 #include <SDL.h>
 
+const int WIDTH = 900;
+const int HEIGHT = 636;
 //COLORS
 const SDL_Color WHITE = {255, 255, 255};
 const SDL_Color BLACK = {0, 0, 0};
 const SDL_Color GREEN = {0, 255, 0};
 const SDL_Color RED = {255, 0, 0};
 const SDL_Color BLUE = {0, 0, 255};
+const SDL_Color YELLOW = {255, 255, 0};
+const SDL_Color ORANGE = {255, 128, 0};
+const SDL_Color PURPLE = {128, 0, 128};
+
+
+const SDL_Rect END_GAME_RECT = {(WIDTH - 180) / 2,(HEIGHT - 30) / 2, 180, 30};
+const SDL_Rect KILLS_RECT = {(WIDTH - 100) / 2, END_GAME_RECT.y + 40, 100, 20};
+const SDL_Rect DEATHS_RECT = {(WIDTH - 100) / 2, KILLS_RECT.y + 30, 100, 20};
+const SDL_Rect DROPS_RECT = {(WIDTH - 100) / 2, DEATHS_RECT.y + 30, 100, 20};
+const SDL_Rect KDA_RECT = {(WIDTH - 120) / 2, DROPS_RECT.y + 30, 120, 25};
+const SDL_Rect PROMPT_RECT = {(WIDTH - 100) / 2, KDA_RECT.y + 30, 100, 20};
 
 //SDL key shortcuts
 const Uint32 LEFT = SDLK_LEFT;

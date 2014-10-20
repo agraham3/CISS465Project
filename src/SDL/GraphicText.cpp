@@ -12,6 +12,15 @@ Text::~Text()
     TTF_CloseFont(font);
 }
 
+Text::Text(Screen & s, bool _secret, SDL_Color clr, std::string hider, int fontsize, std::string m)
+    : message(m), color(clr), secret(_secret), text_hider(Image(hider, s))
+{
+    rect.x = 0;
+    rect.y = 0;
+    rect.h = 0;
+    rect.w = 0;
+    font = TTF_OpenFont("fonts/FreeSans.ttf", fontsize);
+}
 
 
 void Text::draw(Screen & s)

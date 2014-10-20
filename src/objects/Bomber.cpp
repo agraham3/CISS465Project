@@ -424,8 +424,10 @@ std::string Bomber::send_info(const std::string & name)
         ret += to_string(active_bomb[i].get_time_left()) + '|';
         ret += to_string(active_bomb[i].exp_time()) + '|';
     }
+    ret += to_string(lives);
     return ret;
 }
+
 
 void Bomber::set(const std::string & s)
 {
@@ -438,8 +440,8 @@ void Bomber::set(const std::string & s)
     direction = v[4];
     set_animation(v[4]);
     active_bomb.resize(v[5]);
-    int j = 0;
-    for (int i = 6; i < v.size(); ++i)
+    int i = 6;
+    for (int j = 0; j < active_bomb.size(); ++j)
     {
         active_bomb[j].set_x(v[i]);
         ++i;
@@ -448,9 +450,11 @@ void Bomber::set(const std::string & s)
         active_bomb[j].set_time_left(v[i]);
         ++i;
         active_bomb[j].set_exp(v[i]);
-        ++j;
+        ++i;
     }
+    lives = v[v.size() - 1];
 }
+
 
 void Bomber::drop_bomb()
 {

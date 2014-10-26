@@ -91,7 +91,7 @@ public:
     void set_animation(int i = 0);
     void reset_frame(int amount=-1, int frames=5);
     void inc_frame();
-    void update();
+    void update(bool enemy=false);
     SDL_Rect get_rect();
     bool is_active();
     bool is_alive() {return alive;}

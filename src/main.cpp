@@ -147,6 +147,7 @@ retrylog:
     //move Bomber-Man
     std::vector<int> destroyed;
     Text end_game_msg(screen, END_GAME_RECT);
+    Uint32 update_timer = SDL_GetTicks();
     while (1)
     {
         int start = SDL_GetTicks();
@@ -220,8 +221,12 @@ retrylog:
                                 player.dir(-1);
                             break;   
                     }
-                    c.send_message(player.send_info(c.get_name()), c.get_socket());
             }
+        }
+        if (SDL_GetTicks() > update_timer + 150)
+        {
+            c.send_message(player.send_info(c.get_name()), c.get_socket());
+            update_timer = SDL_GetTicks();
         }
         switch(player.dir())
         {

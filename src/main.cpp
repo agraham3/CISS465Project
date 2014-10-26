@@ -206,24 +206,40 @@ retrylog:
                     {
                         case UP: player.set_animation(2);
                             if (player.dir() == 2)
+                            {
                                 player.dir(-1);
+                                c.send_message("dir:" + c.get_name() + '|' + to_string(-1),
+                                               c.get_socket());
+                            }
                             break;
                         case DOWN: player.set_animation(0);
                             if (player.dir() == 0)
+                            {
                                 player.dir(-1);
+                                c.send_message("dir:" + c.get_name() + '|' + to_string(-1),
+                                               c.get_socket());
+                            }
                             break;
                         case LEFT: player.set_animation(3);
                             if (player.dir() == 3)
+                            {
                                 player.dir(-1);
+                                c.send_message("dir:" + c.get_name() + '|' + to_string(-1),
+                                               c.get_socket());
+                            }
                             break;
                         case RIGHT: player.set_animation(1);
                             if (player.dir() == 1)
+                            {
                                 player.dir(-1);
+                                c.send_message("dir:" + c.get_name() + '|' + to_string(-1),
+                                               c.get_socket());
+                            }
                             break;   
                     }
             }
         }
-        if (SDL_GetTicks() > update_timer + 150)
+        if (SDL_GetTicks() > update_timer + 300)
         {
             c.send_message(player.send_info(c.get_name()), c.get_socket());
             update_timer = SDL_GetTicks();
@@ -290,9 +306,20 @@ retrylog:
                             std::cout << data << std::endl;
                         else if (command == "dir")
                         {
-                            std::string name = get_name(data);
-                            data = data.substr(name.size() + 1);
-                            enemy[name].dir(atoi(data.c_str()));
+                            try
+                            {
+                                std::string name = get_name(data);
+                                data = data.substr(name.size() + 1);
+                                enemy[name].dir(atoi(data.c_str()));
+                            }
+                            catch (const std::out_of_range &oor)
+                            {
+                                std::cerr << "Out of range error: "
+                                          << oor.what()
+                                          << '\n';
+                                c.send_message("quit", c.get_socket());
+                                continue;
+                            }
                         }
                         else if (command == "bmr")
                         {
@@ -394,8 +421,21 @@ retrylog:
                 c.send_message("kil:"+ i->first, c.get_socket());
             }
         }
-        
+        for (it_type i = enemy.begin(); i != enemy.end(); i++)
+        {
+            int col = stage.collision((i->second).get_rect());
+            if (col != -1)
+            {
+                (i->second).reposition(stage.get_blocks(), col);
+            }
+            col = stage.hit_destructible((i->second).get_rect(), true);
+            if (col != -1)
+            {
+                (i->second).reposition(stage.get_destructibles(), col, true);
+            }
+        }
         int coll = stage.collision(player.get_rect());
+        
         if (coll != -1)
         {
             player.reposition(stage.get_blocks(), coll);
@@ -406,6 +446,10 @@ retrylog:
             player.reposition(stage.get_destructibles(), coll, true);
         }
         player.update();
+        for (it_type i = enemy.begin(); i != enemy.end(); i++)
+        {
+            (i->second).update();
+        }
         screen.clear();
         stage.draw(screen);
         player.draw(screen);

@@ -200,8 +200,6 @@ Bomber::Bomber()
 
 int Bomber::draw(Screen & s, int okay)
 {
-    if (okay == 2)
-        std::cout << is_alive() << std::endl;
     SDL_Rect p;
     p.x = pos[0];
     p.y = pos[1];
@@ -434,11 +432,9 @@ std::string Bomber::send_info(const std::string & name)
 
 void Bomber::set(const std::string & s)
 {
-    std::cout << "Hello, World!\n" << std::endl;
     std::vector<int> v = get_ints(s);
     if (v[0] == 0) alive = false;
     else alive = true;
-    std::cout << alive << std::endl;
     pos[0] = v[1];
     pos[1] = v[2];
     frame = v[3];

@@ -145,7 +145,6 @@ retrylog:
     Stage stage(screen);
     std::map< std::string, Bomber > enemy;
     //move Bomber-Man
-    int dir = -1;
     std::vector<int> destroyed;
     Text end_game_msg(screen, END_GAME_RECT);
     while (1)
@@ -164,16 +163,28 @@ retrylog:
                     switch(event.key.keysym.sym)
                     {
                         case UP: player.set_animation(2);
-                            dir = 2;
+                            if (player.dir() != 2)
+                                c.send_message("dir:" + c.get_name() + '|' + to_string(2),
+                                               c.get_socket());
+                            player.dir(2);
                             break;
                         case DOWN: player.set_animation(0);
-                            dir = 0;
+                            if (player.dir() != 0)
+                                c.send_message("dir:" + c.get_name() + '|' + to_string(0),
+                                               c.get_socket());
+                            player.dir(0);
                             break;
                         case LEFT: player.set_animation(3);
-                            dir = 3;
+                            if (player.dir() != 3)
+                                c.send_message("dir:" + c.get_name() + '|' + to_string(3),
+                                               c.get_socket());
+                            player.dir(3);
                             break;
                         case RIGHT: player.set_animation(1);
-                            dir = 1;
+                            if (player.dir() != 1)
+                                c.send_message("dir:" + c.get_name() + '|' + to_string(1),
+                                               c.get_socket());
+                            player.dir(1);
                             break;
                         case ENTER:
                         {
@@ -193,25 +204,26 @@ retrylog:
                     switch(event.key.keysym.sym)
                     {
                         case UP: player.set_animation(2);
-                            if (dir == 2)
-                                dir = -1;
+                            if (player.dir() == 2)
+                                player.dir(-1);
                             break;
                         case DOWN: player.set_animation(0);
-                            if (dir == 0)
-                                dir = -1;
+                            if (player.dir() == 0)
+                                player.dir(-1);
                             break;
                         case LEFT: player.set_animation(3);
-                            if (dir == 3)
-                                dir = -1;
+                            if (player.dir() == 3)
+                                player.dir(-1);
                             break;
                         case RIGHT: player.set_animation(1);
-                            if (dir == 1)
-                                dir = -1;
+                            if (player.dir() == 1)
+                                player.dir(-1);
                             break;   
                     }
+                    c.send_message(player.send_info(c.get_name()), c.get_socket());
             }
         }
-        switch(dir)
+        switch(player.dir())
         {
             case 2:
                 player.move_up();
@@ -231,6 +243,29 @@ retrylog:
                 break;
         }
         
+        for (it_type i = enemy.begin(); i != enemy.end(); i++)
+        {
+            switch((i->second).dir())
+            {
+                case 2:
+                    (i->second).move_up();
+                    (i->second).inc_frame();
+                    break;
+                case 0:
+                    (i->second).move_down();
+                    (i->second).inc_frame();
+                    break;
+                case 3:
+                    (i->second).move_left();
+                    (i->second).inc_frame();
+                    break;
+                case 1:
+                    (i->second).move_right();
+                    (i->second).inc_frame();
+                    break;
+        }
+        }
+        
         // receive data from server
         c.set_socket_set(c.create_sockset());
         int numready = SDLNet_CheckSockets(c.socket_set(), (Uint32)42);
@@ -248,6 +283,12 @@ retrylog:
                         std::string data = message.substr(4);
                         if (command == "msg")
                             std::cout << data << std::endl;
+                        else if (command == "dir")
+                        {
+                            std::string name = get_name(data);
+                            data = data.substr(name.size() + 1);
+                            enemy[name].dir(atoi(data.c_str()));
+                        }
                         else if (command == "bmr")
                         {
                             std::string name = get_name(data);
@@ -263,18 +304,6 @@ retrylog:
                                              (name, Bomber(player_image, bomb_image,
                                                            exp_image, red_arrow, screen)));
                             }
-                        }
-                        else if (command == "new")
-                        {
-                            enemy.insert(std::pair < std::string, Bomber>
-                                         (data, Bomber(player_image, bomb_image,
-                                                       exp_image, red_arrow, screen)));
-                        }
-                        else if (command == "rmv")
-                        {
-                            std::map < std::string, Bomber >::iterator it;
-                            it = enemy.find(data);
-                            enemy.erase(it);
                         }
                         else if(command == "kil")
                         {
@@ -296,6 +325,18 @@ retrylog:
                                 }
                             }
                             stage.destroy_destructibles(data);
+                        }
+                        else if (command == "new")
+                        {
+                            enemy.insert(std::pair < std::string, Bomber>
+                                         (data, Bomber(player_image, bomb_image,
+                                                       exp_image, red_arrow, screen)));
+                        }
+                        else if (command == "rmv")
+                        {
+                            std::map < std::string, Bomber >::iterator it;
+                            it = enemy.find(data);
+                            enemy.erase(it);
                         }
                         else if(command == "win")
                         {
@@ -334,9 +375,9 @@ retrylog:
         {
             stage.hit_destructibles(player_bombs[i], destroyed);
         }
-        c.send_message(player.send_info(c.get_name()), c.get_socket());
         SDL_Delay(50);
-        c.send_message("dst:" + to_string(destroyed), c.get_socket());
+        if (destroyed.size() > 0)
+            c.send_message("dst:" + to_string(destroyed), c.get_socket());
         for (it_type i = enemy.begin(); i != enemy.end(); i++)
         {
             int hit = player.any_collisions((i->second).get_actives());

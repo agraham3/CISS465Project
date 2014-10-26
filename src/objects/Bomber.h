@@ -159,7 +159,8 @@ public:
     int get_deaths() {return deaths;}
     int get_drops() {return drops;}
     double get_kda() {return (double) kills / deaths;}
-    
+    void dir(int x) {direction = x;}
+    int dir() {return direction;}
     void inc_kills() {kills++;}
 private:
     std::vector<SDL_Rect> walk_down;

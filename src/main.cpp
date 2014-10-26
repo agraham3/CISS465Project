@@ -148,6 +148,7 @@ retrylog:
     std::vector<int> destroyed;
     Text end_game_msg(screen, END_GAME_RECT);
     Uint32 update_timer = SDL_GetTicks();
+    Uint32 dst_timer = SDL_GetTicks();
     while (1)
     {
         int start = SDL_GetTicks();
@@ -244,6 +245,12 @@ retrylog:
             c.send_message(player.send_info(c.get_name()), c.get_socket());
             update_timer = SDL_GetTicks();
         }
+        if (SDL_GetTicks() > dst_timer + 400)
+        {
+            c.send_message("dst:" + to_string(destroyed), c.get_socket());
+            dst_timer = SDL_GetTicks();
+        }
+        
         switch(player.dir())
         {
             case 2:
@@ -306,20 +313,9 @@ retrylog:
                             std::cout << data << std::endl;
                         else if (command == "dir")
                         {
-                            try
-                            {
-                                std::string name = get_name(data);
-                                data = data.substr(name.size() + 1);
-                                enemy[name].dir(atoi(data.c_str()));
-                            }
-                            catch (const std::out_of_range &oor)
-                            {
-                                std::cerr << "Out of range error: "
-                                          << oor.what()
-                                          << '\n';
-                                c.send_message("quit", c.get_socket());
-                                continue;
-                            }
+                            std::string name = get_name(data);
+                            data = data.substr(name.size() + 1);
+                            enemy[name].dir(atoi(data.c_str()));
                         }
                         else if (command == "bmr")
                         {
@@ -390,6 +386,7 @@ retrylog:
                         std::cerr << "Out of range error: "
                                   << oor.what()
                                   << '\n';
+                        std::cerr << "message: " << message << '\n';
                         c.send_message("quit", c.get_socket());
                         continue;
                     }
@@ -406,11 +403,6 @@ retrylog:
         for (int i = 0; i < player_bombs.size(); i++)
         {
             stage.hit_destructibles(player_bombs[i], destroyed);
-        }
-        if (destroyed.size() > 0)
-        {
-            c.send_message("dst:" + to_string(destroyed), c.get_socket());
-            destroyed.clear();
         }
         for (it_type i = enemy.begin(); i != enemy.end(); i++)
         {

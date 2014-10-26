@@ -375,7 +375,6 @@ retrylog:
         {
             stage.hit_destructibles(player_bombs[i], destroyed);
         }
-        SDL_Delay(50);
         if (destroyed.size() > 0)
             c.send_message("dst:" + to_string(destroyed), c.get_socket());
         for (it_type i = enemy.begin(); i != enemy.end(); i++)

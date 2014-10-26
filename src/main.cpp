@@ -440,7 +440,7 @@ retrylog:
         player.update();
         for (it_type i = enemy.begin(); i != enemy.end(); i++)
         {
-            (i->second).update();
+            (i->second).update(true);
         }
         screen.clear();
         stage.draw(screen);

@@ -376,7 +376,10 @@ retrylog:
             stage.hit_destructibles(player_bombs[i], destroyed);
         }
         if (destroyed.size() > 0)
+        {
             c.send_message("dst:" + to_string(destroyed), c.get_socket());
+            destroyed.clear();
+        }
         for (it_type i = enemy.begin(); i != enemy.end(); i++)
         {
             int hit = player.any_collisions((i->second).get_actives());

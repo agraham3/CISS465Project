@@ -146,7 +146,7 @@ Bomber::Bomber(const std::string & image_file,
     health = MAX_HEALTH;
     alive = true;
     lives = MAX_LIVES;
-    direction = 0;
+    direction = -1;
     active_time = SDL_GetTicks();
     horizontal = 0;
     vertical = 0;
